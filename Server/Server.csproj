@@ -181,4 +181,8 @@
     <AdditionalFiles Include="Web\Views\_ViewStart.cshtml" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Shared\Shared.csproj" />
+  </ItemGroup>
+
 </Project>
