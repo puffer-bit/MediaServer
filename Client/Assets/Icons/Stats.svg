@@ -1,0 +1,9 @@
+<svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+    <!-- Фон кнопки -->
+    <rect x="4" y="4" width="56" height="56" rx="0" fill="#1976d2"/>
+
+    <!-- Столбцы статистики -->
+    <rect x="16" y="32" width="8" height="20" fill="#fff"/>
+    <rect x="28" y="24" width="8" height="28" fill="#fff"/>
+    <rect x="40" y="16" width="8" height="36" fill="#fff"/>
+</svg>

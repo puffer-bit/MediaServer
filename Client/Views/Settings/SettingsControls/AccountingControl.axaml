@@ -1,0 +1,62 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:settings="clr-namespace:Client.ViewModels.Settings.SettingsControls"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="Client.Views.Settings.SettingsControls.AccountingControl"
+             x:DataType="settings:AccountingControlViewModel"
+             d:DataContext="{d:DesignInstance Type=settings:AccountingControlViewModel, IsDesignTimeCreatable=True}">
+    <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Spacing="6">
+        <TextBlock FontSize="16" FontWeight="Bold">Identity settings</TextBlock>
+        <CheckBox Content="Encrypt user identity (Experimental, Not Implemented)" IsEnabled="False" IsChecked="{Binding IsUserIdentityEncryptEnabled}"></CheckBox>
+        <CheckBox Content="Encrypt old identities (Experimental)" Margin="32,-6,0,0" IsEnabled="{Binding IsUserIdentityEncryptEnabled}" IsChecked="{Binding IsUserIdentityEncryptCurrentIdentitiesEnabled}"></CheckBox>
+        <StackPanel Orientation="Horizontal" Spacing="8">
+            <Svg Width="20" Height="20" Path="avares://Client/Assets/Icons/Info.svg"/>
+            <TextBlock Margin="-3,3,0,0" FontSize="12" FontStyle="Italic">Encrypted identities cannot be decrypted</TextBlock>
+        </StackPanel>
+        <StackPanel Orientation="Vertical" Margin="0,12,0,0">
+            <TextBlock FontSize="16" FontWeight="Bold" Margin="0,0,0,6">Identities</TextBlock>
+            <DataGrid ItemsSource="{Binding Identities}"
+                              HorizontalAlignment="Stretch"
+                              VerticalAlignment="Stretch"
+                              CanUserResizeColumns="False"
+                              CanUserReorderColumns="False"
+                              CanUserSortColumns="True"
+                              BorderBrush="Gray"
+                              BorderThickness="1"
+                              RowBackground="#2F2F2F"
+                              Background="#2F2F2F">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Address" Binding="{Binding Address}"/>
+                    <DataGridTextColumn Header="User name" Binding="{Binding User.Name}"/>
+                    <DataGridTemplateColumn Header="Identity key" IsReadOnly="True" Width="*">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Grid ColumnDefinitions="*, 32">
+                                    <TextBlock Grid.Column="0" Text="{Binding User.Id}"
+                                               HorizontalAlignment="Stretch"
+                                               TextAlignment="Left"
+                                               TextTrimming="CharacterEllipsis"
+                                               TextWrapping="NoWrap"
+                                               VerticalAlignment="Center"
+                                               Margin="8,0,0,0"/>
+                                    <Button Grid.Column="1" Margin="6,0,0,0" Command="{Binding $parent[DataGrid].((settings:AccountingControlViewModel)DataContext).DeleteIdentityCommand}"
+                                            CommandParameter="{Binding}"
+                                            VerticalAlignment="Stretch"
+                                            HorizontalAlignment="Right">
+                                        <Svg Width="20" Height="20" Path="avares://Client/Assets/Icons/No.svg" VerticalAlignment="Center"/>
+                                    </Button>
+                                </Grid>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+            <StackPanel Orientation="Horizontal" Spacing="8" Margin="0,6,0,0">
+                <Svg Width="20" Height="20" Path="avares://Client/Assets/Icons/Info.svg"/>
+                <TextBlock Margin="-3,3,0,0" FontSize="12" FontStyle="Italic">Editing cells does not require saving</TextBlock>
+            </StackPanel>
+        </StackPanel>
+    </StackPanel>
+</UserControl>

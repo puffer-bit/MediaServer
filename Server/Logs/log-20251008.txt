@@ -1,0 +1,81 @@
+[00:04:40 INF] Server started.
+[19:43:28 INF] Server started.
+[19:43:29 DBG] User User1 connected.
+[19:43:34 INF] Room with name "das"(ID: f7e6529a-f669-4486-828d-6bff94ed7e66) created. Waiting for host...
+[19:43:34 INF] SessionCreated fired
+[19:43:35 WRN] JoinRoom event error. Room full.
+[19:43:37 WRN] JoinRoom event error. Room full.
+[19:43:48 WRN] JoinRoom event error. Room full.
+[19:54:18 WRN] JoinRoom event error. Room full.
+[19:55:23 INF] Host with ID acd357a0-3939-42f7-bef5-cc4f10208c59 connected to Room f7e6529a-f669-4486-828d-6bff94ed7e66.
+[19:55:27 INF] ReactOnAnswer event completed.
+[20:06:55 INF] Server started.
+[20:07:12 DBG] User User1 connected.
+[20:07:52 INF] User User1 disconnected. Reason: Timed out
+[20:08:00 ERR] Error on ws connection. Unable to read data from the transport connection: Connection reset by peer.
+[20:08:10 DBG] User User1 connected.
+[20:08:15 INF] Room with name "das"(ID: 63e49438-89f5-4ed7-ac06-7c420a28d92d) created. Waiting for host...
+[20:08:15 INF] SessionCreated fired
+[20:08:16 INF] Host with ID acd357a0-3939-42f7-bef5-cc4f10208c59 connected to Room 63e49438-89f5-4ed7-ac06-7c420a28d92d.
+[20:08:22 INF] ReactOnAnswer event completed.
+[20:09:00 INF] User User1 disconnected. Reason: WebSocket disconnection.
+[20:09:09 DBG] User User1 connected.
+[20:09:11 INF] Peer with ID acd357a0-3939-42f7-bef5-cc4f10208c59 already connected to Room 63e49438-89f5-4ed7-ac06-7c420a28d92d.
+[20:09:11 INF] Host with ID acd357a0-3939-42f7-bef5-cc4f10208c59 connected to Room 63e49438-89f5-4ed7-ac06-7c420a28d92d.
+[20:09:15 INF] ReactOnAnswer event completed.
+[20:09:48 INF] User User1 disconnected. Reason: WebSocket disconnection.
+[20:09:57 DBG] User User1 connected.
+[20:09:58 INF] Peer with ID acd357a0-3939-42f7-bef5-cc4f10208c59 already connected to Room 63e49438-89f5-4ed7-ac06-7c420a28d92d.
+[20:09:58 INF] Host with ID acd357a0-3939-42f7-bef5-cc4f10208c59 connected to Room 63e49438-89f5-4ed7-ac06-7c420a28d92d.
+[20:10:02 INF] ReactOnAnswer event completed.
+[20:11:06 DBG] User User connected.
+[20:11:08 INF] Client with ID e19d228e-070e-4c13-97c7-d679da8e8061 connected to Room 63e49438-89f5-4ed7-ac06-7c420a28d92d.
+[20:11:08 INF] ReactOnAnswer event completed.
+[20:11:18 INF] Host with ID acd357a0-3939-42f7-bef5-cc4f10208c59 disconnected from Room 63e49438-89f5-4ed7-ac06-7c420a28d92d.
+[20:11:19 INF] Host with ID acd357a0-3939-42f7-bef5-cc4f10208c59 connected to Room 63e49438-89f5-4ed7-ac06-7c420a28d92d.
+[20:11:20 INF] ReactOnAnswer event completed.
+[20:11:21 INF] ReactOnAnswer event completed.
+[20:12:09 INF] User User1 disconnected. Reason: WebSocket disconnection.
+[20:12:17 DBG] User User1 connected.
+[20:12:19 INF] Peer with ID acd357a0-3939-42f7-bef5-cc4f10208c59 already connected to Room 63e49438-89f5-4ed7-ac06-7c420a28d92d.
+[20:12:19 INF] Host with ID acd357a0-3939-42f7-bef5-cc4f10208c59 connected to Room 63e49438-89f5-4ed7-ac06-7c420a28d92d.
+[20:12:23 INF] ReactOnAnswer event completed.
+[20:12:36 INF] Client with ID e19d228e-070e-4c13-97c7-d679da8e8061 disconnected from Room 63e49438-89f5-4ed7-ac06-7c420a28d92d.
+[20:12:36 INF] Client with ID e19d228e-070e-4c13-97c7-d679da8e8061 connected to Room 63e49438-89f5-4ed7-ac06-7c420a28d92d.
+[20:12:37 INF] ReactOnAnswer event completed.
+[20:13:39 INF] User User1 disconnected. Reason: WebSocket disconnection.
+[20:13:43 INF] Peer with ID e19d228e-070e-4c13-97c7-d679da8e8061 already connected to Room 63e49438-89f5-4ed7-ac06-7c420a28d92d.
+[20:13:43 INF] Client with ID e19d228e-070e-4c13-97c7-d679da8e8061 connected to Room 63e49438-89f5-4ed7-ac06-7c420a28d92d.
+[20:13:43 INF] ReactOnAnswer event completed.
+[20:13:51 DBG] User User1 connected.
+[20:13:53 INF] Peer with ID acd357a0-3939-42f7-bef5-cc4f10208c59 already connected to Room 63e49438-89f5-4ed7-ac06-7c420a28d92d.
+[20:13:53 INF] Host with ID acd357a0-3939-42f7-bef5-cc4f10208c59 connected to Room 63e49438-89f5-4ed7-ac06-7c420a28d92d.
+[20:13:54 INF] ReactOnAnswer event completed.
+[20:25:23 INF] Server started.
+[20:25:31 DBG] User User1 connected.
+[20:25:36 INF] Room with name "dsa"(ID: 14a148c1-1ca7-4b05-84f9-775fff9d99b1) created. Waiting for host...
+[20:25:36 INF] SessionCreated fired
+[20:25:37 INF] Host with ID acd357a0-3939-42f7-bef5-cc4f10208c59 connected to Room 14a148c1-1ca7-4b05-84f9-775fff9d99b1.
+[20:25:41 INF] ReactOnAnswer event completed.
+[20:25:51 INF] Host with ID acd357a0-3939-42f7-bef5-cc4f10208c59 disconnected from Room 14a148c1-1ca7-4b05-84f9-775fff9d99b1.
+[20:25:52 INF] Host with ID acd357a0-3939-42f7-bef5-cc4f10208c59 connected to Room 14a148c1-1ca7-4b05-84f9-775fff9d99b1.
+[20:25:53 INF] ReactOnAnswer event completed.
+[22:22:19 INF] Server started.
+[22:22:20 DBG] User User1 connected.
+[22:22:25 INF] Room with name "das"(ID: efdf31d2-ac14-4be9-a263-b023142df445) created. Waiting for host...
+[22:22:25 INF] SessionCreated fired
+[23:07:15 INF] Server started.
+[23:07:18 DBG] User User1 connected.
+[23:08:10 INF] Server started.
+[23:09:07 DBG] User User1 connected.
+[23:10:04 INF] Server started.
+[23:10:08 DBG] User User1 connected.
+[23:11:21 INF] Server started.
+[23:11:23 DBG] User User1 connected.
+[23:11:26 INF] User User1 disconnected. Reason: WebSocket disconnection.
+[23:11:41 DBG] User User1 connected.
+[23:11:44 INF] User User1 disconnected. Reason: WebSocket disconnection.
+[23:11:46 DBG] User User1 connected.
+[23:11:47 INF] User User1 disconnected. Reason: WebSocket disconnection.
+[23:11:49 DBG] User User1 connected.
+[23:14:29 INF] User User1 disconnected. Reason: WebSocket disconnection.

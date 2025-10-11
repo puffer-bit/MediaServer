@@ -1,0 +1,70 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewModels="clr-namespace:Client.ViewModels"
+             xmlns:controls="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia.ProgressRing"
+             xmlns:videoSession="clr-namespace:Client.ViewModels.Sessions.VideoSession"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:DataType="videoSession:VideoSessionViewModel"
+             x:Class="Client.Views.Chats.VideoSessionView.VideoSessionControl">
+    
+    <Grid RowDefinitions="42,*">
+
+        <Grid Grid.Row="0" Background="#3D3D3D">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="4*"></ColumnDefinition>
+                <ColumnDefinition Width="2*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="10" Margin="6,0,0,0">
+                <Border>
+                    <!-- Loading ring -->
+                    <controls:ProgressRing x:Name="LoadingIcon"
+                                           MinWidth="30"
+                                           MinHeight="30"
+                                           IsIndeterminate="True"
+                                           IsVisible="{Binding IsLoading}"
+                                           BorderThickness="4"
+                                           Foreground="WhiteSmoke"/>
+                    
+                </Border>
+                <Image Width="30" Height="30" IsVisible="{Binding !IsLoading}">
+                    <Image.Source>
+                        <SvgImage Source="{Binding IconPath}"/>
+                    </Image.Source>
+                </Image>
+                <TextBlock Text="{Binding CurrentAction}"
+                           HorizontalAlignment="Stretch"
+                           VerticalAlignment="Center"
+                           TextTrimming="CharacterEllipsis"
+                           TextWrapping="NoWrap">
+                    
+                </TextBlock>
+            </StackPanel>
+            <StackPanel Grid.Column="1" Orientation="Horizontal"  Margin="0,0,10,0" HorizontalAlignment="Right" ToolTip.Tip="Session info">
+                <Button Padding="4" Background="Transparent" Command="{Binding FullScreenCommand}">
+                    <Image Width="24" Height="24" HorizontalAlignment="Left">
+                        <Image.Source >
+                            <SvgImage Source="avares://Client/Assets/Icons/GoFullscreen.svg"/>
+                        </Image.Source>
+                    </Image>
+                </Button>
+                <ToggleButton Padding="4" Background="Transparent" IsEnabled="True">
+                    <Image Width="24" Height="24" HorizontalAlignment="Left" >
+                        <Image.Source >
+                            <SvgImage Source="avares://Client/Assets/Icons/BaseUsers.svg"/>
+                        </Image.Source>
+                    </Image>
+                </ToggleButton>
+                <Button Padding="0" Background="Transparent" Command="{Binding CloseCommand}" ToolTip.Tip="Leave session">
+                    <Image Width="32" Height="32" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="-4,0, 0, 0">
+                        <Image.Source>
+                            <SvgImage Source="avares://Client/Assets/Icons/Logout.svg"/>
+                        </Image.Source>
+                    </Image>
+                </Button>
+            </StackPanel>
+        </Grid>
+        <Image Grid.Row="1" Source="{Binding CurrentFrame}" Stretch="Uniform" Margin="12,12,12,12"/>
+    </Grid>
+</UserControl>

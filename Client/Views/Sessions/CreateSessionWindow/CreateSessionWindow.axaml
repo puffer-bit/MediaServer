@@ -1,0 +1,82 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:controls="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia.ProgressRing"
+        xmlns:sessions="clr-namespace:Client.ViewModels.Sessions"
+        xmlns:uiTemplateSelectors="clr-namespace:Client.Services.UITemplateSelectors"
+        mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="450"
+        x:Class="Client.Views.Chats.CreateSessionWindow.CreateSessionWindow"
+        Title="{Binding Title}"
+        x:DataType="sessions:CreateSessionWindowViewModel"
+        Background="#3D3D3D"
+        Width="300"
+        Height="400"
+        CanResize="False">
+    
+    <Grid RowDefinitions="*, 20, 66">
+        <StackPanel Margin="16" Spacing="16" Opacity="{Binding Opacity}">
+            <StackPanel.Transitions>
+                <Transitions>
+                    <DoubleTransition Property="Opacity" Duration="0:0:0.2" Easing="SineEaseIn"/>
+                </Transitions>
+            </StackPanel.Transitions>
+            
+            <TextBlock IsVisible="{Binding IsEditMode}" FontWeight="Bold" FontSize="16">
+                Edit session           
+            </TextBlock>
+            <TextBlock IsVisible="{Binding !IsEditMode}" FontWeight="Bold" FontSize="16">
+                Create session
+            </TextBlock>
+            
+            <TextBox Watermark="Session name" IsHitTestVisible="{Binding !IsLoading}" Text="{Binding Name}"/>
+
+            <ComboBox ItemsSource="{Binding SessionTypes}"
+                      SelectedItem="{Binding CurrentSessionType, Mode=TwoWay}"
+                      Width="120" IsHitTestVisible="{Binding !IsLoading}"/>
+            <ContentControl Content="{Binding DynamicContent}">
+                <ContentControl.DataTemplates>
+                    <uiTemplateSelectors:SessionTemplateSelector />
+                </ContentControl.DataTemplates>
+            </ContentControl>
+
+        </StackPanel>
+        <Grid Grid.Row="1" Margin="16,0,0,0" Opacity="{Binding OpacityLoading}">
+            <Grid.Transitions>
+                <Transitions>
+                    <DoubleTransition Property="Opacity" Duration="0:0:0.2" Easing="SineEaseIn"/>
+                </Transitions>
+            </Grid.Transitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="32"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Border Grid.Column="0" HorizontalAlignment="Left">
+                <controls:ProgressRing IsIndeterminate="True" BorderThickness="4" Width="32" Height="32" Foreground="WhiteSmoke"/>
+            </Border>
+            <TextBlock Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0,0,0"
+                       Text="{Binding CurrentAction}"/>
+        </Grid>
+        <Grid Grid.Row="2" Margin="16" Opacity="{Binding Opacity}">
+            <Grid.Transitions>
+                <Transitions>
+                    <DoubleTransition Property="Opacity" Duration="0:0:0.2" Easing="SineEaseIn"/>
+                </Transitions>
+            </Grid.Transitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+            
+            <Button Grid.Column="0" IsVisible="{Binding !IsEditMode}" HorizontalAlignment="Left" Width="74" HorizontalContentAlignment="Center" Command="{Binding CreateCommand}" IsHitTestVisible="{Binding !IsLoading}">
+                <StackPanel Orientation="Horizontal">
+                    <Svg Width="18" Height="18" Margin="-6,0,0,0" Path="avares://Client/Assets/Icons/New.svg" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                    <TextBlock Margin="2,0,0,0" Text="Create" HorizontalAlignment="Left" VerticalAlignment="Center"></TextBlock>
+                </StackPanel>
+            </Button>
+            <Button Grid.Column="0" IsVisible="{Binding IsEditMode}" Content="Apply" HorizontalAlignment="Left" Width="70" HorizontalContentAlignment="Center" Command="{Binding EditCommand}" IsHitTestVisible="{Binding !IsLoading}"/>
+            
+            <Button Grid.Column="1" Content="Cancel" HorizontalAlignment="Right" Width="70" HorizontalContentAlignment="Center" Command="{Binding CloseCommand}" IsHitTestVisible="{Binding !IsLoading}"/>
+        </Grid>
+    </Grid>
+</Window>

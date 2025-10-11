@@ -1,0 +1,18 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:settings="clr-namespace:Client.ViewModels.Settings.SettingsControls"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="Client.Views.Settings.SettingsControls.BehaviorControl"
+             x:DataType="settings:BehaviorControlViewModel"
+             d:DataContext="{d:DesignInstance Type=settings:BehaviorControlViewModel, IsDesignTimeCreatable=True}">
+    <StackPanel Orientation="Vertical" HorizontalAlignment="Left" VerticalAlignment="Top" Spacing="6">
+        <TextBlock FontSize="16" FontWeight="Bold" Margin="0,0,0,6">Auto connection settings</TextBlock>
+        <CheckBox Content="Allow auto connection to last coordinator (Experimental)" IsChecked="{Binding IsAutoConnectionEnabled}"></CheckBox>
+        <StackPanel Orientation="Horizontal" Spacing="6">
+            <TextBlock VerticalAlignment="Center">Reset remembered connection</TextBlock>
+            <Button Command="{Binding ResetCoordinatorDTOCommand}" IsEnabled="{Binding !IsCoordinatorDTOReset}">Reset</Button>
+        </StackPanel>
+    </StackPanel>
+</UserControl>

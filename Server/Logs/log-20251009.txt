@@ -1,0 +1,281 @@
+[17:31:49 INF] Server started.
+[17:32:03 DBG] User User connected.
+[17:32:08 INF] Room with name "вфыв"(ID: 620cce86-fb86-438c-a98a-7f8f48dd539a) created. Waiting for host...
+[17:32:08 INF] SessionCreated fired
+[17:32:10 INF] Host with ID 6df92e3d-0eac-46ab-8c45-886093938cb9 connected to Room 620cce86-fb86-438c-a98a-7f8f48dd539a.
+[17:32:24 ERR] Error on ws connection. Unable to read data from the transport connection: An existing connection was forcibly closed by the remote host..
+[17:32:35 WRN] User with id 6df92e3d-0eac-46ab-8c45-886093938cb9 already connected. Replacing...
+[17:32:35 DBG] User User connected.
+[17:32:48 INF] User User disconnected. Reason: Timed out
+[17:32:55 DBG] User User connected.
+[17:33:56 INF] Peer with ID 6df92e3d-0eac-46ab-8c45-886093938cb9 already connected to Room 620cce86-fb86-438c-a98a-7f8f48dd539a.
+[17:33:56 INF] Host with ID 6df92e3d-0eac-46ab-8c45-886093938cb9 connected to Room 620cce86-fb86-438c-a98a-7f8f48dd539a.
+[17:34:01 ERR] Error on ws connection. Unable to read data from the transport connection: An existing connection was forcibly closed by the remote host..
+[17:34:01 ERR] Error on ws connection. Unable to read data from the transport connection: An existing connection was forcibly closed by the remote host..
+[17:34:20 INF] User User disconnected. Reason: Timed out
+[18:29:12 INF] Server started.
+[18:29:33 DBG] User User connected.
+[18:29:44 INF] Room with name "dsad"(ID: b7fa621a-53e6-4fd5-a781-0cc8fafddfd4) created. Waiting for host...
+[18:29:44 INF] SessionCreated fired
+[18:29:45 INF] Host with ID 6df92e3d-0eac-46ab-8c45-886093938cb9 connected to Room b7fa621a-53e6-4fd5-a781-0cc8fafddfd4.
+[18:31:11 ERR] Error on ws connection. Unable to read data from the transport connection: An existing connection was forcibly closed by the remote host..
+[18:31:16 WRN] User with id 6df92e3d-0eac-46ab-8c45-886093938cb9 already connected. Replacing...
+[18:31:16 DBG] User User connected.
+[18:31:33 WRN] User with id 6df92e3d-0eac-46ab-8c45-886093938cb9 already connected. Replacing...
+[18:31:33 DBG] User User connected.
+[18:31:33 INF] User User disconnected. Reason: Timed out
+[18:31:42 DBG] User User connected.
+[18:31:44 INF] Peer with ID 6df92e3d-0eac-46ab-8c45-886093938cb9 already connected to Room b7fa621a-53e6-4fd5-a781-0cc8fafddfd4.
+[18:31:44 INF] Host with ID 6df92e3d-0eac-46ab-8c45-886093938cb9 connected to Room b7fa621a-53e6-4fd5-a781-0cc8fafddfd4.
+[18:31:55 ERR] Error on ws connection. Unable to read data from the transport connection: An existing connection was forcibly closed by the remote host..
+[18:31:55 ERR] Error on ws connection. Unable to read data from the transport connection: An existing connection was forcibly closed by the remote host..
+[18:31:55 ERR] Error on ws connection. Unable to read data from the transport connection: An existing connection was forcibly closed by the remote host..
+[18:32:00 WRN] User with id 6df92e3d-0eac-46ab-8c45-886093938cb9 already connected. Replacing...
+[18:32:00 DBG] User User connected.
+[18:32:06 WRN] User with id 6df92e3d-0eac-46ab-8c45-886093938cb9 already connected. Replacing...
+[18:32:06 DBG] User User connected.
+[18:32:17 INF] User User disconnected. Reason: Timed out
+[18:32:44 ERR] Error on ws connection. Unable to read data from the transport connection: An existing connection was forcibly closed by the remote host..
+[18:32:44 ERR] Error on ws connection. Unable to read data from the transport connection: An existing connection was forcibly closed by the remote host..
+[18:32:49 DBG] User User connected.
+[18:32:52 INF] Peer with ID 6df92e3d-0eac-46ab-8c45-886093938cb9 already connected to Room b7fa621a-53e6-4fd5-a781-0cc8fafddfd4.
+[18:32:52 INF] Host with ID 6df92e3d-0eac-46ab-8c45-886093938cb9 connected to Room b7fa621a-53e6-4fd5-a781-0cc8fafddfd4.
+[18:33:09 ERR] Error on ws connection. Unable to read data from the transport connection: An existing connection was forcibly closed by the remote host..
+[18:33:15 WRN] User with id 6df92e3d-0eac-46ab-8c45-886093938cb9 already connected. Replacing...
+[18:33:15 DBG] User User connected.
+[18:33:29 INF] User User disconnected. Reason: Timed out
+[18:33:36 DBG] User User connected.
+[18:33:38 INF] Peer with ID 6df92e3d-0eac-46ab-8c45-886093938cb9 already connected to Room b7fa621a-53e6-4fd5-a781-0cc8fafddfd4.
+[18:33:38 INF] Host with ID 6df92e3d-0eac-46ab-8c45-886093938cb9 connected to Room b7fa621a-53e6-4fd5-a781-0cc8fafddfd4.
+[18:34:00 ERR] Error on ws connection. Unable to read data from the transport connection: An existing connection was forcibly closed by the remote host..
+[18:34:00 ERR] Error on ws connection. Unable to read data from the transport connection: An existing connection was forcibly closed by the remote host..
+[18:34:10 WRN] User with id 6df92e3d-0eac-46ab-8c45-886093938cb9 already connected. Replacing...
+[18:34:10 DBG] User User connected.
+[18:34:21 INF] User User disconnected. Reason: Timed out
+[18:34:29 DBG] User User connected.
+[18:34:31 INF] Peer with ID 6df92e3d-0eac-46ab-8c45-886093938cb9 already connected to Room b7fa621a-53e6-4fd5-a781-0cc8fafddfd4.
+[18:34:31 INF] Host with ID 6df92e3d-0eac-46ab-8c45-886093938cb9 connected to Room b7fa621a-53e6-4fd5-a781-0cc8fafddfd4.
+[18:35:25 ERR] Error on ws connection. Unable to read data from the transport connection: An existing connection was forcibly closed by the remote host..
+[18:35:25 ERR] Error on ws connection. Unable to read data from the transport connection: An existing connection was forcibly closed by the remote host..
+[18:35:49 INF] User User disconnected. Reason: Timed out
+[18:38:13 INF] Server started.
+[18:38:19 DBG] User User connected.
+[18:38:27 INF] Room with name "выф"(ID: 3a7caef5-dad5-45a4-bc28-9a1d1e732021) created. Waiting for host...
+[18:38:27 INF] SessionCreated fired
+[18:38:28 INF] Host with ID 6df92e3d-0eac-46ab-8c45-886093938cb9 connected to Room 3a7caef5-dad5-45a4-bc28-9a1d1e732021.
+[18:38:46 ERR] Error on ws connection. Unable to read data from the transport connection: An existing connection was forcibly closed by the remote host..
+[18:38:54 WRN] User with id 6df92e3d-0eac-46ab-8c45-886093938cb9 already connected. Replacing...
+[18:38:54 DBG] User User connected.
+[18:39:03 ERR] Error on ws connection. Unable to read data from the transport connection: An existing connection was forcibly closed by the remote host..
+[18:39:08 INF] Server started.
+[18:39:14 DBG] User User connected.
+[18:39:19 INF] Room with name "ыфв"(ID: b4d338e8-a17a-4bc4-98a8-a89de455ce8c) created. Waiting for host...
+[18:39:19 INF] SessionCreated fired
+[18:39:19 INF] Host with ID 6df92e3d-0eac-46ab-8c45-886093938cb9 connected to Room b4d338e8-a17a-4bc4-98a8-a89de455ce8c.
+[18:48:30 ERR] Error on ws connection. Unable to read data from the transport connection: An existing connection was forcibly closed by the remote host..
+[18:48:39 INF] Server started.
+[18:48:49 DBG] User User connected.
+[18:48:54 INF] Room with name "dsa"(ID: 28cb890a-6611-4f2c-80b4-87fa365a3ef0) created. Waiting for host...
+[18:48:54 INF] SessionCreated fired
+[18:48:55 INF] Host with ID 6df92e3d-0eac-46ab-8c45-886093938cb9 connected to Room 28cb890a-6611-4f2c-80b4-87fa365a3ef0.
+[18:49:14 INF] User User disconnected. Reason: Timed out
+[18:51:49 ERR] Error on ws connection. Unable to read data from the transport connection: An existing connection was forcibly closed by the remote host..
+[18:51:56 INF] Server started.
+[18:52:02 DBG] User User connected.
+[18:52:05 INF] Room with name "dsa"(ID: bbebaf40-fc10-48cf-b1eb-f4d416aab465) created. Waiting for host...
+[18:52:05 INF] SessionCreated fired
+[18:52:07 INF] Host with ID 6df92e3d-0eac-46ab-8c45-886093938cb9 connected to Room bbebaf40-fc10-48cf-b1eb-f4d416aab465.
+[18:53:16 ERR] Error on ws connection. Unable to read data from the transport connection: An existing connection was forcibly closed by the remote host..
+[18:53:21 INF] Server started.
+[18:53:30 DBG] User User connected.
+[18:53:36 INF] Room with name "dsad"(ID: 1117f645-38ca-4964-807c-113d2d069e7a) created. Waiting for host...
+[18:53:36 INF] SessionCreated fired
+[18:53:36 INF] Host with ID 6df92e3d-0eac-46ab-8c45-886093938cb9 connected to Room 1117f645-38ca-4964-807c-113d2d069e7a.
+[18:53:51 INF] Server started.
+[18:54:01 DBG] User User connected.
+[18:54:06 INF] Room with name "dsad"(ID: b36bf8ba-f39f-4a82-947e-7ee979b666ff) created. Waiting for host...
+[18:54:06 INF] SessionCreated fired
+[18:54:07 INF] Host with ID 6df92e3d-0eac-46ab-8c45-886093938cb9 connected to Room b36bf8ba-f39f-4a82-947e-7ee979b666ff.
+[18:58:06 ERR] Error on ws connection. Unable to read data from the transport connection: An existing connection was forcibly closed by the remote host..
+[18:59:04 INF] Server started.
+[18:59:10 DBG] User User connected.
+[18:59:14 INF] Room with name "выфв"(ID: f4222f25-15d4-45b9-bf91-e60a3144c3f7) created. Waiting for host...
+[18:59:14 INF] SessionCreated fired
+[18:59:15 INF] Host with ID 6df92e3d-0eac-46ab-8c45-886093938cb9 connected to Room f4222f25-15d4-45b9-bf91-e60a3144c3f7.
+[19:00:56 INF] Server started.
+[19:01:02 DBG] User User connected.
+[19:01:18 INF] Room with name "dsad"(ID: 0b12e491-5cfe-4be3-be6b-3737afc403be) created. Waiting for host...
+[19:01:18 INF] SessionCreated fired
+[19:01:19 INF] Host with ID 6df92e3d-0eac-46ab-8c45-886093938cb9 connected to Room 0b12e491-5cfe-4be3-be6b-3737afc403be.
+[19:03:31 ERR] Error on ws connection. Unable to read data from the transport connection: An existing connection was forcibly closed by the remote host..
+[19:03:33 INF] Server started.
+[19:03:40 DBG] User User connected.
+[19:03:44 INF] Room with name "dsad"(ID: 4dd4afc5-1fff-4a09-9b1a-9276ac5e58c1) created. Waiting for host...
+[19:03:44 INF] SessionCreated fired
+[19:03:45 INF] Host with ID 6df92e3d-0eac-46ab-8c45-886093938cb9 connected to Room 4dd4afc5-1fff-4a09-9b1a-9276ac5e58c1.
+[19:04:06 ERR] Error on ws connection. Unable to read data from the transport connection: An existing connection was forcibly closed by the remote host..
+[19:04:51 INF] Server started.
+[19:04:59 DBG] User User connected.
+[19:05:04 INF] Room with name "dsa"(ID: d2ae813e-7591-40bf-a8d6-03a7743f497a) created. Waiting for host...
+[19:05:04 INF] SessionCreated fired
+[19:05:05 INF] Host with ID 6df92e3d-0eac-46ab-8c45-886093938cb9 connected to Room d2ae813e-7591-40bf-a8d6-03a7743f497a.
+[19:06:28 ERR] Error on ws connection. Unable to read data from the transport connection: An existing connection was forcibly closed by the remote host..
+[19:06:30 INF] Server started.
+[19:06:37 DBG] User User connected.
+[19:06:40 INF] Room with name "dd"(ID: 94a0c50b-e9c6-4d80-930b-1b6abe079dd7) created. Waiting for host...
+[19:06:40 INF] SessionCreated fired
+[19:06:41 INF] Host with ID 6df92e3d-0eac-46ab-8c45-886093938cb9 connected to Room 94a0c50b-e9c6-4d80-930b-1b6abe079dd7.
+[19:08:46 ERR] Error on ws connection. Unable to read data from the transport connection: An existing connection was forcibly closed by the remote host..
+[19:08:48 INF] Server started.
+[19:08:53 DBG] User User connected.
+[19:08:58 INF] Room with name "ddd"(ID: 9bd92da5-ffdf-459c-b4e8-9314616cb760) created. Waiting for host...
+[19:08:58 INF] SessionCreated fired
+[19:08:58 INF] Host with ID 6df92e3d-0eac-46ab-8c45-886093938cb9 connected to Room 9bd92da5-ffdf-459c-b4e8-9314616cb760.
+[19:09:17 ERR] Error on ws connection. Unable to read data from the transport connection: An existing connection was forcibly closed by the remote host..
+[19:09:20 INF] Server started.
+[19:09:26 DBG] User User connected.
+[19:09:30 INF] Room with name "dsad"(ID: 064e8f5e-d620-4ac9-b662-d713c739cb93) created. Waiting for host...
+[19:09:30 INF] SessionCreated fired
+[19:09:31 INF] Host with ID 6df92e3d-0eac-46ab-8c45-886093938cb9 connected to Room 064e8f5e-d620-4ac9-b662-d713c739cb93.
+[19:10:04 ERR] Error on ws connection. Unable to read data from the transport connection: An existing connection was forcibly closed by the remote host..
+[19:10:06 INF] Server started.
+[19:10:14 DBG] User User connected.
+[19:10:18 INF] Room with name "вфыв"(ID: 2c65a1be-40a9-4367-93ea-c00920a652a3) created. Waiting for host...
+[19:10:18 INF] SessionCreated fired
+[19:10:19 INF] Host with ID 6df92e3d-0eac-46ab-8c45-886093938cb9 connected to Room 2c65a1be-40a9-4367-93ea-c00920a652a3.
+[19:10:21 INF] ReactOnAnswer event completed.
+[19:10:33 ERR] Error on ws connection. Unable to read data from the transport connection: An existing connection was forcibly closed by the remote host..
+[19:10:54 INF] User User disconnected. Reason: Timed out
+[19:11:53 INF] Server started.
+[19:11:59 DBG] User User connected.
+[19:12:02 INF] Room with name "dsa"(ID: cf6aeb26-e376-421c-9626-adac5a216dfb) created. Waiting for host...
+[19:12:02 INF] SessionCreated fired
+[19:12:03 INF] Host with ID 6df92e3d-0eac-46ab-8c45-886093938cb9 connected to Room cf6aeb26-e376-421c-9626-adac5a216dfb.
+[19:12:05 INF] ReactOnAnswer event completed.
+[19:12:21 ERR] Error on ws connection. Unable to read data from the transport connection: An existing connection was forcibly closed by the remote host..
+[19:12:40 WRN] User with id 6df92e3d-0eac-46ab-8c45-886093938cb9 already connected. Replacing...
+[19:12:40 DBG] User User connected.
+[19:12:44 INF] User User disconnected. Reason: Timed out
+[19:12:46 DBG] User User connected.
+[19:12:48 INF] Peer with ID 6df92e3d-0eac-46ab-8c45-886093938cb9 already connected to Room cf6aeb26-e376-421c-9626-adac5a216dfb.
+[19:12:48 INF] Host with ID 6df92e3d-0eac-46ab-8c45-886093938cb9 connected to Room cf6aeb26-e376-421c-9626-adac5a216dfb.
+[19:13:07 ERR] Error on ws connection. Unable to read data from the transport connection: An existing connection was forcibly closed by the remote host..
+[19:13:07 ERR] Error on ws connection. Unable to read data from the transport connection: An existing connection was forcibly closed by the remote host..
+[19:13:26 INF] User User disconnected. Reason: Timed out
+[19:13:29 DBG] User User connected.
+[19:13:57 ERR] Error on ws connection. Unable to read data from the transport connection: An existing connection was forcibly closed by the remote host..
+[19:13:59 INF] Server started.
+[19:14:04 DBG] User User connected.
+[19:14:09 INF] Room with name "dsad"(ID: 0e623501-cd7d-4763-a28b-32c8a1bd3c52) created. Waiting for host...
+[19:14:09 INF] SessionCreated fired
+[19:14:10 INF] Host with ID 6df92e3d-0eac-46ab-8c45-886093938cb9 connected to Room 0e623501-cd7d-4763-a28b-32c8a1bd3c52.
+[19:14:14 INF] ReactOnAnswer event completed.
+[19:14:28 INF] Host with ID 6df92e3d-0eac-46ab-8c45-886093938cb9 disconnected from Room 0e623501-cd7d-4763-a28b-32c8a1bd3c52.
+[19:14:30 INF] Host with ID 6df92e3d-0eac-46ab-8c45-886093938cb9 connected to Room 0e623501-cd7d-4763-a28b-32c8a1bd3c52.
+[19:14:37 INF] ReactOnAnswer event completed.
+[19:14:38 ERR] Error on ws connection. Unable to read data from the transport connection: An existing connection was forcibly closed by the remote host..
+[19:15:01 WRN] User with id 6df92e3d-0eac-46ab-8c45-886093938cb9 already connected. Replacing...
+[19:15:01 DBG] User User connected.
+[19:15:03 WRN] User with id 6df92e3d-0eac-46ab-8c45-886093938cb9 already connected. Replacing...
+[19:15:03 DBG] User User connected.
+[19:15:04 INF] User User disconnected. Reason: Timed out
+[19:15:09 ERR] Error on ws connection. Unable to read data from the transport connection: An existing connection was forcibly closed by the remote host..
+[19:15:09 ERR] Error on ws connection. Unable to read data from the transport connection: An existing connection was forcibly closed by the remote host..
+[19:15:12 INF] Server started.
+[19:15:17 DBG] User User connected.
+[19:15:24 INF] Room with name "ddd"(ID: 73a8ad25-e0e8-41c2-8fe3-730526b52529) created. Waiting for host...
+[19:15:24 INF] SessionCreated fired
+[19:15:25 INF] Host with ID 6df92e3d-0eac-46ab-8c45-886093938cb9 connected to Room 73a8ad25-e0e8-41c2-8fe3-730526b52529.
+[19:15:33 INF] ReactOnAnswer event completed.
+[19:15:40 ERR] Error on ws connection. Unable to read data from the transport connection: An existing connection was forcibly closed by the remote host..
+[19:16:02 INF] User User disconnected. Reason: Timed out
+[19:16:09 DBG] User User connected.
+[19:16:13 INF] Room with name "вв"(ID: 55a5939b-a584-4be2-bd05-f854360721c0) created. Waiting for host...
+[19:16:13 INF] SessionCreated fired
+[19:16:14 INF] Peer with ID 6df92e3d-0eac-46ab-8c45-886093938cb9 already connected to Room 73a8ad25-e0e8-41c2-8fe3-730526b52529.
+[19:16:14 INF] Host with ID 6df92e3d-0eac-46ab-8c45-886093938cb9 connected to Room 73a8ad25-e0e8-41c2-8fe3-730526b52529.
+[19:16:29 INF] ReactOnAnswer event completed.
+[19:16:46 ERR] Error on ws connection. Unable to read data from the transport connection: An existing connection was forcibly closed by the remote host..
+[19:17:09 INF] User User disconnected. Reason: Timed out
+[19:34:45 INF] Server started.
+[19:34:50 DBG] User User connected.
+[19:34:54 INF] Room with name "dsad"(ID: 568a7c9b-996d-41c3-a903-33a8159501e0) created. Waiting for host...
+[19:34:54 INF] SessionCreated fired
+[19:34:55 INF] Host with ID 6df92e3d-0eac-46ab-8c45-886093938cb9 connected to Room 568a7c9b-996d-41c3-a903-33a8159501e0.
+[19:35:05 ERR] Error on ws connection. Unable to read data from the transport connection: An existing connection was forcibly closed by the remote host..
+[19:35:12 WRN] User with id 6df92e3d-0eac-46ab-8c45-886093938cb9 already connected. Replacing...
+[19:35:12 DBG] User User connected.
+[19:35:15 INF] Server started.
+[19:35:19 DBG] User User connected.
+[19:35:25 INF] Room with name "dsa"(ID: fc48a86d-d5d9-4676-bbf7-e2427b727e3d) created. Waiting for host...
+[19:35:25 INF] SessionCreated fired
+[19:35:25 INF] Host with ID 6df92e3d-0eac-46ab-8c45-886093938cb9 connected to Room fc48a86d-d5d9-4676-bbf7-e2427b727e3d.
+[19:35:28 INF] ReactOnAnswer event completed.
+[19:35:47 ERR] Error on ws connection. Unable to read data from the transport connection: An existing connection was forcibly closed by the remote host..
+[19:35:51 INF] Server started.
+[19:35:55 DBG] User User connected.
+[19:35:58 INF] Room with name "dd"(ID: 00518ad7-fbd1-4a4e-991d-3d664819f6c5) created. Waiting for host...
+[19:35:58 INF] SessionCreated fired
+[19:36:00 INF] Host with ID 6df92e3d-0eac-46ab-8c45-886093938cb9 connected to Room 00518ad7-fbd1-4a4e-991d-3d664819f6c5.
+[19:36:02 INF] ReactOnAnswer event completed.
+[19:36:10 ERR] Error on ws connection. Unable to read data from the transport connection: An existing connection was forcibly closed by the remote host..
+[19:36:14 INF] Server started.
+[19:36:18 DBG] User User connected.
+[19:36:23 INF] Room with name "dsad"(ID: eebec794-92c1-473c-a1f9-ea59d17f6d79) created. Waiting for host...
+[19:36:23 INF] SessionCreated fired
+[19:36:24 INF] Host with ID 6df92e3d-0eac-46ab-8c45-886093938cb9 connected to Room eebec794-92c1-473c-a1f9-ea59d17f6d79.
+[19:36:27 ERR] Error on ws connection. Unable to read data from the transport connection: An existing connection was forcibly closed by the remote host..
+[19:36:30 INF] Server started.
+[19:36:34 DBG] User User connected.
+[19:36:39 INF] CreateVideoSession event error. Wrong room capacity
+[19:36:43 INF] Room with name "dsad"(ID: b36f421d-45cf-4455-a04c-02b006d07a49) created. Waiting for host...
+[19:36:43 INF] SessionCreated fired
+[19:36:44 INF] Host with ID 6df92e3d-0eac-46ab-8c45-886093938cb9 connected to Room b36f421d-45cf-4455-a04c-02b006d07a49.
+[19:36:48 ERR] Error on ws connection. Unable to read data from the transport connection: An existing connection was forcibly closed by the remote host..
+[19:36:52 INF] Server started.
+[19:36:57 DBG] User User connected.
+[19:36:59 WRN] User with id 6df92e3d-0eac-46ab-8c45-886093938cb9 already connected. Replacing...
+[19:36:59 DBG] User User connected.
+[19:37:06 INF] Room with name "dsa"(ID: 027383f7-e06e-4edb-97ba-67ce47b03d9e) created. Waiting for host...
+[19:37:06 INF] SessionCreated fired
+[19:37:06 INF] Host with ID 6df92e3d-0eac-46ab-8c45-886093938cb9 connected to Room 027383f7-e06e-4edb-97ba-67ce47b03d9e.
+[19:37:22 INF] User User disconnected. Reason: Timed out
+[19:37:26 ERR] Error on ws connection. Unable to read data from the transport connection: An existing connection was forcibly closed by the remote host..
+[19:37:26 ERR] Error on ws connection. Unable to read data from the transport connection: An existing connection was forcibly closed by the remote host..
+[19:37:32 DBG] User User connected.
+[19:37:33 INF] User User disconnected. Reason: WebSocket disconnection.
+[19:37:36 DBG] User User connected.
+[19:37:39 INF] Peer with ID 6df92e3d-0eac-46ab-8c45-886093938cb9 already connected to Room 027383f7-e06e-4edb-97ba-67ce47b03d9e.
+[19:37:39 INF] Host with ID 6df92e3d-0eac-46ab-8c45-886093938cb9 connected to Room 027383f7-e06e-4edb-97ba-67ce47b03d9e.
+[19:38:01 INF] User User disconnected. Reason: Timed out
+[19:39:18 ERR] Error on ws connection. Unable to read data from the transport connection: An existing connection was forcibly closed by the remote host..
+[19:43:15 INF] Server started.
+[19:43:25 DBG] User User connected.
+[19:43:29 INF] Room with name "dsadas"(ID: a30d4059-ed8d-4a8c-8551-c16d500014e0) created. Waiting for host...
+[19:43:29 INF] SessionCreated fired
+[19:43:30 INF] Host with ID 6df92e3d-0eac-46ab-8c45-886093938cb9 connected to Room a30d4059-ed8d-4a8c-8551-c16d500014e0.
+[19:43:48 ERR] Error on ws connection. Unable to read data from the transport connection: An existing connection was forcibly closed by the remote host..
+[20:03:38 INF] Server started.
+[20:03:48 DBG] User User connected.
+[20:03:54 INF] Room with name "dsad"(ID: bd768088-639b-4f38-8026-8f1a067c84da) created. Waiting for host...
+[20:03:54 INF] SessionCreated fired
+[20:03:55 INF] Host with ID 6df92e3d-0eac-46ab-8c45-886093938cb9 connected to Room bd768088-639b-4f38-8026-8f1a067c84da.
+[20:04:09 ERR] Error on ws connection. Unable to read data from the transport connection: An existing connection was forcibly closed by the remote host..
+[20:04:14 INF] Server started.
+[20:04:20 DBG] User User connected.
+[20:04:25 INF] Room with name "dsad"(ID: c0db2bd0-9545-4ef4-b2df-45c482aa13ec) created. Waiting for host...
+[20:04:25 INF] SessionCreated fired
+[20:04:26 INF] Host with ID 6df92e3d-0eac-46ab-8c45-886093938cb9 connected to Room c0db2bd0-9545-4ef4-b2df-45c482aa13ec.
+[20:09:25 ERR] Error on ws connection. Unable to read data from the transport connection: An existing connection was forcibly closed by the remote host..
+[20:09:31 INF] Server started.
+[20:09:36 DBG] User User connected.
+[20:09:41 INF] CreateVideoSession event error. Wrong room capacity
+[20:09:45 INF] Room with name "ddd"(ID: b714705b-341b-4f3a-a41b-1959be748b22) created. Waiting for host...
+[20:09:45 INF] SessionCreated fired
+[20:09:47 INF] Host with ID 6df92e3d-0eac-46ab-8c45-886093938cb9 connected to Room b714705b-341b-4f3a-a41b-1959be748b22.
+[20:13:46 ERR] Error on ws connection. Unable to read data from the transport connection: An existing connection was forcibly closed by the remote host..
+[20:14:07 INF] User User disconnected. Reason: Timed out
+[20:15:53 INF] Server started.
+[20:21:58 INF] Server started.
+[21:08:24 INF] Server started.
+[21:52:14 INF] Server started.

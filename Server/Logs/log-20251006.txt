@@ -1,0 +1,450 @@
+[17:00:50 INF] Server started.
+[17:01:01 DBG] User User1 connected.
+[17:01:04 DBG] User User connected.
+[17:01:10 INF] Room with name "вфыв"(ID: 28b9907c-9448-4095-9f64-30687338888d) created. Waiting for host...
+[17:01:10 INF] SessionCreated fired
+[17:01:11 INF] Client with ID e19d228e-070e-4c13-97c7-d679da8e8061 connected to Room 28b9907c-9448-4095-9f64-30687338888d.
+[17:01:13 INF] Host with ID acd357a0-3939-42f7-bef5-cc4f10208c59 connected to Room 28b9907c-9448-4095-9f64-30687338888d.
+[17:01:20 INF] ReactOnAnswer event completed.
+[17:01:21 INF] ReactOnAnswer event completed.
+[17:01:40 INF] Host with ID acd357a0-3939-42f7-bef5-cc4f10208c59 disconnected from Room 28b9907c-9448-4095-9f64-30687338888d.
+[17:01:42 INF] Client with ID e19d228e-070e-4c13-97c7-d679da8e8061 disconnected from Room 28b9907c-9448-4095-9f64-30687338888d.
+[17:01:46 INF] Room with name "ыыы"(ID: f1578745-63cb-4934-a213-b6d0fd426a68) created. Waiting for host...
+[17:01:46 INF] SessionCreated fired
+[17:01:47 INF] Client with ID acd357a0-3939-42f7-bef5-cc4f10208c59 connected to Room f1578745-63cb-4934-a213-b6d0fd426a68.
+[17:01:54 INF] Host with ID e19d228e-070e-4c13-97c7-d679da8e8061 connected to Room f1578745-63cb-4934-a213-b6d0fd426a68.
+[17:01:57 DBG] ReactOnICE event completed.
+[17:01:57 DBG] ReactOnICE event completed.
+[17:01:57 DBG] ReactOnICE event completed.
+[17:01:57 DBG] ReactOnICE event completed.
+[17:01:57 INF] ReactOnAnswer event completed.
+[17:01:57 DBG] ReactOnICE event completed.
+[17:01:57 DBG] ReactOnICE event completed.
+[17:01:57 DBG] ReactOnICE event completed.
+[17:01:57 DBG] ReactOnICE event completed.
+[17:01:57 INF] ReactOnAnswer event completed.
+[17:03:25 INF] Client with ID acd357a0-3939-42f7-bef5-cc4f10208c59 disconnected from Room f1578745-63cb-4934-a213-b6d0fd426a68.
+[17:03:26 INF] Client with ID acd357a0-3939-42f7-bef5-cc4f10208c59 connected to Room f1578745-63cb-4934-a213-b6d0fd426a68.
+[17:03:26 INF] ReactOnAnswer event completed.
+[17:03:33 INF] Client with ID acd357a0-3939-42f7-bef5-cc4f10208c59 disconnected from Room f1578745-63cb-4934-a213-b6d0fd426a68.
+[17:03:34 INF] Client with ID acd357a0-3939-42f7-bef5-cc4f10208c59 connected to Room f1578745-63cb-4934-a213-b6d0fd426a68.
+[17:03:34 INF] ReactOnAnswer event completed.
+[17:04:21 ERR] Error on ws connection. Unable to read data from the transport connection: Connection reset by peer.
+[17:04:41 INF] User User1 disconnected. Reason: Timed out
+[17:05:41 INF] User User disconnected. Reason: WebSocket disconnection.
+[17:06:33 DBG] User User connected.
+[17:06:45 DBG] User User1 connected.
+[17:06:51 INF] Host with ID acd357a0-3939-42f7-bef5-cc4f10208c59 connected to Room 28b9907c-9448-4095-9f64-30687338888d.
+[17:06:55 INF] ReactOnAnswer event completed.
+[17:06:59 INF] Client with ID e19d228e-070e-4c13-97c7-d679da8e8061 connected to Room 28b9907c-9448-4095-9f64-30687338888d.
+[17:06:59 INF] ReactOnAnswer event completed.
+[17:08:11 INF] Client with ID e19d228e-070e-4c13-97c7-d679da8e8061 disconnected from Room 28b9907c-9448-4095-9f64-30687338888d.
+[17:08:12 INF] Client with ID e19d228e-070e-4c13-97c7-d679da8e8061 connected to Room 28b9907c-9448-4095-9f64-30687338888d.
+[17:08:12 INF] ReactOnAnswer event completed.
+[17:08:21 INF] Client with ID e19d228e-070e-4c13-97c7-d679da8e8061 disconnected from Room 28b9907c-9448-4095-9f64-30687338888d.
+[17:08:22 INF] Client with ID e19d228e-070e-4c13-97c7-d679da8e8061 connected to Room 28b9907c-9448-4095-9f64-30687338888d.
+[17:08:22 INF] ReactOnAnswer event completed.
+[17:08:33 INF] Client with ID e19d228e-070e-4c13-97c7-d679da8e8061 disconnected from Room 28b9907c-9448-4095-9f64-30687338888d.
+[17:08:34 INF] Client with ID e19d228e-070e-4c13-97c7-d679da8e8061 connected to Room 28b9907c-9448-4095-9f64-30687338888d.
+[17:08:34 INF] ReactOnAnswer event completed.
+[17:08:35 INF] Client with ID e19d228e-070e-4c13-97c7-d679da8e8061 disconnected from Room 28b9907c-9448-4095-9f64-30687338888d.
+[17:08:43 INF] User User disconnected. Reason: WebSocket disconnection.
+[17:08:50 INF] Host with ID acd357a0-3939-42f7-bef5-cc4f10208c59 disconnected from Room 28b9907c-9448-4095-9f64-30687338888d.
+[17:08:54 DBG] User User connected.
+[17:08:58 INF] Peer with ID e19d228e-070e-4c13-97c7-d679da8e8061 already existed in Room f1578745-63cb-4934-a213-b6d0fd426a68.
+[17:08:58 INF] Host with ID e19d228e-070e-4c13-97c7-d679da8e8061 connected to Room f1578745-63cb-4934-a213-b6d0fd426a68.
+[17:09:01 INF] ReactOnAnswer event completed.
+[17:09:04 INF] Peer with ID acd357a0-3939-42f7-bef5-cc4f10208c59 already existed in Room f1578745-63cb-4934-a213-b6d0fd426a68.
+[17:09:04 INF] Client with ID acd357a0-3939-42f7-bef5-cc4f10208c59 connected to Room f1578745-63cb-4934-a213-b6d0fd426a68.
+[17:09:04 INF] ReactOnAnswer event completed.
+[17:09:09 INF] Client with ID acd357a0-3939-42f7-bef5-cc4f10208c59 disconnected from Room f1578745-63cb-4934-a213-b6d0fd426a68.
+[17:09:10 INF] Client with ID acd357a0-3939-42f7-bef5-cc4f10208c59 connected to Room f1578745-63cb-4934-a213-b6d0fd426a68.
+[17:09:13 DBG] ReactOnICE event completed.
+[17:09:13 DBG] ReactOnICE event completed.
+[17:09:13 DBG] ReactOnICE event completed.
+[17:09:13 DBG] ReactOnICE event completed.
+[17:09:13 INF] ReactOnAnswer event completed.
+[17:10:08 INF] Client with ID acd357a0-3939-42f7-bef5-cc4f10208c59 disconnected from Room f1578745-63cb-4934-a213-b6d0fd426a68.
+[17:10:09 INF] Client with ID acd357a0-3939-42f7-bef5-cc4f10208c59 connected to Room f1578745-63cb-4934-a213-b6d0fd426a68.
+[17:10:10 DBG] ReactOnICE event completed.
+[17:10:10 DBG] ReactOnICE event completed.
+[17:10:10 DBG] ReactOnICE event completed.
+[17:10:10 DBG] ReactOnICE event completed.
+[17:10:10 INF] ReactOnAnswer event completed.
+[17:10:30 INF] Client with ID acd357a0-3939-42f7-bef5-cc4f10208c59 disconnected from Room f1578745-63cb-4934-a213-b6d0fd426a68.
+[17:10:31 INF] Client with ID acd357a0-3939-42f7-bef5-cc4f10208c59 connected to Room f1578745-63cb-4934-a213-b6d0fd426a68.
+[17:10:34 INF] ReactOnAnswer event completed.
+[17:10:48 INF] Client with ID acd357a0-3939-42f7-bef5-cc4f10208c59 disconnected from Room f1578745-63cb-4934-a213-b6d0fd426a68.
+[17:10:49 INF] Client with ID acd357a0-3939-42f7-bef5-cc4f10208c59 connected to Room f1578745-63cb-4934-a213-b6d0fd426a68.
+[17:10:49 DBG] ReactOnICE event completed.
+[17:10:49 DBG] ReactOnICE event completed.
+[17:10:49 DBG] ReactOnICE event completed.
+[17:10:49 DBG] ReactOnICE event completed.
+[17:10:49 INF] ReactOnAnswer event completed.
+[17:11:03 INF] Client with ID acd357a0-3939-42f7-bef5-cc4f10208c59 disconnected from Room f1578745-63cb-4934-a213-b6d0fd426a68.
+[17:11:04 INF] Client with ID acd357a0-3939-42f7-bef5-cc4f10208c59 connected to Room f1578745-63cb-4934-a213-b6d0fd426a68.
+[17:11:04 INF] ReactOnAnswer event completed.
+[17:13:07 INF] User User1 disconnected. Reason: WebSocket disconnection.
+[17:13:25 DBG] User User1 connected.
+[17:13:29 INF] Peer with ID acd357a0-3939-42f7-bef5-cc4f10208c59 already existed in Room f1578745-63cb-4934-a213-b6d0fd426a68.
+[17:13:29 INF] Client with ID acd357a0-3939-42f7-bef5-cc4f10208c59 connected to Room f1578745-63cb-4934-a213-b6d0fd426a68.
+[17:13:29 INF] ReactOnAnswer event completed.
+[17:13:40 INF] Client with ID acd357a0-3939-42f7-bef5-cc4f10208c59 disconnected from Room f1578745-63cb-4934-a213-b6d0fd426a68.
+[17:13:42 INF] Client with ID acd357a0-3939-42f7-bef5-cc4f10208c59 connected to Room f1578745-63cb-4934-a213-b6d0fd426a68.
+[17:13:42 DBG] ReactOnICE event completed.
+[17:13:42 DBG] ReactOnICE event completed.
+[17:13:42 DBG] ReactOnICE event completed.
+[17:13:42 DBG] ReactOnICE event completed.
+[17:13:42 INF] ReactOnAnswer event completed.
+[17:13:47 INF] Host with ID e19d228e-070e-4c13-97c7-d679da8e8061 disconnected from Room f1578745-63cb-4934-a213-b6d0fd426a68.
+[17:13:50 INF] Host with ID e19d228e-070e-4c13-97c7-d679da8e8061 connected to Room f1578745-63cb-4934-a213-b6d0fd426a68.
+[17:13:51 DBG] ReactOnICE event completed.
+[17:13:51 DBG] ReactOnICE event completed.
+[17:13:51 DBG] ReactOnICE event completed.
+[17:13:51 DBG] ReactOnICE event completed.
+[17:13:51 INF] ReactOnAnswer event completed.
+[17:13:51 INF] ReactOnAnswer event completed.
+[17:14:15 INF] Host with ID e19d228e-070e-4c13-97c7-d679da8e8061 disconnected from Room f1578745-63cb-4934-a213-b6d0fd426a68.
+[17:15:08 INF] User User1 disconnected. Reason: WebSocket disconnection.
+[17:15:11 INF] Host with ID e19d228e-070e-4c13-97c7-d679da8e8061 connected to Room f1578745-63cb-4934-a213-b6d0fd426a68.
+[17:15:13 INF] ReactOnAnswer event completed.
+[17:15:25 DBG] User User1 connected.
+[17:15:27 INF] Peer with ID acd357a0-3939-42f7-bef5-cc4f10208c59 already existed in Room f1578745-63cb-4934-a213-b6d0fd426a68.
+[17:15:27 INF] Client with ID acd357a0-3939-42f7-bef5-cc4f10208c59 connected to Room f1578745-63cb-4934-a213-b6d0fd426a68.
+[17:15:28 INF] ReactOnAnswer event completed.
+[17:15:38 INF] Host with ID e19d228e-070e-4c13-97c7-d679da8e8061 disconnected from Room f1578745-63cb-4934-a213-b6d0fd426a68.
+[17:15:44 INF] Host with ID e19d228e-070e-4c13-97c7-d679da8e8061 connected to Room f1578745-63cb-4934-a213-b6d0fd426a68.
+[17:15:45 DBG] ReactOnICE event completed.
+[17:15:45 DBG] ReactOnICE event completed.
+[17:15:45 DBG] ReactOnICE event completed.
+[17:15:45 DBG] ReactOnICE event completed.
+[17:15:45 INF] ReactOnAnswer event completed.
+[17:15:45 INF] ReactOnAnswer event completed.
+[17:15:58 INF] Client with ID acd357a0-3939-42f7-bef5-cc4f10208c59 disconnected from Room f1578745-63cb-4934-a213-b6d0fd426a68.
+[17:15:59 INF] Client with ID acd357a0-3939-42f7-bef5-cc4f10208c59 connected to Room f1578745-63cb-4934-a213-b6d0fd426a68.
+[17:15:59 DBG] ReactOnICE event completed.
+[17:15:59 DBG] ReactOnICE event completed.
+[17:15:59 DBG] ReactOnICE event completed.
+[17:15:59 DBG] ReactOnICE event completed.
+[17:15:59 INF] ReactOnAnswer event completed.
+[17:16:30 INF] Host with ID e19d228e-070e-4c13-97c7-d679da8e8061 disconnected from Room f1578745-63cb-4934-a213-b6d0fd426a68.
+[17:16:31 INF] Host with ID e19d228e-070e-4c13-97c7-d679da8e8061 connected to Room f1578745-63cb-4934-a213-b6d0fd426a68.
+[17:16:33 DBG] ReactOnICE event completed.
+[17:16:33 DBG] ReactOnICE event completed.
+[17:16:33 DBG] ReactOnICE event completed.
+[17:16:33 DBG] ReactOnICE event completed.
+[17:16:33 INF] ReactOnAnswer event completed.
+[17:16:33 INF] ReactOnAnswer event completed.
+[17:17:29 INF] Client with ID acd357a0-3939-42f7-bef5-cc4f10208c59 disconnected from Room f1578745-63cb-4934-a213-b6d0fd426a68.
+[17:17:30 INF] Client with ID acd357a0-3939-42f7-bef5-cc4f10208c59 connected to Room f1578745-63cb-4934-a213-b6d0fd426a68.
+[17:17:30 DBG] ReactOnICE event completed.
+[17:17:30 DBG] ReactOnICE event completed.
+[17:17:30 DBG] ReactOnICE event completed.
+[17:17:30 DBG] ReactOnICE event completed.
+[17:17:30 INF] ReactOnAnswer event completed.
+[17:18:18 INF] User User1 disconnected. Reason: WebSocket disconnection.
+[20:29:33 INF] Server started.
+[20:29:46 DBG] User User1 connected.
+[20:29:48 DBG] User User connected.
+[20:29:55 INF] Room with name "dsad"(ID: e9768761-e6fe-4ce5-9dd5-00d083e5e33f) created. Waiting for host...
+[20:29:55 INF] SessionCreated fired
+[20:30:02 INF] User User1 disconnected. Reason: WebSocket disconnection.
+[20:30:08 DBG] User User1 connected.
+[20:30:09 INF] Host with ID acd357a0-3939-42f7-bef5-cc4f10208c59 negotiated with Room e9768761-e6fe-4ce5-9dd5-00d083e5e33f.
+[20:30:11 INF] Client with ID e19d228e-070e-4c13-97c7-d679da8e8061 negotiated with Room e9768761-e6fe-4ce5-9dd5-00d083e5e33f.
+[20:30:14 INF] ReactOnAnswer event completed.
+[20:30:15 INF] ReactOnAnswer event completed.
+[20:31:01 INF] Host with ID acd357a0-3939-42f7-bef5-cc4f10208c59 disconnected from Room e9768761-e6fe-4ce5-9dd5-00d083e5e33f.
+[20:31:02 INF] Host with ID acd357a0-3939-42f7-bef5-cc4f10208c59 negotiated with Room e9768761-e6fe-4ce5-9dd5-00d083e5e33f.
+[20:31:03 DBG] ReactOnICE event completed.
+[20:31:03 DBG] ReactOnICE event completed.
+[20:31:03 DBG] ReactOnICE event completed.
+[20:31:03 DBG] ReactOnICE event completed.
+[20:31:03 INF] ReactOnAnswer event completed.
+[20:31:06 INF] ReactOnAnswer event completed.
+[20:31:19 INF] Client with ID e19d228e-070e-4c13-97c7-d679da8e8061 disconnected from Room e9768761-e6fe-4ce5-9dd5-00d083e5e33f.
+[20:31:23 ERR] Error on ws connection. Unable to read data from the transport connection: Connection reset by peer.
+[20:31:28 WRN] User with id acd357a0-3939-42f7-bef5-cc4f10208c59 already connected. Replacing...
+[20:31:28 DBG] User User1 connected.
+[20:31:33 WRN] User with id acd357a0-3939-42f7-bef5-cc4f10208c59 already connected. Replacing...
+[20:31:33 DBG] User User1 connected.
+[20:31:43 INF] User User1 disconnected. Reason: Timed out
+[20:31:44 INF] User null disconnected. Reason: WebSocket disconnection.
+[20:31:44 INF] User null disconnected. Reason: WebSocket disconnection.
+[20:31:54 DBG] User User1 connected.
+[20:31:56 INF] Peer with ID acd357a0-3939-42f7-bef5-cc4f10208c59 already negotiated with Room e9768761-e6fe-4ce5-9dd5-00d083e5e33f.
+[20:31:56 INF] Host with ID acd357a0-3939-42f7-bef5-cc4f10208c59 negotiated with Room e9768761-e6fe-4ce5-9dd5-00d083e5e33f.
+[20:32:02 INF] ReactOnAnswer event completed.
+[20:32:04 INF] Client with ID e19d228e-070e-4c13-97c7-d679da8e8061 negotiated with Room e9768761-e6fe-4ce5-9dd5-00d083e5e33f.
+[20:32:04 DBG] ReactOnICE event completed.
+[20:32:04 DBG] ReactOnICE event completed.
+[20:32:04 DBG] ReactOnICE event completed.
+[20:32:04 DBG] ReactOnICE event completed.
+[20:32:04 INF] ReactOnAnswer event completed.
+[20:32:14 INF] Host with ID acd357a0-3939-42f7-bef5-cc4f10208c59 disconnected from Room e9768761-e6fe-4ce5-9dd5-00d083e5e33f.
+[20:32:15 INF] Host with ID acd357a0-3939-42f7-bef5-cc4f10208c59 negotiated with Room e9768761-e6fe-4ce5-9dd5-00d083e5e33f.
+[20:32:17 DBG] ReactOnICE event completed.
+[20:32:17 DBG] ReactOnICE event completed.
+[20:32:17 DBG] ReactOnICE event completed.
+[20:32:17 DBG] ReactOnICE event completed.
+[20:32:17 INF] ReactOnAnswer event completed.
+[20:32:18 INF] ReactOnAnswer event completed.
+[20:32:26 INF] Host with ID acd357a0-3939-42f7-bef5-cc4f10208c59 disconnected from Room e9768761-e6fe-4ce5-9dd5-00d083e5e33f.
+[20:32:27 INF] Host with ID acd357a0-3939-42f7-bef5-cc4f10208c59 negotiated with Room e9768761-e6fe-4ce5-9dd5-00d083e5e33f.
+[20:32:28 DBG] ReactOnICE event completed.
+[20:32:28 DBG] ReactOnICE event completed.
+[20:32:28 DBG] ReactOnICE event completed.
+[20:32:28 DBG] ReactOnICE event completed.
+[20:32:28 INF] ReactOnAnswer event completed.
+[20:32:32 INF] ReactOnAnswer event completed.
+[20:32:44 INF] Peer with ID acd357a0-3939-42f7-bef5-cc4f10208c59 already negotiated with Room e9768761-e6fe-4ce5-9dd5-00d083e5e33f.
+[20:32:44 INF] Host with ID acd357a0-3939-42f7-bef5-cc4f10208c59 negotiated with Room e9768761-e6fe-4ce5-9dd5-00d083e5e33f.
+[20:32:45 DBG] ReactOnICE event completed.
+[20:32:45 DBG] ReactOnICE event completed.
+[20:32:45 DBG] ReactOnICE event completed.
+[20:32:45 DBG] ReactOnICE event completed.
+[20:32:45 INF] ReactOnAnswer event completed.
+[20:32:47 INF] ReactOnAnswer event completed.
+[20:33:07 INF] Host with ID acd357a0-3939-42f7-bef5-cc4f10208c59 disconnected from Room e9768761-e6fe-4ce5-9dd5-00d083e5e33f.
+[20:33:09 INF] User User1 disconnected. Reason: WebSocket disconnection.
+[20:34:04 DBG] User User1 connected.
+[20:34:06 INF] Host with ID acd357a0-3939-42f7-bef5-cc4f10208c59 negotiated with Room e9768761-e6fe-4ce5-9dd5-00d083e5e33f.
+[20:34:09 INF] ReactOnAnswer event completed.
+[20:34:09 INF] ReactOnAnswer event completed.
+[20:35:38 INF] Host with ID acd357a0-3939-42f7-bef5-cc4f10208c59 disconnected from Room e9768761-e6fe-4ce5-9dd5-00d083e5e33f.
+[20:35:45 INF] Host with ID acd357a0-3939-42f7-bef5-cc4f10208c59 negotiated with Room e9768761-e6fe-4ce5-9dd5-00d083e5e33f.
+[20:35:46 DBG] ReactOnICE event completed.
+[20:35:46 DBG] ReactOnICE event completed.
+[20:35:46 DBG] ReactOnICE event completed.
+[20:35:46 DBG] ReactOnICE event completed.
+[20:35:46 INF] ReactOnAnswer event completed.
+[20:35:46 INF] ReactOnAnswer event completed.
+[20:36:01 INF] Host with ID acd357a0-3939-42f7-bef5-cc4f10208c59 disconnected from Room e9768761-e6fe-4ce5-9dd5-00d083e5e33f.
+[20:36:18 INF] Host with ID acd357a0-3939-42f7-bef5-cc4f10208c59 negotiated with Room e9768761-e6fe-4ce5-9dd5-00d083e5e33f.
+[20:36:19 DBG] ReactOnICE event completed.
+[20:36:19 DBG] ReactOnICE event completed.
+[20:36:19 DBG] ReactOnICE event completed.
+[20:36:19 DBG] ReactOnICE event completed.
+[20:36:19 INF] ReactOnAnswer event completed.
+[20:36:19 INF] ReactOnAnswer event completed.
+[20:36:26 INF] Host with ID acd357a0-3939-42f7-bef5-cc4f10208c59 disconnected from Room e9768761-e6fe-4ce5-9dd5-00d083e5e33f.
+[20:38:10 INF] Host with ID acd357a0-3939-42f7-bef5-cc4f10208c59 negotiated with Room e9768761-e6fe-4ce5-9dd5-00d083e5e33f.
+[20:38:11 DBG] ReactOnICE event completed.
+[20:38:11 DBG] ReactOnICE event completed.
+[20:38:11 DBG] ReactOnICE event completed.
+[20:38:11 DBG] ReactOnICE event completed.
+[20:38:11 INF] ReactOnAnswer event completed.
+[20:38:11 INF] ReactOnAnswer event completed.
+[20:38:34 INF] Host with ID acd357a0-3939-42f7-bef5-cc4f10208c59 disconnected from Room e9768761-e6fe-4ce5-9dd5-00d083e5e33f.
+[20:38:39 INF] Host with ID acd357a0-3939-42f7-bef5-cc4f10208c59 negotiated with Room e9768761-e6fe-4ce5-9dd5-00d083e5e33f.
+[20:38:39 DBG] ReactOnICE event completed.
+[20:38:39 DBG] ReactOnICE event completed.
+[20:38:39 DBG] ReactOnICE event completed.
+[20:38:39 DBG] ReactOnICE event completed.
+[20:38:39 INF] ReactOnAnswer event completed.
+[20:38:40 INF] ReactOnAnswer event completed.
+[20:40:09 INF] Host with ID acd357a0-3939-42f7-bef5-cc4f10208c59 disconnected from Room e9768761-e6fe-4ce5-9dd5-00d083e5e33f.
+[20:40:10 INF] Host with ID acd357a0-3939-42f7-bef5-cc4f10208c59 negotiated with Room e9768761-e6fe-4ce5-9dd5-00d083e5e33f.
+[20:40:12 DBG] ReactOnICE event completed.
+[20:40:12 DBG] ReactOnICE event completed.
+[20:40:12 DBG] ReactOnICE event completed.
+[20:40:12 DBG] ReactOnICE event completed.
+[20:40:12 INF] ReactOnAnswer event completed.
+[20:40:12 INF] ReactOnAnswer event completed.
+[20:42:22 INF] Client with ID e19d228e-070e-4c13-97c7-d679da8e8061 disconnected from Room e9768761-e6fe-4ce5-9dd5-00d083e5e33f.
+[20:42:32 INF] Host with ID acd357a0-3939-42f7-bef5-cc4f10208c59 disconnected from Room e9768761-e6fe-4ce5-9dd5-00d083e5e33f.
+[20:42:33 INF] Host with ID acd357a0-3939-42f7-bef5-cc4f10208c59 negotiated with Room e9768761-e6fe-4ce5-9dd5-00d083e5e33f.
+[20:42:34 DBG] ReactOnICE event completed.
+[20:42:34 DBG] ReactOnICE event completed.
+[20:42:34 DBG] ReactOnICE event completed.
+[20:42:34 DBG] ReactOnICE event completed.
+[20:42:34 INF] ReactOnAnswer event completed.
+[20:44:10 INF] Client with ID e19d228e-070e-4c13-97c7-d679da8e8061 negotiated with Room e9768761-e6fe-4ce5-9dd5-00d083e5e33f.
+[20:44:10 INF] ReactOnAnswer event completed.
+[20:44:17 INF] Client with ID e19d228e-070e-4c13-97c7-d679da8e8061 disconnected from Room e9768761-e6fe-4ce5-9dd5-00d083e5e33f.
+[20:45:07 INF] Client with ID e19d228e-070e-4c13-97c7-d679da8e8061 negotiated with Room e9768761-e6fe-4ce5-9dd5-00d083e5e33f.
+[20:45:07 INF] ReactOnAnswer event completed.
+[20:45:17 INF] Client with ID e19d228e-070e-4c13-97c7-d679da8e8061 disconnected from Room e9768761-e6fe-4ce5-9dd5-00d083e5e33f.
+[20:45:27 INF] Client with ID e19d228e-070e-4c13-97c7-d679da8e8061 negotiated with Room e9768761-e6fe-4ce5-9dd5-00d083e5e33f.
+[20:45:27 INF] ReactOnAnswer event completed.
+[20:45:34 INF] Client with ID e19d228e-070e-4c13-97c7-d679da8e8061 disconnected from Room e9768761-e6fe-4ce5-9dd5-00d083e5e33f.
+[20:45:48 INF] Client with ID e19d228e-070e-4c13-97c7-d679da8e8061 negotiated with Room e9768761-e6fe-4ce5-9dd5-00d083e5e33f.
+[20:45:48 INF] ReactOnAnswer event completed.
+[20:45:58 INF] Client with ID e19d228e-070e-4c13-97c7-d679da8e8061 disconnected from Room e9768761-e6fe-4ce5-9dd5-00d083e5e33f.
+[20:46:08 INF] Client with ID e19d228e-070e-4c13-97c7-d679da8e8061 negotiated with Room e9768761-e6fe-4ce5-9dd5-00d083e5e33f.
+[20:46:10 INF] User User1 disconnected. Reason: WebSocket disconnection.
+[20:46:26 DBG] User User1 connected.
+[20:46:27 INF] Peer with ID acd357a0-3939-42f7-bef5-cc4f10208c59 already negotiated with Room e9768761-e6fe-4ce5-9dd5-00d083e5e33f.
+[20:46:27 INF] Host with ID acd357a0-3939-42f7-bef5-cc4f10208c59 negotiated with Room e9768761-e6fe-4ce5-9dd5-00d083e5e33f.
+[20:46:31 INF] ReactOnAnswer event completed.
+[20:46:31 DBG] ReactOnICE event completed.
+[20:46:31 DBG] ReactOnICE event completed.
+[20:46:31 DBG] ReactOnICE event completed.
+[20:46:31 DBG] ReactOnICE event completed.
+[20:46:31 INF] ReactOnAnswer event completed.
+[20:46:37 INF] Client with ID e19d228e-070e-4c13-97c7-d679da8e8061 disconnected from Room e9768761-e6fe-4ce5-9dd5-00d083e5e33f.
+[20:47:06 INF] Client with ID e19d228e-070e-4c13-97c7-d679da8e8061 negotiated with Room e9768761-e6fe-4ce5-9dd5-00d083e5e33f.
+[20:47:06 INF] ReactOnAnswer event completed.
+[20:47:13 INF] Client with ID e19d228e-070e-4c13-97c7-d679da8e8061 disconnected from Room e9768761-e6fe-4ce5-9dd5-00d083e5e33f.
+[20:48:07 INF] Client with ID e19d228e-070e-4c13-97c7-d679da8e8061 negotiated with Room e9768761-e6fe-4ce5-9dd5-00d083e5e33f.
+[20:48:07 INF] ReactOnAnswer event completed.
+[20:48:14 INF] Client with ID e19d228e-070e-4c13-97c7-d679da8e8061 disconnected from Room e9768761-e6fe-4ce5-9dd5-00d083e5e33f.
+[20:51:17 INF] Server started.
+[20:51:28 DBG] User User1 connected.
+[20:51:31 DBG] User User connected.
+[20:51:33 INF] User User1 disconnected. Reason: WebSocket disconnection.
+[20:52:19 DBG] User User1 connected.
+[20:52:24 INF] Room with name "ssd"(ID: bf05ffff-1369-485b-aa80-7e6abeb4a6f1) created. Waiting for host...
+[20:52:24 INF] SessionCreated fired
+[20:52:25 INF] Host with ID acd357a0-3939-42f7-bef5-cc4f10208c59 negotiated with Room bf05ffff-1369-485b-aa80-7e6abeb4a6f1.
+[20:52:26 INF] Client with ID e19d228e-070e-4c13-97c7-d679da8e8061 negotiated with Room bf05ffff-1369-485b-aa80-7e6abeb4a6f1.
+[20:52:29 INF] ReactOnAnswer event completed.
+[20:52:29 INF] ReactOnAnswer event completed.
+[20:52:46 INF] Client with ID e19d228e-070e-4c13-97c7-d679da8e8061 disconnected from Room bf05ffff-1369-485b-aa80-7e6abeb4a6f1.
+[20:52:57 INF] Client with ID e19d228e-070e-4c13-97c7-d679da8e8061 negotiated with Room bf05ffff-1369-485b-aa80-7e6abeb4a6f1.
+[20:52:57 INF] ReactOnAnswer event completed.
+[20:53:01 INF] User User1 disconnected. Reason: WebSocket disconnection.
+[20:53:09 DBG] User User1 connected.
+[20:53:11 INF] Peer with ID acd357a0-3939-42f7-bef5-cc4f10208c59 already negotiated with Room bf05ffff-1369-485b-aa80-7e6abeb4a6f1.
+[20:53:11 INF] Host with ID acd357a0-3939-42f7-bef5-cc4f10208c59 negotiated with Room bf05ffff-1369-485b-aa80-7e6abeb4a6f1.
+[20:53:14 INF] ReactOnAnswer event completed.
+[20:53:14 INF] ReactOnAnswer event completed.
+[20:53:24 INF] Host with ID acd357a0-3939-42f7-bef5-cc4f10208c59 disconnected from Room bf05ffff-1369-485b-aa80-7e6abeb4a6f1.
+[20:53:28 INF] Client with ID e19d228e-070e-4c13-97c7-d679da8e8061 disconnected from Room bf05ffff-1369-485b-aa80-7e6abeb4a6f1.
+[20:53:31 INF] Room with name "ssd"(ID: bf05ffff-1369-485b-aa80-7e6abeb4a6f1) deleted.
+[20:53:31 INF] SessionDeleted fired
+[20:53:38 INF] Room with name "dsad"(ID: 2d1e4664-810e-4182-b5e0-958bec6df068) created. Waiting for host...
+[20:53:38 INF] SessionCreated fired
+[20:53:40 INF] Host with ID acd357a0-3939-42f7-bef5-cc4f10208c59 negotiated with Room 2d1e4664-810e-4182-b5e0-958bec6df068.
+[20:53:41 DBG] ReactOnICE event completed.
+[20:53:41 DBG] ReactOnICE event completed.
+[20:53:41 DBG] ReactOnICE event completed.
+[20:53:41 DBG] ReactOnICE event completed.
+[20:53:41 INF] ReactOnAnswer event completed.
+[20:53:45 INF] Client with ID e19d228e-070e-4c13-97c7-d679da8e8061 negotiated with Room 2d1e4664-810e-4182-b5e0-958bec6df068.
+[20:53:45 INF] ReactOnAnswer event completed.
+[20:53:49 INF] Client with ID e19d228e-070e-4c13-97c7-d679da8e8061 disconnected from Room 2d1e4664-810e-4182-b5e0-958bec6df068.
+[20:53:53 INF] Client with ID e19d228e-070e-4c13-97c7-d679da8e8061 negotiated with Room 2d1e4664-810e-4182-b5e0-958bec6df068.
+[20:53:53 INF] ReactOnAnswer event completed.
+[20:53:56 INF] Client with ID e19d228e-070e-4c13-97c7-d679da8e8061 disconnected from Room 2d1e4664-810e-4182-b5e0-958bec6df068.
+[20:53:59 INF] Client with ID e19d228e-070e-4c13-97c7-d679da8e8061 negotiated with Room 2d1e4664-810e-4182-b5e0-958bec6df068.
+[20:53:59 INF] ReactOnAnswer event completed.
+[21:02:48 INF] Host with ID acd357a0-3939-42f7-bef5-cc4f10208c59 disconnected from Room 2d1e4664-810e-4182-b5e0-958bec6df068.
+[21:02:49 INF] Host with ID acd357a0-3939-42f7-bef5-cc4f10208c59 negotiated with Room 2d1e4664-810e-4182-b5e0-958bec6df068.
+[21:02:50 DBG] ReactOnICE event completed.
+[21:02:50 DBG] ReactOnICE event completed.
+[21:02:50 DBG] ReactOnICE event completed.
+[21:02:50 DBG] ReactOnICE event completed.
+[21:02:50 INF] ReactOnAnswer event completed.
+[21:02:51 INF] ReactOnAnswer event completed.
+[21:03:10 INF] Host with ID acd357a0-3939-42f7-bef5-cc4f10208c59 disconnected from Room 2d1e4664-810e-4182-b5e0-958bec6df068.
+[21:03:15 INF] Host with ID acd357a0-3939-42f7-bef5-cc4f10208c59 negotiated with Room 2d1e4664-810e-4182-b5e0-958bec6df068.
+[21:03:15 DBG] ReactOnICE event completed.
+[21:03:15 DBG] ReactOnICE event completed.
+[21:03:15 DBG] ReactOnICE event completed.
+[21:03:15 DBG] ReactOnICE event completed.
+[21:03:15 INF] ReactOnAnswer event completed.
+[21:03:15 INF] ReactOnAnswer event completed.
+[21:05:06 INF] Client with ID e19d228e-070e-4c13-97c7-d679da8e8061 disconnected from Room 2d1e4664-810e-4182-b5e0-958bec6df068.
+[21:05:07 INF] Client with ID e19d228e-070e-4c13-97c7-d679da8e8061 negotiated with Room 2d1e4664-810e-4182-b5e0-958bec6df068.
+[21:05:07 INF] ReactOnAnswer event completed.
+[21:08:41 INF] Host with ID acd357a0-3939-42f7-bef5-cc4f10208c59 disconnected from Room 2d1e4664-810e-4182-b5e0-958bec6df068.
+[21:08:43 INF] Host with ID acd357a0-3939-42f7-bef5-cc4f10208c59 negotiated with Room 2d1e4664-810e-4182-b5e0-958bec6df068.
+[21:08:43 DBG] ReactOnICE event completed.
+[21:08:43 DBG] ReactOnICE event completed.
+[21:08:43 DBG] ReactOnICE event completed.
+[21:08:43 DBG] ReactOnICE event completed.
+[21:08:43 INF] ReactOnAnswer event completed.
+[21:08:45 INF] ReactOnAnswer event completed.
+[21:09:02 INF] Peer with ID acd357a0-3939-42f7-bef5-cc4f10208c59 already negotiated with Room 2d1e4664-810e-4182-b5e0-958bec6df068.
+[21:09:02 INF] Host with ID acd357a0-3939-42f7-bef5-cc4f10208c59 negotiated with Room 2d1e4664-810e-4182-b5e0-958bec6df068.
+[21:09:11 INF] Host with ID acd357a0-3939-42f7-bef5-cc4f10208c59 disconnected from Room 2d1e4664-810e-4182-b5e0-958bec6df068.
+[21:09:11 INF] Host with ID acd357a0-3939-42f7-bef5-cc4f10208c59 negotiated with Room 2d1e4664-810e-4182-b5e0-958bec6df068.
+[21:09:12 DBG] ReactOnICE event completed.
+[21:09:12 DBG] ReactOnICE event completed.
+[21:09:12 DBG] ReactOnICE event completed.
+[21:09:12 DBG] ReactOnICE event completed.
+[21:09:12 INF] ReactOnAnswer event completed.
+[21:09:15 INF] ReactOnAnswer event completed.
+[21:10:19 INF] Host with ID acd357a0-3939-42f7-bef5-cc4f10208c59 disconnected from Room 2d1e4664-810e-4182-b5e0-958bec6df068.
+[21:10:20 INF] Host with ID acd357a0-3939-42f7-bef5-cc4f10208c59 negotiated with Room 2d1e4664-810e-4182-b5e0-958bec6df068.
+[21:10:21 DBG] ReactOnICE event completed.
+[21:10:21 DBG] ReactOnICE event completed.
+[21:10:21 DBG] ReactOnICE event completed.
+[21:10:21 DBG] ReactOnICE event completed.
+[21:10:21 INF] ReactOnAnswer event completed.
+[21:10:22 INF] ReactOnAnswer event completed.
+[21:12:16 INF] Client with ID e19d228e-070e-4c13-97c7-d679da8e8061 disconnected from Room 2d1e4664-810e-4182-b5e0-958bec6df068.
+[21:12:24 INF] Client with ID e19d228e-070e-4c13-97c7-d679da8e8061 negotiated with Room 2d1e4664-810e-4182-b5e0-958bec6df068.
+[21:12:24 INF] ReactOnAnswer event completed.
+[21:13:22 INF] Client with ID e19d228e-070e-4c13-97c7-d679da8e8061 disconnected from Room 2d1e4664-810e-4182-b5e0-958bec6df068.
+[21:13:25 INF] Client with ID e19d228e-070e-4c13-97c7-d679da8e8061 negotiated with Room 2d1e4664-810e-4182-b5e0-958bec6df068.
+[21:13:25 INF] ReactOnAnswer event completed.
+[21:13:30 INF] Client with ID e19d228e-070e-4c13-97c7-d679da8e8061 disconnected from Room 2d1e4664-810e-4182-b5e0-958bec6df068.
+[21:13:30 INF] Client with ID e19d228e-070e-4c13-97c7-d679da8e8061 negotiated with Room 2d1e4664-810e-4182-b5e0-958bec6df068.
+[21:13:30 INF] ReactOnAnswer event completed.
+[21:27:44 INF] Host with ID acd357a0-3939-42f7-bef5-cc4f10208c59 disconnected from Room 2d1e4664-810e-4182-b5e0-958bec6df068.
+[21:27:50 INF] Host with ID acd357a0-3939-42f7-bef5-cc4f10208c59 negotiated with Room 2d1e4664-810e-4182-b5e0-958bec6df068.
+[21:27:51 DBG] ReactOnICE event completed.
+[21:27:51 DBG] ReactOnICE event completed.
+[21:27:51 DBG] ReactOnICE event completed.
+[21:27:51 DBG] ReactOnICE event completed.
+[21:27:51 INF] ReactOnAnswer event completed.
+[21:27:51 INF] ReactOnAnswer event completed.
+[21:28:03 INF] Host with ID acd357a0-3939-42f7-bef5-cc4f10208c59 disconnected from Room 2d1e4664-810e-4182-b5e0-958bec6df068.
+[21:28:20 INF] Host with ID acd357a0-3939-42f7-bef5-cc4f10208c59 negotiated with Room 2d1e4664-810e-4182-b5e0-958bec6df068.
+[21:28:20 DBG] ReactOnICE event completed.
+[21:28:20 DBG] ReactOnICE event completed.
+[21:28:20 DBG] ReactOnICE event completed.
+[21:28:20 DBG] ReactOnICE event completed.
+[21:28:20 INF] ReactOnAnswer event completed.
+[21:28:21 INF] ReactOnAnswer event completed.
+[21:29:12 INF] Host with ID acd357a0-3939-42f7-bef5-cc4f10208c59 disconnected from Room 2d1e4664-810e-4182-b5e0-958bec6df068.
+[21:29:13 INF] Host with ID acd357a0-3939-42f7-bef5-cc4f10208c59 negotiated with Room 2d1e4664-810e-4182-b5e0-958bec6df068.
+[21:29:14 DBG] ReactOnICE event completed.
+[21:29:14 DBG] ReactOnICE event completed.
+[21:29:14 DBG] ReactOnICE event completed.
+[21:29:14 DBG] ReactOnICE event completed.
+[21:29:14 INF] ReactOnAnswer event completed.
+[21:29:22 INF] ReactOnAnswer event completed.
+[21:29:35 INF] Host with ID acd357a0-3939-42f7-bef5-cc4f10208c59 disconnected from Room 2d1e4664-810e-4182-b5e0-958bec6df068.
+[21:29:36 INF] Host with ID acd357a0-3939-42f7-bef5-cc4f10208c59 negotiated with Room 2d1e4664-810e-4182-b5e0-958bec6df068.
+[21:29:36 DBG] ReactOnICE event completed.
+[21:29:36 DBG] ReactOnICE event completed.
+[21:29:36 DBG] ReactOnICE event completed.
+[21:29:36 DBG] ReactOnICE event completed.
+[21:29:36 INF] ReactOnAnswer event completed.
+[21:29:37 INF] ReactOnAnswer event completed.
+[21:29:52 INF] Host with ID acd357a0-3939-42f7-bef5-cc4f10208c59 disconnected from Room 2d1e4664-810e-4182-b5e0-958bec6df068.
+[21:29:53 INF] Host with ID acd357a0-3939-42f7-bef5-cc4f10208c59 negotiated with Room 2d1e4664-810e-4182-b5e0-958bec6df068.
+[21:29:54 DBG] ReactOnICE event completed.
+[21:29:54 DBG] ReactOnICE event completed.
+[21:29:54 DBG] ReactOnICE event completed.
+[21:29:54 DBG] ReactOnICE event completed.
+[21:29:54 INF] ReactOnAnswer event completed.
+[21:29:56 INF] ReactOnAnswer event completed.
+[21:30:06 INF] Host with ID acd357a0-3939-42f7-bef5-cc4f10208c59 disconnected from Room 2d1e4664-810e-4182-b5e0-958bec6df068.
+[21:30:07 INF] Host with ID acd357a0-3939-42f7-bef5-cc4f10208c59 negotiated with Room 2d1e4664-810e-4182-b5e0-958bec6df068.
+[21:30:07 DBG] ReactOnICE event completed.
+[21:30:07 DBG] ReactOnICE event completed.
+[21:30:07 DBG] ReactOnICE event completed.
+[21:30:07 DBG] ReactOnICE event completed.
+[21:30:07 INF] ReactOnAnswer event completed.
+[21:30:08 INF] ReactOnAnswer event completed.
+[21:30:16 INF] Host with ID acd357a0-3939-42f7-bef5-cc4f10208c59 disconnected from Room 2d1e4664-810e-4182-b5e0-958bec6df068.
+[21:30:17 INF] Host with ID acd357a0-3939-42f7-bef5-cc4f10208c59 negotiated with Room 2d1e4664-810e-4182-b5e0-958bec6df068.
+[21:30:17 DBG] ReactOnICE event completed.
+[21:30:17 DBG] ReactOnICE event completed.
+[21:30:17 DBG] ReactOnICE event completed.
+[21:30:17 DBG] ReactOnICE event completed.
+[21:30:17 INF] ReactOnAnswer event completed.
+[21:30:17 INF] ReactOnAnswer event completed.
+[21:30:22 INF] Host with ID acd357a0-3939-42f7-bef5-cc4f10208c59 disconnected from Room 2d1e4664-810e-4182-b5e0-958bec6df068.
+[21:30:23 INF] Host with ID acd357a0-3939-42f7-bef5-cc4f10208c59 negotiated with Room 2d1e4664-810e-4182-b5e0-958bec6df068.
+[21:30:24 DBG] ReactOnICE event completed.
+[21:30:24 DBG] ReactOnICE event completed.
+[21:30:24 DBG] ReactOnICE event completed.
+[21:30:24 DBG] ReactOnICE event completed.
+[21:30:24 INF] ReactOnAnswer event completed.
+[21:30:24 INF] ReactOnAnswer event completed.
+[21:30:27 INF] Host with ID acd357a0-3939-42f7-bef5-cc4f10208c59 disconnected from Room 2d1e4664-810e-4182-b5e0-958bec6df068.

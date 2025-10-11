@@ -1,0 +1,152 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:vm="using:Client.ViewModels"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:controls="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia.ProgressRing"
+        xmlns:connectWindow="clr-namespace:Client.ViewModels.MainWindow.ConnectWindow"
+        xmlns:conv="clr-namespace:Client.UIConverters"
+        mc:Ignorable="d" d:DesignWidth="350" d:DesignHeight="460"
+        x:Class="Client.Views.Connections.ConnectWindow"
+        x:DataType="connectWindow:ConnectWindowViewModel"
+        Icon="/Assets/avalonia-logo.ico"
+        Background="#3D3D3D"
+        Height="500"
+        Width="350"
+        CanResize="False"
+        Title="Connect to server">
+    <Window.Resources>
+        <conv:PasswordVisibilityConverter x:Key="PasswordVisibilityConverter"/>
+    </Window.Resources>
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="96"/>
+        </Grid.RowDefinitions>
+        
+        <StackPanel Grid.Row="0" Orientation="Vertical" Margin="16,0,16,0">
+            <Grid Margin="0,16,0,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="20"/>
+                    <RowDefinition Height="30"/>   
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0" FontWeight="Bold" FontSize="16">
+                    Connect to server instance.
+                </TextBlock>
+                <TextBlock Grid.Row="1">
+                    Password may not required.
+                </TextBlock>
+            </Grid>
+        
+            <Grid Margin="0,0,0,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="20"/>
+                    <RowDefinition Height="30"/>   
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0">
+                    Server Address:
+                </TextBlock>
+                <TextBox Grid.Row="1" Height="10"
+                         IsEnabled="{Binding !IsConnecting}"
+                         Text="{Binding ServerAddress}"/>
+            </Grid>
+        
+            <Grid Margin="0,10,0,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="20"/>
+                    <RowDefinition Height="30"/>   
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0">
+                    Password:
+                </TextBlock>
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="9*"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
+            
+                    <TextBox Grid.Column="0" Height="10" PasswordChar="{Binding PasswordChar}"
+                             IsEnabled="{Binding !IsConnecting}"
+                             Text="{Binding Password}"/>
+                    <ToggleButton Grid.Column="1" HorizontalAlignment="Right" HorizontalContentAlignment="Center" Margin="4,0,0,0"
+                                  IsChecked="{Binding IsPasswordVisible}"
+                                  IsEnabled="{Binding !IsConnecting}"
+                                  Background="Transparent">
+                        <Svg Margin="0,2,0,0" Width="24" Height="24" VerticalAlignment="Center" HorizontalAlignment="Center" Path="{Binding IsPasswordVisible, Converter={StaticResource PasswordVisibilityConverter}}"></Svg>
+                    </ToggleButton>
+                </Grid>
+            </Grid>
+            
+            <Grid Margin="0,10,0,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="20"/>
+                    <RowDefinition Height="30"/>   
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0">
+                    Identity:
+                </TextBlock>
+                <ComboBox SelectedIndex="0" Grid.Row="1" Height="10"
+                          IsEnabled="{Binding !IsConnecting}"
+                          ItemsSource="{Binding Identities}"
+                          SelectedItem="{Binding SelectedIdentity, Mode=TwoWay}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Name}" />
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+            </Grid>
+        
+            <Grid Margin="0,10,0,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="20"/>
+                    <RowDefinition Height="30"/>   
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0">
+                    Server connection type:
+                </TextBlock>
+                <ComboBox SelectedIndex="1" Grid.Row="1" Height="10"
+                          IsEnabled="{Binding !IsConnecting}"
+                          ItemsSource="{Binding SupportedServers}"
+                          SelectedItem="{Binding ServerType, Mode=TwoWay}">
+                </ComboBox>
+            </Grid>
+        
+            <CheckBox Margin="0,10,0,0"
+                      IsEnabled="{Binding !IsConnecting}">
+                Save to "Profiles"
+            </CheckBox>
+        </StackPanel>
+        
+        <Grid Grid.Row="1" RowDefinitions="40,*" Margin="16,0,16,16">
+            <Grid Margin="0,0,0,0" IsVisible="{Binding IsConnecting}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="32"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Border Grid.Column="0" HorizontalAlignment="Left">
+                    <controls:ProgressRing IsIndeterminate="True" BorderThickness="4" Width="32" Height="32" Foreground="WhiteSmoke" />
+                </Border>
+                <TextBlock Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0,0,0"
+                           Text="{Binding ConnectionStatus}"/>
+            </Grid>
+            <Grid Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="0" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Width="150"
+                        Command="{Binding ConnectCommand}">
+                    Connect
+                </Button>
+                <Button Grid.Column="1" HorizontalAlignment="Right" HorizontalContentAlignment="Center" Width="100"
+                        IsEnabled="{Binding !IsConnecting}"
+                        Command="{Binding CloseCommand}">
+                    Cancel
+                </Button>
+            </Grid>
+        </Grid>
+        
+    </Grid>
+</Window>

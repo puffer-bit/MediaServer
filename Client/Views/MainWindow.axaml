@@ -1,0 +1,269 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:controls="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia.ProgressRing"
+        xmlns:videoSessionView="clr-namespace:Client.Views.Chats.VideoSessionView"
+        xmlns:conv="clr-namespace:Client.UIConverters"
+        xmlns:mainWindow="clr-namespace:Client.ViewModels.MainWindow"
+        xmlns:videoSession="clr-namespace:Client.ViewModels.Sessions.VideoSession"
+        xmlns:sessions="clr-namespace:Client.ViewModels.Sessions"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="Client.Views.MainWindow"
+        x:DataType="mainWindow:MainWindowViewModel"
+        d:DataContext="{d:DesignInstance Type=mainWindow:MainWindowViewModel, IsDesignTimeCreatable=True}"
+        Icon="/Assets/avalonia-logo.ico"
+        Background="#2F2F2F"
+        MinHeight="400"
+        MinWidth="500"
+        Width="1000"
+        Title="Client"
+        x:Name="Main"
+        WindowState="{Binding IsFullScreen}">
+    
+    <Window.DataTemplates>
+        <DataTemplate DataType="videoSession:VideoSessionViewModel">
+            <videoSessionView:VideoSessionControl/>
+        </DataTemplate>
+    </Window.DataTemplates>
+        
+    <Window.Resources>
+        <conv:ConnectionIconConverter x:Key="ConnectionIconConverter"/>
+        <conv:BoolToOpacityConverter x:Key="BoolToOpacityConverter"/>
+        <ContextMenu x:Key="ItemContextMenu">
+            <MenuItem Header="Delete" Command="{Binding DataContext.DeleteSessionCommand, ElementName=Main}" 
+                      CommandParameter="{Binding PlacementTarget.DataContext, 
+                      RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContextMenu}}"/>
+            <MenuItem Header="Details"/>
+        </ContextMenu>
+    </Window.Resources>
+    
+    <Window.Styles>
+        <Style Selector="Button:disabled">
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="Focusable" Value="False"/>
+        </Style>
+    </Window.Styles>
+    
+    <Grid RowDefinitions="Auto,*,26">
+
+        <Menu Grid.Row="0" Grid.ColumnSpan="3" DockPanel.Dock="Top" Background="#3D3D3D" BorderThickness="1" IsEnabled="{Binding IsInitialized}" IsVisible="{Binding !IsFullScreen}"
+              Opacity="{Binding MenuOpacity}">
+            <Menu.Transitions>
+                <Transitions>
+                    <DoubleTransition Property="Opacity" Duration="0:0:0.2" Easing="SineEaseIn"/>
+                </Transitions>
+            </Menu.Transitions>
+            
+            <MenuItem Header="_Connect" 
+                      Command="{Binding ConnectCommand}" 
+                      IsVisible="{Binding !IsConnected}"/>
+            <MenuItem Header="_Disconnect" 
+                      Command="{Binding DisconnectCommand}" 
+                      IsVisible="{Binding IsConnected}"/>
+            <MenuItem Header="_Profiles">
+                <MenuItem Header="New" />
+                <MenuItem Header="Edit list" />
+                <Separator></Separator>
+                <MenuItem Header="TestServer" Command="{Binding TestCommand}"/>
+            </MenuItem>
+            
+            <MenuItem Header="_Server" IsEnabled="False"/>
+            
+            <MenuItem Header="_Updater">
+                <MenuItem Header="Check for updates" />
+                <Separator></Separator>
+                <MenuItem Header="Open GitHub repository"/>
+            </MenuItem>
+        </Menu>
+        
+        <!-- Main Grid -->
+        <Grid Grid.Row="1" IsVisible="{Binding IsInitialized}" Opacity="{Binding GridOpacity}">
+            <Grid.Transitions>
+                <Transitions>
+                    <DoubleTransition Property="Opacity" Duration="0:0:0.1" Easing="SineEaseIn"/>
+                </Transitions>
+            </Grid.Transitions>
+            
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition MinWidth="180" MaxWidth="300" Width="{Binding LeftColumnWidth}" />
+                <ColumnDefinition Width="1"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            
+            <Grid Grid.Column="0" RowDefinitions="*,1,60" IsVisible="{Binding MenuVisibility}">
+
+                <!-- Higher Grid -->
+                <Grid Grid.Row="0" Background="#3D3D3D" RowDefinitions="42,*,48">
+
+                    <TextBlock Grid.Row="0" Text="Sessions:" FontWeight="Bold" Margin="10"/>
+                    
+                    <Grid Grid.Row="1">
+                        <TextBlock Text="You are not connected"
+                                   IsVisible="{Binding !IsConnected}"
+                                   Margin="10"/>
+
+                <ListBox ItemsSource="{Binding  Sessions}"
+                         IsVisible="{Binding IsConnected}"
+                         x:Name="MyListBox">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate DataType="sessions:SessionViewModel">
+                            <Border Background="Transparent"
+                                    Tag="{Binding}">
+                                <Border.ContextFlyout>
+                                    <MenuFlyout>
+                                        <MenuItem Header="Delete"
+                                                  Command="{Binding DataContext.DeleteSessionCommand, ElementName=Main}"
+                                                  CommandParameter="{Binding}" />
+                                        <MenuItem Header="Details"/>
+                                    </MenuFlyout>
+                                </Border.ContextFlyout>
+                                <Grid ColumnDefinitions="4*,1*" Opacity="{Binding Opacity}">
+                                    <Grid.Transitions>
+                                        <Transitions>
+                                            <DoubleTransition Property="Opacity" Duration="0:0:0.1" Easing="SineEaseIn"/>
+                                        </Transitions>
+                                    </Grid.Transitions>
+
+                                    <Grid Grid.Column="0" ColumnDefinitions="Auto,*">
+                                        <Canvas Grid.Column="0" Width="32" Height="32">
+                                            <Image Width="24" Height="24" Canvas.Top="4">
+                                                <Image.Source>
+                                                    <SvgImage Source="avares://Client/Assets/Icons/VideoSession.svg"/>
+                                                </Image.Source>
+                                            </Image>
+                                            <Image Width="12" Height="12" Canvas.Bottom="26" IsVisible="{Binding IsHost}">
+                                                <Image.Source>
+                                                    <SvgImage Source="avares://Client/Assets/Icons/Host.svg"/>
+                                                </Image.Source>
+                                                <Image.RenderTransform>
+                                                    <RotateTransform Angle="-30" CenterX="12" CenterY="10"/>
+                                                </Image.RenderTransform>
+                                            </Image>
+                                        </Canvas>
+
+                                        <TextBlock Grid.Column="1"
+                                                   Text="{Binding Dto.Name}"
+                                                   TextTrimming="CharacterEllipsis"
+                                                   TextWrapping="NoWrap"
+                                                   VerticalAlignment="Center"/>
+                                    </Grid>
+
+                                    <Button Grid.Column="1"
+                                            Padding="0"
+                                            Command="{Binding DataContext.ShowVideoCommand, ElementName=Main}"
+                                            CommandParameter="{Binding}"
+                                            HorizontalContentAlignment="Center"
+                                            VerticalContentAlignment="Center"
+                                            HorizontalAlignment="Right"
+                                            Background="Transparent"
+                                            IsEnabled="{Binding !IsEntered}">
+                                        <Svg Width="32" Height="32" Margin="-4,0,0,0"
+                                             Path="{Binding IsEntered, Converter={StaticResource ConnectionIconConverter}}"
+                                             Opacity="{Binding IsEntered, Converter={StaticResource BoolToOpacityConverter}}"/>
+                                    </Button>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </Grid>
+                <Button Grid.Row="2"
+                    Padding="0"
+                    HorizontalContentAlignment="Left"
+                    VerticalContentAlignment="Center"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    IsEnabled="{Binding IsConnected}"
+                    IsVisible="{Binding MenuVisibility}"
+                    Command="{Binding CreateSessionCommand}"
+                    Margin="8,8,8,8">
+                    <Grid ColumnDefinitions="1*, 6*" ColumnSpacing="6">
+                        <Svg Grid.Column="0" Margin="6,0,0,0" Width="24" Height="24" Path="avares://Client/Assets/Icons/New.svg"/>
+                        <TextBlock Grid.Column="1" VerticalAlignment="Center">Create session</TextBlock>
+                    </Grid>
+                </Button>
+            </Grid>
+            
+            <!-- Lower Grid -->
+            <Grid Grid.Row="2" Background="#3D3D3D" ColumnDefinitions="*,50" IsVisible="{Binding MenuVisibility}">
+
+                <DockPanel Grid.Column="0" Margin="10" HorizontalAlignment="Left">
+                    <Image Width="32" Height="32"
+                           Source="/Assets/avalonia-logo.ico"
+                           Stretch="Fill"
+                           HorizontalAlignment="Left">
+                        <Image.Clip>
+                            <EllipseGeometry Center="16,16" RadiusX="16" RadiusY="16"/>
+                        </Image.Clip>
+                    </Image>
+                    <TextBlock Margin="12,0,0,0" Text="{Binding User.Name}" VerticalAlignment="Center"/>
+                </DockPanel>
+                
+                <Button Grid.Column="1" Margin="0,0,10,0" HorizontalAlignment="Right" Padding="4" Command="{Binding OpenSettingsCommand}">
+                    <Image Width="20" Height="20">
+                        <Image.Source>
+                            <SvgImage Source="avares://Client/Assets/Icons/Settings.svg"/>
+                        </Image.Source>
+                    </Image>
+                </Button>
+            </Grid>
+        </Grid>
+        
+            <GridSplitter IsVisible="{Binding MenuVisibility}" Margin="0" Padding="0" Grid.Column="1" Background="Transparent"></GridSplitter>
+            
+            <ContentControl x:Name="MainContentControl"
+                            Grid.Column="2"
+                            HorizontalAlignment="Stretch" 
+                            VerticalAlignment="Stretch"
+                            Content="{Binding CurrentContent}"
+                            Opacity="{Binding CurrentContentOpacity}">
+                <ContentControl.Transitions>
+                    <Transitions>
+                        <DoubleTransition Property="Opacity" Duration="0:0:0.2" Easing="SineEaseIn"/>
+                    </Transitions>
+                </ContentControl.Transitions>
+            </ContentControl>
+        </Grid>
+        
+        <Border Grid.Column="0" Grid.Row="2" Background="#3D3D3D" BorderThickness="1">
+            <Grid ColumnDefinitions="*,60">
+
+                <Grid ColumnDefinitions="Auto,*">
+
+                    <Border>
+                        <!-- Loading ring -->
+                        <controls:ProgressRing x:Name="LoadingIcon"
+                           MinWidth="16"
+                           MinHeight="16"
+                           IsIndeterminate="True"
+                           IsVisible="{Binding IsLoading}"
+                           BorderThickness="2"
+                           Foreground="WhiteSmoke" 
+                           Margin="6,0,0,0"/>  
+                    </Border>
+                    
+                    <!-- Text -->
+                    <TextBlock Grid.Column="1"
+                               Text="{Binding CurrentAction}"
+                               VerticalAlignment="Center"
+                               Margin="10,0"
+                               Opacity="{Binding CurrentActionTextOpacity}">
+                        <TextBlock.Transitions>
+                            <Transitions>
+                                <DoubleTransition Property="Opacity" Duration="0:0:0.2" Easing="SineEaseIn"/>
+                            </Transitions>
+                        </TextBlock.Transitions>
+                    </TextBlock>
+                </Grid>
+                
+                <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="10, 4, 10,0">
+                    <TextBlock Margin="0, 0, 16, 0">
+                        Ver: 0.0.1 
+                    </TextBlock>
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>

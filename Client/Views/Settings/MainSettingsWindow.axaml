@@ -1,0 +1,98 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:settings="clr-namespace:Client.ViewModels.Settings"
+        xmlns:settingsViews="clr-namespace:Client.Views.Settings.SettingsControls"
+        xmlns:settingsControls="clr-namespace:Client.ViewModels.Settings.SettingsControls"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="Client.Views.Settings.MainSettingsWindow"
+        x:DataType="settings:MainSettingsWindowViewModel"
+        d:DataContext="{d:DesignInstance Type=settings:MainSettingsWindowViewModel, IsDesignTimeCreatable=True}"
+        Title="Settings"
+        Width="800"
+        MinWidth="600"
+        MinHeight="500"
+        Background="#3D3D3D">
+    <Window.DataTemplates>
+        <DataTemplate DataType="settingsControls:AccountingControlViewModel">
+            <settingsViews:AccountingControl/>
+        </DataTemplate>
+        <DataTemplate DataType="settingsControls:BehaviorControlViewModel">
+            <settingsViews:BehaviorControl/>
+        </DataTemplate>
+    </Window.DataTemplates>
+    
+    <Grid ColumnDefinitions="220, *" RowDefinitions="44, 1, *, 1, 44">
+        <Grid Row="0" ColumnSpan="2" ColumnDefinitions="1*, 3*" Margin="12">
+            <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Left" Spacing="6">
+                <Svg Margin="0,0,0,0" Width="24" Height="24" Path="avares://Client/Assets/Icons/Settings.svg" VerticalAlignment="Center"/>
+                <TextBlock FontSize="18" FontWeight="Bold" Margin="0,0,0,6">Settings</TextBlock>
+            </StackPanel>
+            <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right" IsVisible="{Binding IsExperimentalFeaturesEnabled}">
+                <Svg Width="24" Height="24" Path="avares://Client/Assets/Icons/Warning.svg" VerticalAlignment="Center"/>
+                <TextBlock FontSize="14" FontStyle="Italic" Margin="3,0,0,3">Experimental features enabled.</TextBlock>
+            </StackPanel>
+        </Grid>
+        
+        <Border Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1" Height="1" Background="#2F2F2F"/>
+        
+        <Grid Column="0" Row="2">
+            <ListBox ItemsSource="{Binding SettingList}" SelectedItem="{Binding SelectedSetting}" Margin="12">
+                <ListBox.ItemTemplate>
+                    <DataTemplate DataType="settings:ISettingViewModel">
+                        <Grid Grid.Column="0" ColumnDefinitions="Auto,*">
+                            <Canvas Grid.Column="0" Width="32" Height="32">
+                                <Image Width="24" Height="24" Canvas.Top="4">
+                                    <Image.Source>
+                                        <SvgImage Source="avares://Client/Assets/PlaceHolder.svg"/>
+                                    </Image.Source>
+                                </Image>
+                            </Canvas>
+                            <TextBlock Grid.Column="1"
+                                   Text="{Binding Name}"
+                                   TextTrimming="CharacterEllipsis"
+                                   TextWrapping="NoWrap"
+                                   VerticalAlignment="Center"/>
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </Grid>
+        
+        <Grid Column="1" Row="2" Margin="12"
+              VerticalAlignment="Stretch"
+              HorizontalAlignment="Stretch">
+            <ContentControl Content="{Binding SelectedSetting}">
+                
+            </ContentControl>
+        </Grid>
+        
+        <Border Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="3" Height="1" Background="#2F2F2F"/>
+        
+        <Grid Column="0" ColumnSpan="2" Row="4" Margin="10,0,10,0" ColumnDefinitions="160, *">
+            <StackPanel Grid.Column="0" Orientation="Horizontal">
+                <Button Background="OrangeRed" Command="{Binding ResetAllSettingsCommand}" IsEnabled="{Binding !IsReset}">
+                    <StackPanel Orientation="Horizontal" Spacing="4">
+                        <Svg Margin="0,1,0,0" Width="16" Height="16" Path="avares://Client/Assets/Icons/Reset.svg" VerticalAlignment="Center"/>
+                        <TextBlock>Reset all settings</TextBlock>
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+            <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" Spacing="10">
+                <Button IsEnabled="{Binding IsEdited}" Background="ForestGreen" Command="{Binding SaveCommand}">
+                    <StackPanel Orientation="Horizontal" Spacing="4">
+                        <Svg Margin="0,1,0,0" Width="16" Height="16" Path="avares://Client/Assets/Icons/Save.svg" VerticalAlignment="Center"/>
+                        <TextBlock>Save</TextBlock>
+                    </StackPanel>
+                </Button>
+                <Button Command="{Binding CloseCommand}">
+                    <StackPanel Orientation="Horizontal" Spacing="4">
+                        <Svg Margin="0,1,0,0" Width="16" Height="16" Path="avares://Client/Assets/Icons/No.svg" VerticalAlignment="Center"/>
+                        <TextBlock>Close</TextBlock>
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Window>
