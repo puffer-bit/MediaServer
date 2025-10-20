@@ -23,11 +23,11 @@ public class AppInitializer
             // FFMPEG
             if (OperatingSystem.IsWindows())
             {
-                FFmpegInit.Initialise(FfmpegLogLevelEnum.AV_LOG_ERROR, Directory.GetCurrentDirectory() + "/runtimes/win-x64/native");
+                FFmpegInit.Initialise(FfmpegLogLevelEnum.AV_LOG_ERROR, Directory.GetCurrentDirectory());
             }
             else if (OperatingSystem.IsLinux())
             {
-                FFmpegInit.Initialise(FfmpegLogLevelEnum.AV_LOG_FATAL, "/media/user/Local SSD Linux1/RiderProjects/SFU_TestServer/Server/bin/Debug/net9.0/ffmpeg");
+                FFmpegInit.Initialise(FfmpegLogLevelEnum.AV_LOG_FATAL, Directory.GetCurrentDirectory());
             }
         }
         catch (Exception)

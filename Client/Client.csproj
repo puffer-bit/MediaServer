@@ -7,6 +7,8 @@
         <ApplicationManifest>app.manifest</ApplicationManifest>
         <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <RuntimeIdentifier Condition="'$(OS)' == 'Windows_NT'">win-x64</RuntimeIdentifier>
+        <RuntimeIdentifier Condition="'$(OS)' != 'Windows_NT'">linux-x64</RuntimeIdentifier>
     </PropertyGroup>
 
     <ItemGroup>
@@ -55,4 +57,118 @@
         <SubType>Code</SubType>
       </Compile>
     </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="Assets\avalonia-logo.ico" />
+      <AvaloniaResource Include="Assets\avalonia-logo.ico" />
+      <None Remove="Assets\Icons\BaseUser.svg" />
+      <AvaloniaResource Include="Assets\Icons\BaseUser.svg" />
+      <None Remove="Assets\Icons\BaseUsers.svg" />
+      <AvaloniaResource Include="Assets\Icons\BaseUsers.svg" />
+      <None Remove="Assets\Icons\Completed.svg" />
+      <AvaloniaResource Include="Assets\Icons\Completed.svg" />
+      <None Remove="Assets\Icons\ConnectToInstance.svg" />
+      <AvaloniaResource Include="Assets\Icons\ConnectToInstance.svg" />
+      <None Remove="Assets\Icons\Crush.svg" />
+      <AvaloniaResource Include="Assets\Icons\Crush.svg" />
+      <None Remove="Assets\Icons\Edit.svg" />
+      <AvaloniaResource Include="Assets\Icons\Edit.svg" />
+      <None Remove="Assets\Icons\Error.svg" />
+      <AvaloniaResource Include="Assets\Icons\Error.svg" />
+      <None Remove="Assets\Icons\Find.svg" />
+      <AvaloniaResource Include="Assets\Icons\Find.svg" />
+      <None Remove="Assets\Icons\GoFullscreen.svg" />
+      <AvaloniaResource Include="Assets\Icons\GoFullscreen.svg" />
+      <None Remove="Assets\Icons\GoLive.svg" />
+      <AvaloniaResource Include="Assets\Icons\GoLive.svg" />
+      <None Remove="Assets\Icons\GoodShield.svg" />
+      <AvaloniaResource Include="Assets\Icons\GoodShield.svg" />
+      <None Remove="Assets\Icons\HidePassword.svg" />
+      <AvaloniaResource Include="Assets\Icons\HidePassword.svg" />
+      <None Remove="Assets\Icons\Host.svg" />
+      <AvaloniaResource Include="Assets\Icons\Host.svg" />
+      <None Remove="Assets\Icons\Info.svg" />
+      <AvaloniaResource Include="Assets\Icons\Info.svg" />
+      <None Remove="Assets\Icons\Joined.svg" />
+      <AvaloniaResource Include="Assets\Icons\Joined.svg" />
+      <None Remove="Assets\Icons\Login.svg" />
+      <AvaloniaResource Include="Assets\Icons\Login.svg" />
+      <None Remove="Assets\Icons\Logout.svg" />
+      <AvaloniaResource Include="Assets\Icons\Logout.svg" />
+      <None Remove="Assets\Icons\MaxVolume.svg" />
+      <AvaloniaResource Include="Assets\Icons\MaxVolume.svg" />
+      <None Remove="Assets\Icons\Microphone.svg" />
+      <AvaloniaResource Include="Assets\Icons\Microphone.svg" />
+      <None Remove="Assets\Icons\MicrophoneMuted.svg" />
+      <AvaloniaResource Include="Assets\Icons\MicrophoneMuted.svg" />
+      <None Remove="Assets\Icons\New.svg" />
+      <AvaloniaResource Include="Assets\Icons\New.svg" />
+      <None Remove="Assets\Icons\No.svg" />
+      <AvaloniaResource Include="Assets\Icons\No.svg" />
+      <None Remove="Assets\Icons\Question.svg" />
+      <AvaloniaResource Include="Assets\Icons\Question.svg" />
+      <None Remove="Assets\Icons\Reset.svg" />
+      <AvaloniaResource Include="Assets\Icons\Reset.svg" />
+      <None Remove="Assets\Icons\Save.svg" />
+      <AvaloniaResource Include="Assets\Icons\Save.svg" />
+      <None Remove="Assets\Icons\Server.svg" />
+      <AvaloniaResource Include="Assets\Icons\Server.svg" />
+      <None Remove="Assets\Icons\Settings.svg" />
+      <AvaloniaResource Include="Assets\Icons\Settings.svg" />
+      <None Remove="Assets\Icons\Shield.svg" />
+      <AvaloniaResource Include="Assets\Icons\Shield.svg" />
+      <None Remove="Assets\Icons\ShowPassword.svg" />
+      <AvaloniaResource Include="Assets\Icons\ShowPassword.svg" />
+      <None Remove="Assets\Icons\Stats.svg" />
+      <AvaloniaResource Include="Assets\Icons\Stats.svg" />
+      <None Remove="Assets\Icons\Stop.svg" />
+      <AvaloniaResource Include="Assets\Icons\Stop.svg" />
+      <None Remove="Assets\Icons\StrangeShield.svg" />
+      <AvaloniaResource Include="Assets\Icons\StrangeShield.svg" />
+      <None Remove="Assets\Icons\VideoSession.svg" />
+      <AvaloniaResource Include="Assets\Icons\VideoSession.svg" />
+      <None Remove="Assets\Icons\Warning.svg" />
+      <AvaloniaResource Include="Assets\Icons\Warning.svg" />
+      <None Remove="Assets\Icons\Yes.svg" />
+      <AvaloniaResource Include="Assets\Icons\Yes.svg" />
+      <None Remove="Assets\PlaceHolder.svg" />
+      <AvaloniaResource Include="Assets\PlaceHolder.svg" />
+      <None Remove="Assets\SessionInfo.svg" />
+      <AvaloniaResource Include="Assets\SessionInfo.svg" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Libs\Linux\Ffmpeg\" />
+      <Folder Include="Libs\Windows\" />
+    </ItemGroup>
+
+    <Target Name="ShowRID" BeforeTargets="Build">
+        <Message Text="RID is: $(RuntimeIdentifier)" Importance="high" />
+    </Target>
+
+    <Target Name="CopyBassLibs" AfterTargets="Build">
+        <ItemGroup Condition="'$(RuntimeIdentifier)' == 'linux-x64'">
+            <BassLibs Include="Libs/Linux/Bass/*.*" />
+        </ItemGroup>
+        <ItemGroup Condition="'$(RuntimeIdentifier)' == 'win-x64'">
+            <BassLibs Include="Libs/Windows/Bass/*.*" />
+        </ItemGroup>
+
+        <Copy SourceFiles="@(BassLibs)"
+              DestinationFolder="$(OutputPath)"
+              SkipUnchangedFiles="true" />
+    </Target>
+    
+    <Target Name="CopyFfmpegLibs" AfterTargets="Build">
+        <ItemGroup Condition="'$(RuntimeIdentifier)' == 'linux-x64'">
+            <FfmpegLibs Include="Libs/Linux/Ffmpeg/*.*" />
+        </ItemGroup>
+        <ItemGroup Condition="'$(RuntimeIdentifier)' == 'win-x64'">
+            <FfmpegLibs Include="Libs/Windows/Ffmpeg/*.*" />
+        </ItemGroup>
+
+        <Copy SourceFiles="@(FfmpegLibs)"
+              DestinationFolder="$(OutputPath)"
+              SkipUnchangedFiles="true" />
+    </Target>
 </Project>

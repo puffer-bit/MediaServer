@@ -14,26 +14,26 @@
         <StyleInclude Source="avares://FluentAvalonia.ProgressRing/Styling/Controls/ProgressRing.axaml" />
         <StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Fluent.xaml"/>
     </Application.Styles>
-             <TrayIcon.Icons>
-                 <TrayIcons>
-                     <TrayIcon Icon="/Assets/avalonia-logo.ico" 
-                               ToolTipText="Avalonia Tray Icon ToolTip">
-                         <TrayIcon.Menu>
-                             <NativeMenu>
-                                 <NativeMenuItem Header="Settings">
-                                     <NativeMenu>
-                                         <NativeMenuItem Header="Option 1"   />
-                                         <NativeMenuItem Header="Option 2"   />
-                                     </NativeMenu>
-                                 </NativeMenuItem>
-                                 <NativeMenuItem Header="Disconnect"  />
-                                 <NativeMenuItemSeparator />
-                                 <NativeMenuItem Header="Mute stream audio"  />
-                                 <NativeMenuItemSeparator />
-                                 <NativeMenuItem Header="Exit"/>
-                             </NativeMenu>
-                         </TrayIcon.Menu>
-                     </TrayIcon>
-                 </TrayIcons>
-             </TrayIcon.Icons>
+         <TrayIcon.Icons>
+             <TrayIcons>
+                 <TrayIcon Icon="avares://Client/Assets/avalonia-logo.ico" 
+                                   ToolTipText="* Client">
+                     <TrayIcon.Menu>
+                         <NativeMenu>
+                             <NativeMenuItem Header="Settings">
+                                 <NativeMenu>
+                                     <NativeMenuItem Header="Option 1"   />
+                                     <NativeMenuItem Header="Option 2"   />
+                                 </NativeMenu>
+                             </NativeMenuItem>
+                             <NativeMenuItem Header="Disconnect"  />
+                             <NativeMenuItemSeparator />
+                             <NativeMenuItem Header="Mute stream audio"  />
+                             <NativeMenuItemSeparator />
+                             <NativeMenuItem Header="Exit"/>
+                         </NativeMenu>
+                     </TrayIcon.Menu>
+                 </TrayIcon>
+             </TrayIcons>
+         </TrayIcon.Icons>
 </Application>

@@ -62,7 +62,7 @@
             <MenuItem Header="_Disconnect" 
                       Command="{Binding DisconnectCommand}" 
                       IsVisible="{Binding IsConnected}"/>
-            <MenuItem Header="_Profiles">
+            <MenuItem Header="_Profiles" IsEnabled="False">
                 <MenuItem Header="New" />
                 <MenuItem Header="Edit list" />
                 <Separator></Separator>
@@ -71,7 +71,7 @@
             
             <MenuItem Header="_Server" IsEnabled="False"/>
             
-            <MenuItem Header="_Updater">
+            <MenuItem Header="_Updater" IsEnabled="False">
                 <MenuItem Header="Check for updates" />
                 <Separator></Separator>
                 <MenuItem Header="Open GitHub repository"/>

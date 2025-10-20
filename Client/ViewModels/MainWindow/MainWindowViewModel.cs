@@ -261,7 +261,7 @@ internal class MainWindowViewModel : ReactiveObject
             {
                 await ShowTestBox.Handle(new MessageBoxViewModel(Icon.Fatal, Buttons.Ok, $"Startup error. " +
                     $"\n\nFailed to obtain required dependencies. Check the integrity of the program. " +
-                    $"Perhaps the required libraries are damaged or completely missing. Further launch is impossible. \n\n " +
+                    $"Perhaps the required libraries are damaged or completely missing. Further launch is impossible. \n\n" +
                     $"Failed dependencies: {failedDependencies}", "Fatal error", false));
             }
             Environment.Exit(-1);

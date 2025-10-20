@@ -20,7 +20,6 @@ namespace Server
 {
     public class Program
     {
-        
         public static async Task Main(string[] args)
         {
             Log.Logger = new LoggerConfiguration()
@@ -35,8 +34,7 @@ namespace Server
             {
                 if (!FfmpegInitialize())
                 {
-                    Log.Logger.Fatal("Cannot initialize ffmpeg.");
-                    Environment.Exit(-1);
+                    Log.Logger.Warning("Cannot initialize ffmpeg. Test sessions disabled.");
                 }
 
                 var builder = CreateWebApplicationBuilder(args);
