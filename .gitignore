@@ -1,0 +1,20 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs/MediaServer/CopilotIndices/17.12.38.29086
+/.vs/MediaServer/DesignTimeBuild
+/.vs/MediaServer/config
+/.vs/MediaServer/FileContentIndex
+/.vs/MediaServer/FileContentIndex/a98cb9e2-41bd-4a54-ab44-87a92c613de1.vsidx
+/.vs/ProjectEvaluation
+/.vs/MediaServer/v17
+/.vs/MediaServer/v17/.futdcache.v2
+/.vs/ProjectSettings.json
+/.vs/slnx.sqlite
+/.vs/VSWorkspaceState.json
+/Server/bin/Debug/net9.0
+/Server/Logs
+/Server/obj/Debug/net9.0
+/Server/obj/Release/net9.0
+/Server/obj
