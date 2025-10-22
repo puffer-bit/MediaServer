@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using Gst;
+using GstSharpBundle;
 using ManagedBass;
 using SIPSorceryMedia.FFmpeg;
 
@@ -41,10 +42,11 @@ public class AppInitializer
             Environment.SetEnvironmentVariable("GST_DEBUG", "5");
             Environment.SetEnvironmentVariable("GST_DEBUG_NO_COLOR", "1");
             Environment.SetEnvironmentVariable("GST_DEBUG_FILE", "gst_debug.log");
+            Environment.SetEnvironmentVariable("GST_PLUGIN_PATH", Path.Combine(AppContext.BaseDirectory, "lib", "gstreamer-1.0"));
             // GST
             Application.Init();
         }
-        catch (Exception)
+        catch (Exception e)
         {
             _failedDependencies.Add("GST");
             IsFailed = true;

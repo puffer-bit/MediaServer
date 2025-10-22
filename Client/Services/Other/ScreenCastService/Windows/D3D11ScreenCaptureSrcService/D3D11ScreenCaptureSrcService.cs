@@ -14,13 +14,26 @@ namespace Client.Services.Other.ScreenCastService.Windows.D3D11ScreenCaptureSrcS
         private AppSink? _appSink;
         private Pipeline? _pipeline;
         private string? _pipelineDescription;
-        private MainLoop? _mainLoop;
 
         public event Action<byte[]>? FrameReceived;
 
-        public void SetPipelineData(WindowsScreenCastType type, string hwnd)
+        public D3D11ScreenCaptureSrcService()
         {
-            _pipelineDescription = $"d3d11screencapturesrc monitor-handle=1 ! videoconvert ! video/x-raw,format=RGB ! appsink name=mysink";
+
+        }
+
+        public void SetPipelineData(WindowsScreenCastType castType, string nodeId)
+        {
+            if (castType == WindowsScreenCastType.Window)
+            {
+                _pipelineDescription =
+               $"d3d11screencapturesrc window-handle={nodeId} show-cursor=true ! videoconvert ! video/x-raw,format=NV12 ! nvh264enc bitrate=4000 preset=low-latency-hq ! h264parse config-interval=1 ! appsink name=mysink";
+            }
+            else if (castType == WindowsScreenCastType.Monitor)
+            {
+                _pipelineDescription =
+               $"d3d11screencapturesrc monitor-handle={nodeId} show-cursor=true ! videoconvert ! video/x-raw,format=NV12 ! nvh264enc bitrate=4000 preset=low-latency-hq ! h264parse config-interval=1 ! appsink name=mysink";
+            }
         }
 
         public bool CreatePipeline()
@@ -30,13 +43,9 @@ namespace Client.Services.Other.ScreenCastService.Windows.D3D11ScreenCaptureSrcS
                 if (_pipelineDescription != null && _pipeline == null)
                 {
                     _pipeline = Parse.Launch(_pipelineDescription) as Pipeline;
-                    if (_pipeline == null)
-                    {
-                        Console.WriteLine("Pipeline creation failed.");
-                        return false;
-                    }
 
-                    var appsinkElement = _pipeline.GetChildByName("mysink");
+                    // Try to get the appsink by name
+                    var appsinkElement = _pipeline!.GetChildByName("mysink");
                     if (appsinkElement == null)
                     {
                         Console.WriteLine("Unable to find 'mysink' in pipeline.");
@@ -46,11 +55,8 @@ namespace Client.Services.Other.ScreenCastService.Windows.D3D11ScreenCaptureSrcS
                     _appSink = new AppSink(appsinkElement.Handle);
                     _appSink.EmitSignals = true;
                     _appSink.MaxBuffers = 3;
-                    _appSink.Drop = true;
-                    _appSink.WaitOnEos = false;
-
-                    _appSink.NewSample += ProceedFrameData;
-
+                    _appSink.Drop = false;
+                    appsinkElement.Dispose();
                     return true;
                 }
                 return false;
@@ -66,10 +72,10 @@ namespace Client.Services.Other.ScreenCastService.Windows.D3D11ScreenCaptureSrcS
         {
             try
             {
-                if (_pipeline != null)
+                if (_pipeline != null && _appSink != null)
                 {
                     _pipeline.SetState(State.Playing);
-
+                    _appSink.NewSample += ProceedFrameData;
 
                     return true;
                 }
@@ -86,7 +92,11 @@ namespace Client.Services.Other.ScreenCastService.Windows.D3D11ScreenCaptureSrcS
         {
             try
             {
-                _pipeline?.SetState(State.Paused);
+                if (_pipeline != null && _appSink != null)
+                {
+                    _appSink.NewSample -= ProceedFrameData;
+                    _pipeline.SetState(State.Paused);
+                }
             }
             catch (Exception e)
             {
@@ -96,23 +106,16 @@ namespace Client.Services.Other.ScreenCastService.Windows.D3D11ScreenCaptureSrcS
 
         private void ProceedFrameData(object o, NewSampleArgs args)
         {
-            try
+            using var sample = _appSink!.TryPullSample(100);
+            if (sample != null)
             {
-                using var sample = _appSink!.PullSample();
-                if (sample != null)
-                {
-                    using var buffer = sample.Buffer;
-                    buffer.Map(out MapInfo map, MapFlags.Read);
+                using var buffer = sample.Buffer;
+                buffer.Map(out MapInfo map, MapFlags.Read);
 
-                    byte[] encodedFrame = new byte[map.Size];
-                    Marshal.Copy(map.DataPtr, encodedFrame, 0, (int)map.Size);
-                    OnFrameCompleted(encodedFrame);
-                    buffer.Unmap(map);
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error in ProceedFrameData: {ex.Message}");
+                byte[] encodedFrame = new byte[map.Size];
+                Marshal.Copy(map.DataPtr, encodedFrame, 0, (int)map.Size);
+                OnFrameCompleted(encodedFrame);
+                buffer.Unmap(map);
             }
         }
 
@@ -123,23 +126,14 @@ namespace Client.Services.Other.ScreenCastService.Windows.D3D11ScreenCaptureSrcS
 
         public void DestroyPipeline()
         {
-            try
-            {
-                _pipeline?.SetState(State.Null);
-
-                _pipeline?.Dispose();
-                _pipeline = null;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine($"Failed to destroy pipeline. Exception: {e}");
-            }
+            _pipeline?.Dispose();
+            _pipeline = null;
         }
 
         public void Dispose()
         {
-            DestroyPipeline();
             _appSink?.Dispose();
+            _pipeline?.Dispose();
             GC.SuppressFinalize(this);
         }
     }

@@ -85,7 +85,8 @@ namespace Client.Services.Other.ScreenCastService.Windows.Win32PortalClient
 
         public void Dispose()
         {
-            
+            _d3d11ScreenCaptureSrcService?.Dispose();
+            GC.SuppressFinalize(this);
         }
     }
 }
