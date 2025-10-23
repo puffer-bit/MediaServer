@@ -1,24 +1,20 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Server.Domain.Entities;
+using Server.MainServer.Main.Server;
+using Server.MainServer.Main.Server.Coordinator;
+using System;
 
 namespace Server.Domain;
 
-public class ServerDbContext : IdentityDbContext<IdentityUser>
+public class ServerDbContext : DbContext
 {
-    public ServerDbContext(DbContextOptions<ServerDbContext> options) : base(options) { }
-        
-    protected override void OnModelCreating(ModelBuilder builder)
-    {
-        base.OnModelCreating(builder);
+    public DbSet<ServerInstance> ServerInstance { get; set; }
+    public DbSet<CoordinatorInstance> CoordinatorInstances { get; set; }
+    public DbSet<UserEntity> UserEntities { get; set; }
+    public DbSet<VideoSessionEntity> VideoSessions { get; set; }
 
-        builder.Entity<IdentityRole>().HasData(
-            new IdentityRole
-            {
-                Id = "guest-role-id",
-                Name = "guest",
-                NormalizedName = "GUEST"
-            }
-        );
-    }
+    public ServerDbContext(DbContextOptions<ServerDbContext> options) : base(options) { }
+
 }

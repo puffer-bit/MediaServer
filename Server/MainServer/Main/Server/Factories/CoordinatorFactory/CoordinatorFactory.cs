@@ -28,6 +28,9 @@ public class CoordinatorFactory : ICoordinatorFactory
         _coordinator = coordinator;
     }
 
+    public ICoordinatorInstanceContext CreateCoordinatorInstanceContext() =>
+        ActivatorUtilities.CreateInstance<CoordinatorInstanceContext>(_provider, _coordinator);
+
     public IConnectionManager CreateConnectionManager() =>
         ActivatorUtilities.CreateInstance<ConnectionManager>(_provider, CreateConnectionManagerContext());
     public IConnectionManagerContext CreateConnectionManagerContext() =>

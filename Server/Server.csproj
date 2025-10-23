@@ -34,8 +34,6 @@
     <Folder Include="bin\Debug\net9.0\" />
     <Folder Include="bin\Debug\net9.0\SFU\Database\" />
     <Folder Include="Certs\" />
-    <Folder Include="Domain\Entities\" />
-    <Folder Include="Domain\Enums\" />
     <Folder Include="Domain\Repositories\" />
     <Folder Include="Logs\" />
     <Folder Include="MainServer\Main\Server\Voice\PeerManager\" />

@@ -13,6 +13,8 @@ public interface ICoordinatorFactory
 {
     void Initialize(CoordinatorInstance coordinator);
     
+    ICoordinatorInstanceContext CreateCoordinatorInstanceContext();
+
     IConnectionManager CreateConnectionManager();
     IConnectionManagerContext CreateConnectionManagerContext();
     

@@ -17,8 +17,10 @@ using SIPSorceryMedia.FFmpeg;
 
 namespace Server.MainServer.Main.Server.Coordinator
 {
-    public partial class CoordinatorInstance
+    public partial class CoordinatorInstance : ICoordinatorInstance
     {
+        public ICoordinatorInstanceContext Context { get; init; }
+
         private readonly ISessionManager _sessionManager;
         private readonly IConnectionManager _connectionManager;
         private readonly IUserManager _userManager;
@@ -27,12 +29,14 @@ namespace Server.MainServer.Main.Server.Coordinator
         private readonly IHeartbeatManager _heartbeatManager;
         private readonly ILogger _logger;
         private readonly Dictionary<MessageType, IMessageHandler> _handlers = new();
-        
+
         public CoordinatorInstance( 
             ILoggerFactory loggerFactory,
             ICoordinatorFactory coordinatorFactory)
         {
             coordinatorFactory.Initialize(this);
+            Context = coordinatorFactory.CreateCoordinatorInstanceContext();
+
             _webRTCManager = coordinatorFactory.CreateWebRTCManager();
             _messageSender = coordinatorFactory.CreateMessageSender();
             _userManager = coordinatorFactory.CreateUserManager();
@@ -65,7 +69,8 @@ namespace Server.MainServer.Main.Server.Coordinator
         {
             await CreateTestVideoSessionFromMp4();
             await CreateTestVideoSessionFromPattern();
-            _logger.LogWarning("Beware of continuous use of test sessions. This triggers video encoding and increases the load on the hardware many times over.");
+            _logger.LogWarning("Beware of continuous use of test sessions. " +
+                "This triggers video encoding and increases the load on the hardware many times over.");
         }
         
         private async Task CreateTestVideoSessionFromMp4()
@@ -188,6 +193,11 @@ namespace Server.MainServer.Main.Server.Coordinator
             }
         }
         
+        public void CommitCoordinatorChanges()
+        {
+            throw new NotImplementedException();
+        }
+
         public void ProcessEvent(BaseMessage message)
         {
             if (message.UserId == null)

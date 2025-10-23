@@ -4,5 +4,5 @@ namespace Server.MainServer.Main.Server.Coordinator.Users.Manager;
 
 public interface IUserManagerContext
 {
-    Dictionary<string, UserDTO?> ConnectedUsers { get; set; }
+    Dictionary<string, UserDTO?> ConnectedUsers { get; init; }
 }
