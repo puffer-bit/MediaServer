@@ -4,6 +4,7 @@ using System.Runtime.InteropServices;
 using Client.Services.Other.ScreenCastService.Windows.Win32PortalClient;
 using Gst;
 using Gst.App;
+using Shared.Enums;
 using SIPSorceryMedia.Abstractions;
 
 namespace Client.Services.Other.ScreenCastService.Linux.PipeWireService;
@@ -27,7 +28,7 @@ public class PipeWireService : IGStreamerService, IDisposable
             $"pipewiresrc path={nodeId} ! videoconvert ! video/x-raw,format=NV12 ! nvh264enc bitrate=4000 preset=low-latency-hq ! h264parse config-interval=1 ! appsink name=mysink";    
     }
 
-    public bool CreatePipeline()
+    public ScreenCastResult CreatePipeline()
     {
         try
         {
@@ -40,7 +41,7 @@ public class PipeWireService : IGStreamerService, IDisposable
                 if (appsinkElement == null)
                 {
                     Console.WriteLine("Unable to find 'mysink' in pipeline.");
-                    return false;
+                    return ScreenCastResult.InternalError;
                 }
 
                 _appSink = new AppSink(appsinkElement.Handle);
@@ -49,18 +50,18 @@ public class PipeWireService : IGStreamerService, IDisposable
                 _appSink.Drop = false;
                 _appSink.WaitOnEos = false;
                 appsinkElement.Dispose();
-                return true;
+                return ScreenCastResult.NoError;
             }
-            return false;
+            return ScreenCastResult.NotInitialized;
         }
         catch (Exception e)
         {
             Console.WriteLine($"Failed to build pipeline. Exception: {e}");
-            return false;
+            return ScreenCastResult.InternalError;
         }
     }
 
-    public bool StartPipeline()
+    public ScreenCastResult StartPipeline()
     {
         try
         {
@@ -69,18 +70,18 @@ public class PipeWireService : IGStreamerService, IDisposable
                 _pipeline.SetState(State.Playing);
                 _appSink.NewSample += ProceedFrameData;
 
-                return true;
+                return ScreenCastResult.NoError;
             }
-            return false;
+            return ScreenCastResult.NotInitialized;
         }
         catch (Exception e)
         {
             Console.WriteLine($"Failed to start pipeline. Exception: {e}");
-            return false;
+            return ScreenCastResult.InternalError;
         }
     }
 
-    public void PausePipeline()
+    public ScreenCastResult PausePipeline()
     {
         try
         {
@@ -88,11 +89,14 @@ public class PipeWireService : IGStreamerService, IDisposable
             {
                 _appSink.NewSample -= ProceedFrameData;
                 _pipeline.SetState(State.Paused);
+                return ScreenCastResult.NoError;
             }
+            return ScreenCastResult.NotInitialized;
         }
         catch (Exception e)
         {
             Console.WriteLine($"Failed to pause pipeline. Exception: {e}");
+            return ScreenCastResult.InternalError;
         }
     }
 
@@ -116,10 +120,11 @@ public class PipeWireService : IGStreamerService, IDisposable
         FrameReceived?.Invoke(encodedFrame);
     }
 
-    public void DestroyPipeline()
+    public ScreenCastResult DestroyPipeline()
     {
         _pipeline?.Dispose();
         _pipeline = null;
+        return ScreenCastResult.NoError;
     }
 
     public void Dispose()

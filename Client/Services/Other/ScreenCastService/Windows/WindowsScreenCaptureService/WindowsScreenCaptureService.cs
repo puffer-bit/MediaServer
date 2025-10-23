@@ -1,15 +1,13 @@
-﻿using SIPSorceryMedia.Abstractions;
-using System;
+﻿using Client.Services.Other.ScreenCastService.Windows.Win32PortalClient;
 using Gst;
 using Gst.App;
+using Shared.Enums;
+using System;
 using System.Runtime.InteropServices;
-using GLib;
-using System.Threading;
-using Client.Services.Other.ScreenCastService.Windows.Win32PortalClient;
 
 namespace Client.Services.Other.ScreenCastService.Windows.D3D11ScreenCaptureSrcService
 {
-    public class D3D11ScreenCaptureSrcService : IGStreamerService
+    public class WindowsScreenCaptureService : IGStreamerService
     {
         private AppSink? _appSink;
         private Pipeline? _pipeline;
@@ -17,7 +15,7 @@ namespace Client.Services.Other.ScreenCastService.Windows.D3D11ScreenCaptureSrcS
 
         public event Action<byte[]>? FrameReceived;
 
-        public D3D11ScreenCaptureSrcService()
+        public WindowsScreenCaptureService()
         {
 
         }
@@ -36,7 +34,7 @@ namespace Client.Services.Other.ScreenCastService.Windows.D3D11ScreenCaptureSrcS
             }
         }
 
-        public bool CreatePipeline()
+        public ScreenCastResult CreatePipeline()
         {
             try
             {
@@ -49,7 +47,7 @@ namespace Client.Services.Other.ScreenCastService.Windows.D3D11ScreenCaptureSrcS
                     if (appsinkElement == null)
                     {
                         Console.WriteLine("Unable to find 'mysink' in pipeline.");
-                        return false;
+                        return ScreenCastResult.InternalError;
                     }
 
                     _appSink = new AppSink(appsinkElement.Handle);
@@ -57,18 +55,18 @@ namespace Client.Services.Other.ScreenCastService.Windows.D3D11ScreenCaptureSrcS
                     _appSink.MaxBuffers = 3;
                     _appSink.Drop = false;
                     appsinkElement.Dispose();
-                    return true;
+                    return ScreenCastResult.NoError;
                 }
-                return false;
+                return ScreenCastResult.NotInitialized;
             }
             catch (Exception e)
             {
                 Console.WriteLine($"Failed to build pipeline. Exception: {e}");
-                return false;
+                return ScreenCastResult.InternalError;
             }
         }
 
-        public bool StartPipeline()
+        public ScreenCastResult StartPipeline()
         {
             try
             {
@@ -77,18 +75,18 @@ namespace Client.Services.Other.ScreenCastService.Windows.D3D11ScreenCaptureSrcS
                     _pipeline.SetState(State.Playing);
                     _appSink.NewSample += ProceedFrameData;
 
-                    return true;
+                    return ScreenCastResult.NoError;
                 }
-                return false;
+                return ScreenCastResult.NotInitialized;
             }
             catch (Exception e)
             {
                 Console.WriteLine($"Failed to start pipeline. Exception: {e}");
-                return false;
+                return ScreenCastResult.InternalError;
             }
         }
 
-        public void PausePipeline()
+        public ScreenCastResult PausePipeline()
         {
             try
             {
@@ -96,11 +94,14 @@ namespace Client.Services.Other.ScreenCastService.Windows.D3D11ScreenCaptureSrcS
                 {
                     _appSink.NewSample -= ProceedFrameData;
                     _pipeline.SetState(State.Paused);
+                    return ScreenCastResult.NoError;
                 }
+                return ScreenCastResult.NotInitialized;
             }
             catch (Exception e)
             {
                 Console.WriteLine($"Failed to pause pipeline. Exception: {e}");
+                return ScreenCastResult.InternalError;
             }
         }
 
@@ -124,10 +125,11 @@ namespace Client.Services.Other.ScreenCastService.Windows.D3D11ScreenCaptureSrcS
             FrameReceived?.Invoke(encodedFrame);
         }
 
-        public void DestroyPipeline()
+        public ScreenCastResult DestroyPipeline()
         {
             _pipeline?.Dispose();
             _pipeline = null;
+            return ScreenCastResult.NoError;
         }
 
         public void Dispose()

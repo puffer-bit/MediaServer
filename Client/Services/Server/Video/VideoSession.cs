@@ -1,14 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Net;
-using System.Threading.Tasks;
 using Avalonia.Media.Imaging;
 using Client.Services.Other.AudioPlayerService;
 using Client.Services.Other.FrameProcessor;
 using Client.Services.Other.ScreenCastService;
-using Client.Services.Other.ScreenCastService.XdgDesktopPortalClient;
 using Client.Services.Server.Coordinator;
 using Client.Services.Server.Video.Peer;
 using ReactiveUI;
@@ -18,6 +11,12 @@ using Shared.Models.Requests;
 using SIPSorcery.Net;
 using SIPSorceryMedia.Abstractions;
 using SIPSorceryMedia.FFmpeg;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Net;
+using System.Threading.Tasks;
 
 namespace Client.Services.Server.Video;
 
@@ -385,6 +384,7 @@ public class VideoSession : ReactiveObject, IVideoSession
         {
             await _screenCastClient.CreateSessionAsync();
         }
+
         await _screenCastClient.SelectSourcesAsync();
         if (await _screenCastClient.StartSessionAsync())
         {
@@ -432,9 +432,7 @@ public class VideoSession : ReactiveObject, IVideoSession
     public void Dispose()
     {
         State = VideoSessionState.Ended;
-        _ffmpegVideoEndPoint.CloseVideo();
         Peer.PeerConnection?.Close("normal");
-        _screenCastClient.Dispose(); 
         _audioPlayerService?.Dispose();
         _frameProcessor?.Dispose();
         Peer.PeerConnection?.Dispose();

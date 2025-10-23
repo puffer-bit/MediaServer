@@ -2,8 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Controls.ApplicationLifetimes;
 using Client.Services.Other.FrameProcessor;
+using Client.Services.Other.ScreenCastService.Windows.D3D11ScreenCaptureSrcService;
 using Client.Services.Other.ScreenCastService.Windows.Win32PortalClient;
+using Client.ViewModels.MessageBox;
+using Client.Views;
+using Client.Views.MessageBox;
 using SIPSorceryMedia.Abstractions;
 using Tmds.DBus;
 
@@ -15,7 +22,8 @@ public class XdgDesktopPortalClient : IScreenCastClient, IDisposable
     private IScreenCast _portal;
     private string _token;
     private ObjectPath _sessionPath;
-    
+    private Window _mainWindow;
+
     // DI
     private readonly IGStreamerService _pipeWireService;
     
@@ -29,6 +37,8 @@ public class XdgDesktopPortalClient : IScreenCastClient, IDisposable
         _bus = new Connection(Address.Session);
         _token = "test_" + Guid.NewGuid().ToString("N");
         _portal = _bus.CreateProxy<IScreenCast>("org.freedesktop.portal.Desktop", "/org/freedesktop/portal/desktop");
+        var lifetime = Application.Current?.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime;
+        _mainWindow = lifetime!.MainWindow!;
     }
 
     public async Task InitializeAsync()
@@ -75,8 +85,8 @@ public class XdgDesktopPortalClient : IScreenCastClient, IDisposable
         var options = new Dictionary<string, object>
         {
             { "handle_token", _token },
-            { "types", (uint)1 },         // 1 = monitor
-            { "cursor_mode", (uint)2 }    // 1 = embedded
+            { "types", (uint)1 },
+            { "cursor_mode", (uint)2 }
         };
 
         var requestPath = await _portal.SelectSourcesAsync(_sessionPath, options);
@@ -126,18 +136,36 @@ public class XdgDesktopPortalClient : IScreenCastClient, IDisposable
                     Console.WriteLine($"{kvp.Key}: {kvp.Value}");
                 }
 
-                // Можно добавить node_id в metadata, если нужно вернуть всё в одном словаре
                 metadata["node_id"] = nodeId;
 
                 _pipeWireService.SetPipelineData(WindowsScreenCastType.Undefined, nodeId.ToString()); // In XDG we dont need to set Window type
-                if (_pipeWireService.CreatePipeline())
+                var createResult = _pipeWireService.CreatePipeline();
+                if (createResult != Shared.Enums.ScreenCastResult.NoError)
                 {
-                    if (_pipeWireService.StartPipeline())
+                    MessageBoxWindow messageBox = new MessageBoxWindow()
                     {
-                        _pipeWireService.FrameReceived += OnFrameReceived;
-                    }
+                        DataContext = new MessageBoxViewModel(Icon.Error, Buttons.Ok,
+                        $"Pipeline failed to create. Logs may contains additional information.\n\nCode: {(int)createResult}",
+                        "GStreamer Error")
+                    };
+                    await messageBox.ShowDialog(_mainWindow);
+                    return false;
                 }
-            
+
+                var startResult = _pipeWireService.StartPipeline();
+                if (startResult != Shared.Enums.ScreenCastResult.NoError)
+                {
+                    MessageBoxWindow messageBox = new MessageBoxWindow()
+                    {
+                        DataContext = new MessageBoxViewModel(Icon.Error, Buttons.Ok,
+                        $"Pipeline failed to start. Logs may contains additional information.\n\nCode: {(int)startResult}",
+                        "GStreamer Error")
+                    };
+                    await messageBox.ShowDialog(_mainWindow);
+                    return false;
+                }
+                _pipeWireService.FrameReceived += OnFrameReceived;
+
                 return true;
             }
         }
@@ -151,7 +179,19 @@ public class XdgDesktopPortalClient : IScreenCastClient, IDisposable
 
     public async Task<bool> CloseSessionAsync()
     {
-        throw new NotImplementedException();
+        var result = _pipeWireService.DestroyPipeline();
+        if (result != Shared.Enums.ScreenCastResult.NoError)
+        {
+            MessageBoxWindow messageBox = new MessageBoxWindow()
+            {
+                DataContext = new MessageBoxViewModel(Icon.Error, Buttons.Ok,
+                $"Pipeline failed to close. Logs may contains additional information.\n\nCode: {(int)result}",
+                "GStreamer Error")
+            };
+            await messageBox.ShowDialog(_mainWindow);
+            return false;
+        }
+        return true;
     }
 
     private async Task<IDictionary<string, object>> WaitForResponseAsync(
@@ -161,7 +201,6 @@ public class XdgDesktopPortalClient : IScreenCastClient, IDisposable
         var req = _bus.CreateProxy<IRequest>("org.freedesktop.portal.Desktop", requestPath);
         var tcs = new TaskCompletionSource<IDictionary<string, object>>();
 
-        // Привязываем отмену к TaskCompletionSource
         cancellationToken.Register(() =>
         {
             tcs.TrySetCanceled(cancellationToken);

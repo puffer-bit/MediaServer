@@ -5,10 +5,7 @@ using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Data.Core.Plugins;
 using System.Linq;
-using System.Text.Json;
 using Avalonia.Markup.Xaml;
-using Client.Services;
-using Client.Services.Interfaces;
 using Client.Services.Other;
 using Client.Services.Other.AppInfrastructure;
 using Client.Services.Other.AudioPlayerService;
@@ -16,23 +13,17 @@ using Client.Services.Other.FrameProcessor;
 using Client.Services.Other.ScreenCastService;
 using Client.Services.Other.ScreenCastService.XdgDesktopPortalClient;
 using Client.Services.Server.Coordinator;
-using Client.Services.Server.Coordinator.Authentication;
-using Client.Services.Server.Coordinator.Connection;
-using Client.Services.Server.Coordinator.Messaging;
-using Client.Services.Server.Coordinator.Messaging.MessageRouter;
-using Client.Services.Server.Coordinator.Sessions;
 using Client.Services.Server.Factories.CoordinatorFactory;
 using Client.Services.Server.Factories.VideoSessionFactory;
-using Client.ViewModels;
 using Client.ViewModels.MainWindow;
 using Client.ViewModels.MainWindow.ConnectWindow;
 using Client.Views;
 using Microsoft.Extensions.DependencyInjection;
-using Websocket.Client;
 using Client.Services.Other.ScreenCastService.Linux.PipeWireService;
 using Client.Services.Other.ScreenCastService.Windows.D3D11ScreenCaptureSrcService;
 using Client.Services.Other.ScreenCastService.Windows.Win32PortalClient;
 using System.Runtime.InteropServices;
+using Avalonia.Styling;
 
 namespace Client;
 
@@ -52,7 +43,11 @@ public partial class App : Application
     public override void OnFrameworkInitializationCompleted()
     {
         var services = new ServiceCollection();
-        
+
+        // Disable light theme
+        Application.Current!.ActualThemeVariantChanged += (_, _) => {
+            Application.Current!.RequestedThemeVariant = ThemeVariant.Light;
+        };
         services.AddSingleton<ClientTools>();
         services.AddSingleton<AppInitializer>();
         services.AddSingleton<ICoordinatorFactory, CoordinatorFactory>();
@@ -73,8 +68,8 @@ public partial class App : Application
         }
         else if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
         {
-            services.AddTransient<IGStreamerService, D3D11ScreenCaptureSrcService>();
-            services.AddTransient<IScreenCastClient, Win32PortalClient>();
+            services.AddTransient<IGStreamerService, WindowsScreenCaptureService>();
+            services.AddTransient<IScreenCastClient, WindowsPortalClient>();
             services.AddTransient<NativeWindowHelper>();
         }
         else

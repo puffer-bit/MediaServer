@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 using Gst;
-using GstSharpBundle;
 using ManagedBass;
 using SIPSorceryMedia.FFmpeg;
 
@@ -14,22 +14,25 @@ public class AppInitializer
     public bool IsInitialized = false;
     public bool IsFailed = false;
     
-    public bool Initialize()
+    public async Task<bool> InitializeAsync()
     {
         if (IsInitialized)
             return true; // Returns true if application already initialized
 
         try
         {
-            // FFMPEG
-            if (OperatingSystem.IsWindows())
+            await System.Threading.Tasks.Task.Run(() =>
             {
-                FFmpegInit.Initialise(FfmpegLogLevelEnum.AV_LOG_ERROR, Directory.GetCurrentDirectory());
-            }
-            else if (OperatingSystem.IsLinux())
-            {
-                FFmpegInit.Initialise(FfmpegLogLevelEnum.AV_LOG_FATAL, Directory.GetCurrentDirectory());
-            }
+                // FFMPEG
+                if (OperatingSystem.IsWindows())
+                {
+                    FFmpegInit.Initialise(FfmpegLogLevelEnum.AV_LOG_ERROR, Directory.GetCurrentDirectory());
+                }
+                else if (OperatingSystem.IsLinux())
+                {
+                    FFmpegInit.Initialise(FfmpegLogLevelEnum.AV_LOG_FATAL, Directory.GetCurrentDirectory());
+                }
+            });
         }
         catch (Exception)
         {
@@ -39,12 +42,15 @@ public class AppInitializer
 
         try
         {
-            Environment.SetEnvironmentVariable("GST_DEBUG", "5");
-            Environment.SetEnvironmentVariable("GST_DEBUG_NO_COLOR", "1");
-            Environment.SetEnvironmentVariable("GST_DEBUG_FILE", "gst_debug.log");
-            Environment.SetEnvironmentVariable("GST_PLUGIN_PATH", Path.Combine(AppContext.BaseDirectory, "lib", "gstreamer-1.0"));
-            // GST
-            Application.Init();
+            await System.Threading.Tasks.Task.Run(() =>
+            {
+                Environment.SetEnvironmentVariable("GST_DEBUG", "5");
+                Environment.SetEnvironmentVariable("GST_DEBUG_NO_COLOR", "1");
+                Environment.SetEnvironmentVariable("GST_DEBUG_FILE", "gst_debug.log");
+                Environment.SetEnvironmentVariable("GST_PLUGIN_PATH", Path.Combine(AppContext.BaseDirectory, "lib", "gstreamer-1.0"));
+                // GST
+                Application.Init();
+            });
         }
         catch (Exception e)
         {
@@ -55,12 +61,15 @@ public class AppInitializer
 
         try
         {
-            // BASS
-            Bass.Init();
-            Bass.Configure(Configuration.DeviceBufferLength, 200);
-            Bass.Configure(Configuration.PlaybackBufferLength, 200);
-            Bass.Configure(Configuration.UpdatePeriod, 7);
-            Bass.Configure(Configuration.GlobalSampleVolume, 11);
+            await System.Threading.Tasks.Task.Run(() =>
+            {
+                // BASS
+                Bass.Init();
+                Bass.Configure(Configuration.DeviceBufferLength, 200);
+                Bass.Configure(Configuration.PlaybackBufferLength, 200);
+                Bass.Configure(Configuration.UpdatePeriod, 7);
+                Bass.Configure(Configuration.GlobalSampleVolume, 11);
+            });
         }
         catch (Exception)
         {
