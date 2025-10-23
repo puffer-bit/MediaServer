@@ -253,6 +253,8 @@ internal class VideoSessionViewModel : ReactiveObject, ISessionViewModel
 
     public void CloseSession()
     {
+        EndSending();
+        EndReceive();
         RequestClose?.Invoke();
         _coordinatorSession.LeaveSession(SessionDTO);
         IsClosed = true;
@@ -299,7 +301,7 @@ internal class VideoSessionViewModel : ReactiveObject, ISessionViewModel
      
     private void EndSending()
     {
-        if (_videoSession != null && _videoSession.State == VideoSessionState.WaitingForUserStream)
+        if (_videoSession != null)
         {
             _videoSession.StopSending();
             _videoSession.FrameReceived -= OnFrameReceived;

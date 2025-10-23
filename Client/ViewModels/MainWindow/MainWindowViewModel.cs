@@ -249,7 +249,7 @@ internal class MainWindowViewModel : ReactiveObject
         await ChangeCurrentActionText("Initialization...");
         await Task.Delay(300);
         
-        if (!_appInitializer.Initialize())
+        if (!await _appInitializer.InitializeAsync())
         {
             _appInitializer.GetFailedDependencies(out var failedDependencies);
             if (failedDependencies == null)
