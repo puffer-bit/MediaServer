@@ -1,6 +1,7 @@
-﻿namespace Server.MainServer.Main.Server
+﻿namespace Server.MainServer.Main.Server.Orchestrator
 {
     public partial class ServerInstance : IServerInstance
     {
+
     }
 }

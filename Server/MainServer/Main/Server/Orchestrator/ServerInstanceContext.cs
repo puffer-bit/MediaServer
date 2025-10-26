@@ -1,6 +1,6 @@
 ﻿using Server.Domain.Enums;
 
-namespace Server.MainServer.Main.Server
+namespace Server.MainServer.Main.Server.Orchestrator
 {
     public class ServerInstanceContext : IServerInstanceContext
     {
@@ -41,8 +41,8 @@ namespace Server.MainServer.Main.Server
         public int ActiveSessionsCount { get; set; }
         public int ConnectedUsersCount { get; set; }
         public int RegisteredUsersCount { get; set; }
-        public double CpuLoadPercent { get; set; }
-        public double MemoryConsumption { get; set; }
+        public double CurrentCpuLoadPercent { get; set; }
+        public double CurrentMemoryConsumption { get; set; }
 
         // Security parametrs
         public ServerState State { get; set; }

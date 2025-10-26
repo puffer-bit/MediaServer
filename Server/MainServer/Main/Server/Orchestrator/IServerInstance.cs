@@ -1,6 +1,6 @@
 ﻿using Server.Domain.Enums;
 
-namespace Server.MainServer.Main.Server
+namespace Server.MainServer.Main.Server.Orchestrator
 {
     public interface IServerInstance
     {

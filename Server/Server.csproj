@@ -31,8 +31,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="bin\Debug\net9.0\" />
-    <Folder Include="bin\Debug\net9.0\SFU\Database\" />
     <Folder Include="Certs\" />
     <Folder Include="Domain\Repositories\" />
     <Folder Include="Logs\" />

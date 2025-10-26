@@ -11,10 +11,9 @@ using Server.MainServer.Main.Server.Factories.ClientConnectionFactory;
 using Server.MainServer.Main.Server.Factories.CoordinatorFactory;
 using Server.MainServer.Main.Server.Factories.PeerManagerFactory;
 using Server.MainServer.Main.Server.Factories.VideoSessionFactory;
+using Server.MainServer.Main.Server.Orchestrator.InitialServerLoader;
 using Server.MainServer.Main.WebSocket;
-using Server.MainServer.Server_Options;
 using SIPSorceryMedia.FFmpeg;
-using ILogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace Server
 {
@@ -39,7 +38,7 @@ namespace Server
 
                 var builder = CreateWebApplicationBuilder(args);
                 var configuration = BuildConfiguration(builder.Environment.ContentRootPath);
-                var config = configuration.GetSection("Project").Get<ServerConfigurator>()!;
+                var config = configuration.GetSection("Project").Get<InitialServerLoaderContext>()!;
                 
                 ConfigureServices(builder.Services, config);
                 ConfigureLogging(builder.Host, configuration);
@@ -111,13 +110,13 @@ namespace Server
             });
         }
 
-        private static void ConfigureServices(IServiceCollection services, ServerConfigurator configurator)
+        private static void ConfigureServices(IServiceCollection services, InitialServerLoaderContext configuratorContext)
         {
             services.AddControllersWithViews();
             services.AddHostedService<WebSocketHostedService>();
 
             services.AddDbContext<ServerDbContext>(options =>
-                options.UseSqlite(configurator.Database.ConnectionString));
+                options.UseSqlite(configuratorContext.Database.ConnectionString));
 
             services.AddIdentity<IdentityUser, IdentityRole>(opts =>
             {

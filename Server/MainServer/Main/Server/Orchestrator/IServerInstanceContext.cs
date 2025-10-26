@@ -1,7 +1,7 @@
 ﻿using Server.Domain.Enums;
 using System.Collections.Concurrent;
 
-namespace Server.MainServer.Main.Server
+namespace Server.MainServer.Main.Server.Orchestrator
 {
     public interface IServerInstanceContext
     {
@@ -42,8 +42,8 @@ namespace Server.MainServer.Main.Server
         int ConnectedUsersCount { get; set; }
         int RegisteredUsersCount { get; set; }
 
-        double CpuLoadPercent { get; set; }
-        double MemoryConsumption { get; set; }
+        double CurrentCpuLoadPercent { get; set; }
+        double CurrentMemoryConsumption { get; set; }
 
         // Security parametrs
         ServerState State { get; set; }
