@@ -11,7 +11,7 @@ namespace Server.MainServer.Main.Server.Factories.CoordinatorFactory;
 
 public interface ICoordinatorFactory
 {
-    void Initialize(CoordinatorInstance coordinator);
+    void Initialize(ICoordinatorInstance coordinator);
     
     ICoordinatorInstanceContext CreateCoordinatorInstanceContext();
 

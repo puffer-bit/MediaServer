@@ -143,7 +143,8 @@ namespace Server
             services.AddSingleton<IPeerManagerFactory, PeerManagerFactory>();
             services.AddSingleton<IClientConnectionFactory, ClientConnectionFactory>();
             services.AddSingleton<ILoggerFactory, LoggerFactory>();
-            services.AddSingleton<CoordinatorInstance>();
+            services.AddSingleton<ICoordinatorInstance, CoordinatorInstance>();
+            services.AddSingleton<ICoordinatorInstanceContext, CoordinatorInstanceContext>();
         }
 
         private static void ConfigureMiddleware(WebApplication app)
@@ -166,7 +167,7 @@ namespace Server
         }
 
         public class WebSocketHostedService(
-            CoordinatorInstance coordinatorInstance, 
+            ICoordinatorInstance coordinatorInstance, 
             ILogger<CoordinatorInstance> logger,
             IServiceProvider provider) : BackgroundService
         {

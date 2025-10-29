@@ -16,20 +16,20 @@ namespace Server.MainServer.Main.Server.Factories.CoordinatorFactory;
 public class CoordinatorFactory : ICoordinatorFactory
 {
     private readonly IServiceProvider _provider;
-    private CoordinatorInstance _coordinator;
+    private ICoordinatorInstance _coordinator;
 
     public CoordinatorFactory(IServiceProvider provider)
     {
         _provider = provider;
     }
 
-    public void Initialize(CoordinatorInstance coordinator)
+    public void Initialize(ICoordinatorInstance coordinator)
     {
         _coordinator = coordinator;
     }
 
     public ICoordinatorInstanceContext CreateCoordinatorInstanceContext() =>
-        ActivatorUtilities.CreateInstance<CoordinatorInstanceContext>(_provider, _coordinator);
+        ActivatorUtilities.CreateInstance<CoordinatorInstanceContext>(_provider);
 
     public IConnectionManager CreateConnectionManager() =>
         ActivatorUtilities.CreateInstance<ConnectionManager>(_provider, CreateConnectionManagerContext());

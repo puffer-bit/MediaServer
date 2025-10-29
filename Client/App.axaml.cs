@@ -46,7 +46,7 @@ public partial class App : Application
 
         // Disable light theme
         Application.Current!.ActualThemeVariantChanged += (_, _) => {
-            Application.Current!.RequestedThemeVariant = ThemeVariant.Light;
+            Application.Current!.RequestedThemeVariant = ThemeVariant.Dark;
         };
         services.AddSingleton<ClientTools>();
         services.AddSingleton<AppInitializer>();

@@ -394,6 +394,7 @@ public class VideoSession : ReactiveObject, IVideoSession
             return true;
         }
         State = VideoSessionState.Canceled;
+        await _screenCastClient.CloseSessionAsync();
         return false;
     }
     
