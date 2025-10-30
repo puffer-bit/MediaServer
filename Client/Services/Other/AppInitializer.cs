@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
-using Gst;
 using ManagedBass;
+using Gst;
 using SIPSorceryMedia.FFmpeg;
 
 namespace Client.Services.Other;
@@ -30,7 +30,7 @@ public class AppInitializer
                 }
                 else if (OperatingSystem.IsLinux())
                 {
-                    FFmpegInit.Initialise(FfmpegLogLevelEnum.AV_LOG_FATAL, Directory.GetCurrentDirectory());
+                    FFmpegInit.Initialise(FfmpegLogLevelEnum.AV_LOG_FATAL, Path.Combine(AppContext.BaseDirectory, "Ffmpeg"));
                 }
             });
         }
@@ -44,12 +44,28 @@ public class AppInitializer
         {
             await System.Threading.Tasks.Task.Run(() =>
             {
-                Environment.SetEnvironmentVariable("GST_DEBUG", "5");
-                Environment.SetEnvironmentVariable("GST_DEBUG_NO_COLOR", "1");
-                Environment.SetEnvironmentVariable("GST_DEBUG_FILE", "gst_debug.log");
-                Environment.SetEnvironmentVariable("GST_PLUGIN_PATH", Path.Combine(AppContext.BaseDirectory, "lib", "gstreamer-1.0"));
                 // GST
-                Application.Init();
+                if (OperatingSystem.IsWindows())
+                {
+                    Environment.SetEnvironmentVariable("GST_DEBUG", "5");
+                    Environment.SetEnvironmentVariable("GST_DEBUG_NO_COLOR", "1");
+                    Environment.SetEnvironmentVariable("GST_DEBUG_FILE", "gst_debug.log");
+                    Environment.SetEnvironmentVariable("GST_PLUGIN_PATH", Path.Combine(AppContext.BaseDirectory, "lib", "gstreamer-1.0"));
+                    Application.Init();
+                }
+                else if (OperatingSystem.IsLinux())
+                {
+                    Environment.SetEnvironmentVariable("GST_DEBUG", "5");
+                    Environment.SetEnvironmentVariable("GST_DEBUG_NO_COLOR", "1");
+                    Environment.SetEnvironmentVariable("GST_DEBUG_FILE", "gst_debug.log");
+                    
+                    Application.Init();
+                    var registry = Gst.Registry.Get();
+                    foreach (var plugin in registry.PluginList)
+                    {
+                        Console.WriteLine($"Plugin: {plugin.Name}, Path: {plugin.Filename}");
+                    }
+                }
             });
         }
         catch (Exception e)

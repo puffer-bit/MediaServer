@@ -44,6 +44,7 @@ public partial class App : Application
     {
         var services = new ServiceCollection();
 
+        Application.Current!.RequestedThemeVariant = ThemeVariant.Dark;
         // Disable light theme
         Application.Current!.ActualThemeVariantChanged += (_, _) => {
             Application.Current!.RequestedThemeVariant = ThemeVariant.Dark;

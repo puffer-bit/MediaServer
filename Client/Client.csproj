@@ -26,7 +26,7 @@
         <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1" />
         <PackageReference Include="Concentus" Version="2.2.2" />
         <PackageReference Include="FluentAvalonia.ProgressRing" Version="1.69.2" />
-        <PackageReference Include="GstSharpBundle" Version="1.24.3-preview6" />
+        <PackageReference Include="gstreamer-sharp-netcore" Version="0.0.8" />
         <PackageReference Include="ManagedBass" Version="4.0.1" />
         <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.8" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
@@ -147,69 +147,84 @@
 		<Message Text="RID is: $(RuntimeIdentifier)" Importance="high" />
 	</Target>
 
-	<Target Name="CopyBassLibsOnBuild" AfterTargets="Build">
-		<ItemGroup Condition="'$(RuntimeIdentifier)' == 'linux-x64'">
-			<BassLibs Include="Libs/Linux/Bass/*.*" />
-		</ItemGroup>
-		<ItemGroup Condition="'$(RuntimeIdentifier)' == 'win-x64'">
-			<BassLibs Include="Libs/Windows/Bass/*.*" />
-		</ItemGroup>
+    <Target Name="CopyLibs" AfterTargets="Publish">
+        <ItemGroup Condition="'$(RuntimeIdentifier)' == 'linux-x64'">
+            <BassLibs Include="Libs/Linux/**/*" />
+        </ItemGroup>
+        <ItemGroup Condition="'$(RuntimeIdentifier)' == 'win-x64'">
+            <BassLibs Include="Libs/Windows/**/*" />
+        </ItemGroup>
 
-		<Copy SourceFiles="@(BassLibs)" DestinationFolder="$(OutputPath)" SkipUnchangedFiles="true" />
-	</Target>
+        <Copy SourceFiles="@(BassLibs)"
+              DestinationFolder="$(PublishDir)\%(RecursiveDir)"
+              SkipUnchangedFiles="true" />
+    </Target>
 
-	<Target Name="CopyBassLibsOnPublish" AfterTargets="Publish">
-		<ItemGroup Condition="'$(RuntimeIdentifier)' == 'linux-x64'">
-			<BassLibs Include="Libs/Linux/Bass/*.*" />
-		</ItemGroup>
-		<ItemGroup Condition="'$(RuntimeIdentifier)' == 'win-x64'">
-			<BassLibs Include="Libs/Windows/Bass/*.*" />
-		</ItemGroup>
 
-		<Copy SourceFiles="@(BassLibs)" DestinationFolder="$(PublishDir)" SkipUnchangedFiles="true" />
-	</Target>
 
-	<Target Name="CopyFfmpegLibsOnBuild" AfterTargets="Build">
-		<ItemGroup Condition="'$(RuntimeIdentifier)' == 'linux-x64'">
-			<FfmpegLibs Include="Libs/Linux/Ffmpeg/*.*" />
-		</ItemGroup>
-		<ItemGroup Condition="'$(RuntimeIdentifier)' == 'win-x64'">
-			<FfmpegLibs Include="Libs/Windows/Ffmpeg/*.*" />
-		</ItemGroup>
-
-		<Copy SourceFiles="@(FfmpegLibs)" DestinationFolder="$(OutputPath)" SkipUnchangedFiles="true" />
-	</Target>
-
-	<Target Name="CopyFfmpegLibsOnPublish" AfterTargets="Publish">
-		<ItemGroup Condition="'$(RuntimeIdentifier)' == 'linux-x64'">
-			<FfmpegLibs Include="Libs/Linux/Ffmpeg/*.*" />
-		</ItemGroup>
-		<ItemGroup Condition="'$(RuntimeIdentifier)' == 'win-x64'">
-			<FfmpegLibs Include="Libs/Windows/Ffmpeg/*.*" />
-		</ItemGroup>
-
-		<Copy SourceFiles="@(FfmpegLibs)" DestinationFolder="$(PublishDir)" SkipUnchangedFiles="true" />
-	</Target>
-
-	<Target Name="CopyGStreamerLibsOnBuild" AfterTargets="Build">
-		<ItemGroup Condition="'$(RuntimeIdentifier)' == 'linux-x64'">
-			<GStreamerLibs Include="Libs/Linux/GStreamer/*.*" />
-		</ItemGroup>
-		<ItemGroup Condition="'$(RuntimeIdentifier)' == 'win-x64'">
-			<GStreamerLibs Include="Libs/Windows/GStreamer/*.*" />
-		</ItemGroup>
-
-		<Copy SourceFiles="@(GStreamerLibs)" DestinationFolder="$(OutputPath)" SkipUnchangedFiles="true" />
-	</Target>
-
-	<Target Name="CopyGStreamerLibsOnPublish" AfterTargets="Publish">
-		<ItemGroup Condition="'$(RuntimeIdentifier)' == 'linux-x64'">
-			<GStreamerLibs Include="Libs/Linux/GStreamer/*.*" />
-		</ItemGroup>
-		<ItemGroup Condition="'$(RuntimeIdentifier)' == 'win-x64'">
-			<GStreamerLibs Include="Libs/Windows/GStreamer/*.*" />
-		</ItemGroup>
-
-		<Copy SourceFiles="@(GStreamerLibs)" DestinationFolder="$(PublishDir)" SkipUnchangedFiles="true" />
-	</Target>
+    <!--<Target Name="CopyBassLibsOnBuild" AfterTargets="Build">
+           <ItemGroup Condition="'$(RuntimeIdentifier)' == 'linux-x64'">
+               <BassLibs Include="Libs/Linux/Bass/*.*" />
+           </ItemGroup>
+           <ItemGroup Condition="'$(RuntimeIdentifier)' == 'win-x64'">
+               <BassLibs Include="Libs/Windows/Bass/*.*" />
+           </ItemGroup>
+   
+           <Copy SourceFiles="@(BassLibs)" DestinationFolder="$(OutputPath)" SkipUnchangedFiles="true" />
+       </Target>
+       
+   <Target Name="CopyBassLibsOnPublish" AfterTargets="Publish">
+       <ItemGroup Condition="'$(RuntimeIdentifier)' == 'linux-x64'">
+           <BassLibs Include="Libs/Linux/Bass/*.*" />
+       </ItemGroup>
+       <ItemGroup Condition="'$(RuntimeIdentifier)' == 'win-x64'">
+           <BassLibs Include="Libs/Windows/Bass/*.*" />
+       </ItemGroup>
+   
+       <Copy SourceFiles="@(BassLibs)" DestinationFolder="$(PublishDir)" SkipUnchangedFiles="true" />
+   </Target>
+   
+   <Target Name="CopyFfmpegLibsOnBuild" AfterTargets="Build">
+       <ItemGroup Condition="'$(RuntimeIdentifier)' == 'linux-x64'">
+           <FfmpegLibs Include="Libs/Linux/Ffmpeg/*.*" />
+       </ItemGroup>
+       <ItemGroup Condition="'$(RuntimeIdentifier)' == 'win-x64'">
+           <FfmpegLibs Include="Libs/Windows/Ffmpeg/*.*" />
+       </ItemGroup>
+   
+       <Copy SourceFiles="@(FfmpegLibs)" DestinationFolder="$(OutputPath)" SkipUnchangedFiles="true" />
+   </Target>
+   
+   <Target Name="CopyFfmpegLibsOnPublish" AfterTargets="Publish">
+       <ItemGroup Condition="'$(RuntimeIdentifier)' == 'linux-x64'">
+           <FfmpegLibs Include="Libs/Linux/Ffmpeg/*.*" />
+       </ItemGroup>
+       <ItemGroup Condition="'$(RuntimeIdentifier)' == 'win-x64'">
+           <FfmpegLibs Include="Libs/Windows/Ffmpeg/*.*" />
+       </ItemGroup>
+   
+       <Copy SourceFiles="@(FfmpegLibs)" DestinationFolder="$(PublishDir)" SkipUnchangedFiles="true" />
+   </Target>
+   
+   <Target Name="CopyGStreamerLibsOnBuild" AfterTargets="Build">
+       <ItemGroup Condition="'$(RuntimeIdentifier)' == 'linux-x64'">
+           <GStreamerLibs Include="Libs/Linux/GStreamer/*.*" />
+       </ItemGroup>
+       <ItemGroup Condition="'$(RuntimeIdentifier)' == 'win-x64'">
+           <GStreamerLibs Include="Libs/Windows/GStreamer/*.*" />
+       </ItemGroup>
+   
+       <Copy SourceFiles="@(GStreamerLibs)" DestinationFolder="$(OutputPath)" SkipUnchangedFiles="true" />
+   </Target>
+   
+   <Target Name="CopyGStreamerLibsOnPublish" AfterTargets="Publish">
+       <ItemGroup Condition="'$(RuntimeIdentifier)' == 'linux-x64'">
+           <GStreamerLibs Include="Libs/Linux/GStreamer/*.*" />
+       </ItemGroup>
+       <ItemGroup Condition="'$(RuntimeIdentifier)' == 'win-x64'">
+           <GStreamerLibs Include="Libs/Windows/GStreamer/*.*" />
+       </ItemGroup>
+   
+       <Copy SourceFiles="@(GStreamerLibs)" DestinationFolder="$(PublishDir)" SkipUnchangedFiles="true" />
+   </Target> -->
 </Project>
