@@ -1,0 +1,103 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:controls="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia.ProgressRing"
+             xmlns:videoSession="clr-namespace:Client.ViewModels.Sessions.VideoSession"
+             xmlns:uiConverters1="clr-namespace:Client.Services.UIConverters"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:DataType="videoSession:VideoSessionParticipantsListViewModel"
+             x:Class="Client.Views.Sessions.VideoSessionView.VideoSessionUsersListControl"
+             d:DataContext="{d:DesignInstance Type=videoSession:VideoSessionParticipantsListViewModel, IsDesignTimeCreatable=True}"
+             Background="#3D3D3D"
+             x:Name="Main"
+             HorizontalAlignment="Stretch">
+    <Control.Resources>
+        <uiConverters1:BoolToOpacityConverter x:Key="BoolToOpacityConverter"/>
+        <uiConverters1:VideoSessionStateToStringConverter x:Key="VideoSessionStateToStringConverter"/>
+    </Control.Resources>
+    
+    <Grid RowDefinitions="20, *" Margin="10">
+        <TextBlock Grid.Row="0">
+            Participants:
+        </TextBlock>
+        <ListBox Grid.Row="1" ItemsSource="{Binding Participants}" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Background="#2F2F2F" Margin="0,4,0,0">
+            <ListBox.ItemTemplate>
+                <DataTemplate DataType="videoSession:VideoSessionParticipantViewModel">
+                    <Border Background="Transparent"
+                            Tag="{Binding}">
+                        <Border.ContextFlyout>
+                            <MenuFlyout>
+                                <MenuItem Header="Kick"
+                                          Command="{Binding DataContext.KickParticipant, ElementName=Main}"
+                                          CommandParameter="{Binding}" />
+                                <MenuItem Header="Details"/>
+                            </MenuFlyout>
+                        </Border.ContextFlyout>
+                        <Grid ColumnDefinitions="3*, 50">
+                            <Grid.Transitions>
+                                <Transitions>
+                                    <DoubleTransition Property="Opacity" Duration="0:0:0.1" Easing="SineEaseIn"/>
+                                </Transitions>
+                            </Grid.Transitions>
+
+                            <Grid Grid.Column="0" ColumnDefinitions="Auto,*" VerticalAlignment="Center" HorizontalAlignment="Left">
+                                <Canvas Grid.Column="0" Width="32" Height="32">
+                                    <Image Width="24" Height="24" Canvas.Top="4">
+                                        <Image.Source>
+                                            <SvgImage Source="avares://Client/Assets/Icons/BaseUser.svg"/>
+                                        </Image.Source>
+                                    </Image>
+                                    <Image Width="12" Height="12" Canvas.Bottom="23" Canvas.Left="6" IsVisible="{Binding IsHost}">
+                                        <Image.Source>
+                                            <SvgImage Source="avares://Client/Assets/Icons/Host.svg"/>
+                                        </Image.Source>
+                                    </Image>
+                                </Canvas>
+
+                                <StackPanel Grid.Column="1" Orientation="Vertical">
+                                    <TextBlock Text="{Binding Username}"
+                                               TextTrimming="CharacterEllipsis"
+                                               TextWrapping="NoWrap"
+                                               VerticalAlignment="Center"/>
+                                    <TextBlock Text="{Binding State, Converter={StaticResource VideoSessionStateToStringConverter}}"
+                                               TextTrimming="CharacterEllipsis"
+                                               TextWrapping="NoWrap"
+                                               FontSize="10"
+                                               Foreground="Gray"
+                                               FontStyle="Italic"
+                                               VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </Grid>
+
+                            <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right" Spacing="2" IsVisible="{Binding !IsApproved}">
+                                <Button Padding="0"
+                                        Command="{Binding DataContext.ApproveParticipant, ElementName=Main}"
+                                        CommandParameter="{Binding}"
+                                        HorizontalContentAlignment="Center"
+                                        VerticalContentAlignment="Center"
+                                        Background="Transparent"
+                                        IsEnabled="{Binding !State}">
+                                    <Svg Width="32" Height="32" Margin="-4,0,0,0"
+                                         Path="avares://Client/Assets/Icons/Joined.svg"
+                                         Opacity="{Binding State, Converter={StaticResource BoolToOpacityConverter}}"/>
+                                </Button>
+                                <Button Padding="0"
+                                        Command="{Binding DataContext.RejectParticipant, ElementName=Main}"
+                                        CommandParameter="{Binding}"
+                                        HorizontalContentAlignment="Center"
+                                        VerticalContentAlignment="Center"
+                                        Background="Transparent"
+                                        IsEnabled="{Binding !State}">
+                                    <Svg Width="32" Height="32" Margin="-4,0,0,0"
+                                         Path="avares://Client/Assets/Icons/NotJoined.svg"
+                                         Opacity="{Binding State, Converter={StaticResource BoolToOpacityConverter}}"/>
+                                </Button>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+    </Grid>
+</UserControl>

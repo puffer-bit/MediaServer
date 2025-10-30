@@ -6,13 +6,13 @@ using Shared.Models.Requests.SessionInfo;
 
 namespace Server.MainServer.Main.Server.Coordinator.MessagesProcessing.MessagesHandlers.SessionInfo;
 
-public class InfoRequestMessagesHandler : IMessageHandler
+public class SessionInfoRequestMessagesHandler : IMessageHandler
 {
     private readonly CoordinatorInstance _coordinator;
         
     public MessageType Type => MessageType.SessionInfoRequest;
         
-    public InfoRequestMessagesHandler(
+    public SessionInfoRequestMessagesHandler(
         CoordinatorInstance coordinator)
     {
         _coordinator = coordinator;
@@ -22,7 +22,7 @@ public class InfoRequestMessagesHandler : IMessageHandler
     {
         try
         {
-            var infoRequest = (UserSessionsInfoRequestModel)message.Data;
+            var infoRequest = (SessionsInfoRequestModel)message.Data;
 
             if (infoRequest != null)
             {
@@ -43,20 +43,20 @@ public class InfoRequestMessagesHandler : IMessageHandler
         }
         catch (JsonException ex)
         {
-            SendResponse(new UserSessionsInfoRequestModel(false), SessionRequestResult.InternalError, message);
+            SendResponse(new SessionsInfoRequestModel(false), SessionRequestResult.InternalError, message);
             return Task.FromResult(HandleMessageResult.JsonParseError);
         }
 
         return Task.FromResult(HandleMessageResult.NoError);
     }
 
-    private void HandleSessionsInfo(UserSessionsInfoRequestModel infoRequest, BaseMessage message)
+    private void HandleSessionsInfo(SessionsInfoRequestModel infoRequest, BaseMessage message)
     {
         infoRequest.AddSessions(_coordinator.GetAllSessions());
         SendResponse(infoRequest, SessionRequestResult.NoError, message);
     }
         
-    private void HandleSessionInfo(UserSessionsInfoRequestModel infoRequest, BaseMessage message)
+    private void HandleSessionInfo(SessionsInfoRequestModel infoRequest, BaseMessage message)
     {
         if (_coordinator.GetVideoSessionAsModel(infoRequest.RoomId, out var session) == SessionRequestResult.NoError)
         {
@@ -66,7 +66,7 @@ public class InfoRequestMessagesHandler : IMessageHandler
         SendResponse(infoRequest, SessionRequestResult.RoomNotExists, message);
     }
         
-    private void SendResponse(UserSessionsInfoRequestModel request, SessionRequestResult result, BaseMessage message)
+    private void SendResponse(SessionsInfoRequestModel request, SessionRequestResult result, BaseMessage message)
     {
         request.Result = result;
         _coordinator.SendMessageToUser(message.UserId!, new BaseMessage(message)

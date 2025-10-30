@@ -1,17 +1,12 @@
-using System;
 using System.Reactive;
 using System.Reactive.Disposables;
-using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Markup.Xaml;
 using Avalonia.ReactiveUI;
-using Avalonia.Threading;
-using Client.ViewModels.MainWindow;
 using Client.ViewModels.MessageBox;
 using Client.ViewModels.Sessions.VideoSession;
 using ReactiveUI;
 
-namespace Client.Views.Chats.VideoSessionView;
+namespace Client.Views.Sessions.VideoSessionView;
 
 internal partial class VideoSessionControl : ReactiveUserControl<VideoSessionViewModel>
 {

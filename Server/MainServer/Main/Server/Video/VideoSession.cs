@@ -4,6 +4,7 @@ using Server.MainServer.Main.Server.Video.Peer;
 using Server.MainServer.Main.Server.Video.PeerManager;
 using Shared.Enums;
 using Shared.Models;
+using Shared.Models.DTO;
 using Shared.Models.Requests.SessionInfo;
 
 namespace Server.MainServer.Main.Server.Video;
@@ -13,6 +14,7 @@ public class VideoSession : IVideoSession
     public required Mutex Mutex { get; set; }
     private List<UserDTO> AllowedUsers { get; set; } = []; 
     public bool IsAudioRequested { get; set; }
+    public bool IsHostMustApprove { get; set; }
     private bool _isHostConnected;
     public bool IsHostConnected
     {
@@ -41,12 +43,14 @@ public class VideoSession : IVideoSession
         IVideoPeerManager videoPeerManager,
         CoordinatorInstance coordinator,
         bool isAudioRequested,
+        bool isHostMustApprove,
         ILoggerFactory loggerFactory)
     {
         _context = context;
         _logger = loggerFactory.CreateLogger($"Session({context.Id})");
         _coordinator = coordinator;
         IsAudioRequested = isAudioRequested;
+        IsHostMustApprove = isHostMustApprove;
         _videoPeerManager = videoPeerManager;
         Mutex = new Mutex(false);
         HostStatusChanged += () =>
@@ -66,7 +70,7 @@ public class VideoSession : IVideoSession
                         MessageType.SessionsStateChanged, 
                         new SessionStateChanged(
                             AsModel(), 
-                            SessionStateChangedType.HostDissconnected)),
+                            SessionStateChangedType.HostDisconnected)),
                     true);
             }
         };
@@ -87,9 +91,10 @@ public class VideoSession : IVideoSession
             IsAudioRequested = IsAudioRequested,
             IsHostConnected = IsHostConnected,
             SessionType = Type,
-            Users = GetAllPeersAsUsers()
+            IsHostMustApprove = IsHostMustApprove,
+            Peers = GetAllPeersAsModel()
         };
-        
+
     /// <summary>
     /// Broadcast message to all room members (exclude host)
     /// TODO: Remove host excluding
@@ -120,6 +125,11 @@ public class VideoSession : IVideoSession
         _videoPeerManager.RemovePeer(peerId);
     }
 
+    public void ChangePeerApproveState(string? peerId, VideoSessionApproveState newState)
+    {
+        _videoPeerManager.ChangePeerApproveState(peerId, newState);
+    }
+
     public bool GetPeerById(string? peerId, out IPeer? peer)
     {
         if (_videoPeerManager.GetPeerById(peerId, out var foundPeer))
@@ -146,12 +156,36 @@ public class VideoSession : IVideoSession
     {
         return _videoPeerManager.GetAllPeers();
     }
+    
+    public List<PeerDTO> GetAllPeersAsModel()
+    {
+        List<PeerDTO> peerDTOList = new();
+        
+        foreach (var peer in _videoPeerManager.GetAllPeers())
+        {
+            peerDTOList.Add(new PeerDTO()
+            {
+                Id = peer.GetId(),
+                UserId = peer.GetUserId(),
+                IsAudioRequested = peer.IsAudioRequested,
+                IsStreamHost = peer.IsStreamHost,
+                ApproveState = peer.ApproveState
+            });
+        }
+        
+        return peerDTOList;
+    }
 
     public List<UserDTO> GetAllPeersAsUsers()
     {
         return _videoPeerManager.GetAllPeersAsUsers();
     }
-    
+
+    public List<UserDTO> GetAllPeersAsUsersModel()
+    {
+        throw new NotImplementedException();
+    }
+
     public string GetSessionId()
     {
         return _context.Id;

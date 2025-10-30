@@ -15,7 +15,7 @@ public class VideoSessionFactory : IVideoSessionFactory
     }
     
     public IVideoSession CreateVideoSession(VideoSessionDTO dto, CoordinatorInstance coordinator) =>
-        ActivatorUtilities.CreateInstance<VideoSession>(_provider, CreateVideoSessionContext(dto), CreatePeerManager(coordinator, dto.Id), coordinator, dto.IsAudioRequested);
+        ActivatorUtilities.CreateInstance<VideoSession>(_provider, CreateVideoSessionContext(dto), CreatePeerManager(coordinator, dto.Id), coordinator, dto.IsAudioRequested, dto.IsHostMustApprove);
     [Obsolete] public IVideoSession CreateVideoSession(string id, string name, string hostId, int capacity, bool isAudioRequested, CoordinatorInstance coordinator) =>
         ActivatorUtilities.CreateInstance<VideoSession>(_provider, CreateVideoSessionContext(id, name, hostId, capacity), CreatePeerManager(coordinator, id), coordinator, isAudioRequested);
     public IVideoSessionContext CreateVideoSessionContext(VideoSessionDTO dto) =>

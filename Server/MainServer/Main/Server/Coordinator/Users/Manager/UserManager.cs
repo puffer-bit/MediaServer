@@ -1,4 +1,5 @@
 using Shared.Models;
+using Shared.Models.DTO;
 
 namespace Server.MainServer.Main.Server.Coordinator.Users.Manager;
 

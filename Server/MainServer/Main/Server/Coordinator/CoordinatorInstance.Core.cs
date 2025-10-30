@@ -8,6 +8,7 @@ using Server.MainServer.Main.Server.Coordinator.WebRTC.Manager;
 using Server.MainServer.Main.Server.Factories.CoordinatorFactory;
 using Shared.Enums;
 using Shared.Models;
+using Shared.Models.DTO;
 using SIPSorcery.Media;
 using SIPSorcery.Net;
 using SIPSorceryMedia.Abstractions;
@@ -43,7 +44,7 @@ namespace Server.MainServer.Main.Server.Coordinator
             _connectionManager = coordinatorFactory.CreateConnectionManager();
             _sessionManager = coordinatorFactory.CreateSessionManager();
             _heartbeatManager = coordinatorFactory.CreateHeartbeatManager();
-            _logger = loggerFactory.CreateLogger("Coordinator");
+            _logger = loggerFactory.CreateLogger("Coordinator " + Context.Id);
             //_validator = validator;
             foreach (var handler in coordinatorFactory.CreateMessageHandlers())
             {
@@ -52,14 +53,18 @@ namespace Server.MainServer.Main.Server.Coordinator
             _userManager.AddUser(new UserDTO()
             {
                 Id = "system",
-                Name = "system",
+                Username = "system",
+                UserIdentity = "system",
+                Ip = "127.0.0.1",
+                CoordinatorInstanceId = "0", // TODO: Change after orchestrator integration
                 State = UserState.Normal
             }, out _);
             
             _logger.LogInformation("Server started.");
+            _ = RegisterTestSessions();
         }
         
-        [Obsolete]
+        [Obsolete] // Now uses factory
         public void RegisterHandler(MessageType type, IMessageHandler handler)
         {
             _handlers[type] = handler;

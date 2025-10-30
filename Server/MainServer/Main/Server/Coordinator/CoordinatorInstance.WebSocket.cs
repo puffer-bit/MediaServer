@@ -3,6 +3,7 @@ using Newtonsoft.Json.Linq;
 using Server.MainServer.Main.Server.Coordinator.Connection;
 using Shared.Enums;
 using Shared.Models;
+using Shared.Models.DTO;
 using Shared.Models.Requests;
 using Shared.Models.Requests.Heartbeat;
 
@@ -53,6 +54,13 @@ public partial class CoordinatorInstance
                 MessageId = message.MessageId
             });
         }
+        else
+        {
+            SendMessageToUser(userDTO.Id!, new BaseMessage(MessageType.UserAuth, new UserAuthRequestModel(UserAuthRequestModel.AuthStatus.WrongLoginData, addedUser!))
+            {
+                MessageId = message.MessageId
+            });
+        }
     }
     
     public void DetachUser(string userId, string reason, BaseMessage? disconnectMessage = null)
@@ -64,6 +72,6 @@ public partial class CoordinatorInstance
          RemoveUserFromAllSessions(userId);
          RemoveUserFromInstance(userId);
          RemoveConnection(userId);
-         _logger.LogInformation("User {Name} disconnected. Reason: {Reason}", user?.Name, reason);
+         _logger.LogInformation("User {Name} disconnected. Reason: {Reason}", user?.Username, reason);
     }
 }

@@ -13,7 +13,7 @@ public interface ISessionManager
     
     CreateSessionResult CreateVideoSession(SessionDTO sessionDTO, string userId);
     JoinSessionResult JoinVideoSession(SessionDTO sessionDTO, string userId);
-    LeaveSessionResult KickFromVideoSession(SessionDTO sessionDTO, string userId);
+    LeaveSessionResult KickFromVideoSession(SessionDTO sessionDTO, string userId, bool isForce);
     DeleteSessionResult DeleteVideoSession(SessionDTO sessionDTO, string userId);
     IDictionary<string, IVideoSession> GetAllVideoSessions();
     IDictionary<string, SessionDTO> GetAllVideoSessionsAsModel();

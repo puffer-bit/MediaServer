@@ -6,6 +6,7 @@ using Server.MainServer.Main.Server.Coordinator.MessagesProcessing.MessageSender
 using Server.MainServer.Main.Server.Coordinator.MessagesProcessing.MessagesHandlers;
 using Server.MainServer.Main.Server.Coordinator.MessagesProcessing.MessagesHandlers.Heartbeat;
 using Server.MainServer.Main.Server.Coordinator.MessagesProcessing.MessagesHandlers.SessionInfo;
+using Server.MainServer.Main.Server.Coordinator.MessagesProcessing.MessagesHandlers.UserInfo;
 using Server.MainServer.Main.Server.Coordinator.MessagesProcessing.MessagesHandlers.WebRTCNegotiation;
 using Server.MainServer.Main.Server.Coordinator.Users.Manager;
 using Server.MainServer.Main.Server.Coordinator.WebRTC.Manager;
@@ -60,8 +61,9 @@ public class CoordinatorFactory : ICoordinatorFactory
     public IEnumerable<IMessageHandler> CreateMessageHandlers()
     {
         yield return ActivatorUtilities.CreateInstance<SessionActionMessageHandler>(_provider, _coordinator);
-        yield return ActivatorUtilities.CreateInstance<InfoRequestMessagesHandler>(_provider, _coordinator);
+        yield return ActivatorUtilities.CreateInstance<SessionInfoRequestMessagesHandler>(_provider, _coordinator);
         yield return ActivatorUtilities.CreateInstance<WebRTCNegotiationMessagesHandler>(_provider, _coordinator);
+        yield return ActivatorUtilities.CreateInstance<UserInfoRequestMessagesHandler>(_provider, _coordinator);
         yield return ActivatorUtilities.CreateInstance<HeartbeatHandler>(_provider, _coordinator);
     }
 }

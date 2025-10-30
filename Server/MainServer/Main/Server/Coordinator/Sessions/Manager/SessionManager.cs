@@ -195,7 +195,7 @@ public class SessionManager : ISessionManager
         throw new NotImplementedException();
     }
 
-    public LeaveSessionResult KickFromVideoSession(SessionDTO sessionDTO, string userId)
+    public LeaveSessionResult KickFromVideoSession(SessionDTO sessionDTO, string userId, bool isForce)
     {
         try
         {
@@ -204,6 +204,10 @@ public class SessionManager : ISessionManager
                 if (session.GetPeerByUserId(userId, out var peer))
                 {
                     session.DetachPeer(peer!.GetId());
+                    if (isForce)
+                        _coordinator.UserKickedFormVideoSession(peer.GetId(), session.GetSessionId());
+                    else
+                        _coordinator.UserLeavesVideoSession(peer.GetId(), session.GetSessionId());
                 }
                 
                 return LeaveSessionResult.NoError;
@@ -259,7 +263,7 @@ public class SessionManager : ISessionManager
 
             foreach (var peerId in peersToRemove)
             {
-                KickFromVideoSession(session.AsModel(), peerId);
+                KickFromVideoSession(session.AsModel(), peerId, false);
             }
         }
     }

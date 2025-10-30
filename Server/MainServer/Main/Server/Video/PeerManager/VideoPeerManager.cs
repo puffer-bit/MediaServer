@@ -1,7 +1,9 @@
 using Server.MainServer.Main.Server.Coordinator;
 using Server.MainServer.Main.Server.Factories.PeerManagerFactory;
 using Server.MainServer.Main.Server.Video.Peer;
+using Shared.Enums;
 using Shared.Models;
+using Shared.Models.DTO;
 
 namespace Server.MainServer.Main.Server.Video.PeerManager;
 
@@ -26,15 +28,18 @@ public class VideoPeerManager : IVideoPeerManager
         _logger = loggerFactory.CreateLogger($"Session({RoomId})");
     }
     
-    public IPeer CreateNewPeer(string userId, string peerId, SessionDTO sessionDTO)
+    public IPeer CreateNewPeer(string userId, string peerId, VideoSessionDTO videoSessionDTO)
     {
-        VideoSessionDTO videoSessionDTO = (VideoSessionDTO)sessionDTO;
         var peer = _peerManagerFactory.CreatePeer(peerId, userId, videoSessionDTO.IsAudioRequested);
+        
         if (peer.GetUserId() == videoSessionDTO.HostId)
         {
             peer.MakeHost();
+            peer.ApproveState = VideoSessionApproveState.WaitingForNegotiation;
+            return peer;
         }
 
+        peer.ApproveState = videoSessionDTO.IsHostMustApprove ? VideoSessionApproveState.WaitingForApprove : VideoSessionApproveState.WaitingForNegotiation;
         return peer;
     }
 
@@ -106,6 +111,14 @@ public class VideoPeerManager : IVideoPeerManager
         return _context.Peers.TryRemove(peerId, out _);
     }
 
+    public void ChangePeerApproveState(string? peerId, VideoSessionApproveState newState)
+    {
+        if (_context.Peers.TryGetValue(peerId, out var peer))
+        {
+            peer.ApproveState = newState;
+        }
+    }
+    
     public IVideoPeerManagerContext GetPeerManagerContext()
     {
         return _context;

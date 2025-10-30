@@ -17,6 +17,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using Shared.Models.DTO;
 
 namespace Client.Services.Server.Video;
 
@@ -30,13 +31,14 @@ public class VideoSession : ReactiveObject, IVideoSession
     public string? HostPeerId { get; set; }
     public required bool IsHostConnected { get; set; }
     public required bool IsAudioRequested { get; set; }
+    private bool IsDisposed { get; set; }
     private VideoSessionState _state;
     public VideoSessionState State
     {
         get => _state;
         set => this.RaiseAndSetIfChanged(ref _state, value);
     }
-
+    public List<PeerDTO> Participants { get; } = new();
     public bool IsHost => _coordinatorSession.GetUser().Id == HostId;
     public Queue<RTCIceCandidateInit> IceCandidatesBuffer { get; } = new();
     private readonly CoordinatorSession _coordinatorSession;
@@ -45,7 +47,7 @@ public class VideoSession : ReactiveObject, IVideoSession
     private readonly IAudioPlayerService? _audioPlayerService;
     private readonly IScreenCastClient _screenCastClient;
     private readonly IFrameProcessor _frameProcessor;
-    Stopwatch stopwatch = Stopwatch.StartNew();
+    private readonly Stopwatch _stopwatch = Stopwatch.StartNew();
     private readonly FFmpegVideoEndPoint _ffmpegVideoEndPoint;
     private VideoFormat? _videoFormat;
     public event Action<WriteableBitmap>? FrameReceived;
@@ -68,6 +70,11 @@ public class VideoSession : ReactiveObject, IVideoSession
         IsAudioRequested = sessionDTO.IsAudioRequested;
         Peer = peer;
 
+        foreach (var user in sessionDTO.Peers)
+        {
+            Participants.Add(user);
+        }
+        
         if (sessionDTO.IsAudioRequested)
         {
             _audioPlayerService = audioPlayerService;
@@ -101,7 +108,8 @@ public class VideoSession : ReactiveObject, IVideoSession
             HostPeerId = this.HostPeerId,
             IsHostConnected = this.IsHostConnected,
             IsAudioRequested = this.IsAudioRequested,
-            SessionType = SessionType.Video
+            SessionType = SessionType.Video,
+            Peers = Participants,
         };
     }
 
@@ -118,6 +126,12 @@ public class VideoSession : ReactiveObject, IVideoSession
         else
             HandleHostDissconnected();
         IsAudioRequested = sessionDTO.IsAudioRequested;
+        
+        Participants.Clear();
+        foreach (var user in sessionDTO.Peers)
+        {
+            Participants.Add(user);
+        }
     }
 
     public void HandleHostConnected()
@@ -404,23 +418,25 @@ public class VideoSession : ReactiveObject, IVideoSession
         {
             _screenCastClient.FrameReceived -= OnVideoFrameReady;
         }
+
+        State = VideoSessionState.Ended;
     }
     
     private void OnVideoFrameReceived(RawImage rawImage)
     {
         FrameReceived?.Invoke(_frameProcessor.ProceedRawFrame(rawImage));
-        var elapsedMs = stopwatch.ElapsedMilliseconds;
-        Console.WriteLine($"Frame interval {elapsedMs} мс");
-        stopwatch.Reset();
+        var elapsedMs = _stopwatch.ElapsedMilliseconds;
+        //Console.WriteLine($"Frame interval {elapsedMs} мс");
+        _stopwatch.Reset();
     }
 
     private void OnVideoFrameReady(byte[] encodedFrame)
     {
-        stopwatch.Start();
+        _stopwatch.Start();
         uint clockRate = 90000;
         double frameDurationSeconds = 1.0 / 60.0;
         uint durationRtpUnits = (uint)(clockRate * frameDurationSeconds);
-        _ffmpegVideoEndPoint.GotVideoFrame(IPEndPoint.Parse("1.1.1.1"), durationRtpUnits, encodedFrame, 
+        _ffmpegVideoEndPoint.GotVideoFrame(IPEndPoint.Parse("127.0.0.1"), durationRtpUnits, encodedFrame, 
             new VideoFormat(96, "H264", 90000, "profile-level-id=42e01f;packetization-mode=1;"));
         Peer.PeerConnection?.SendVideo(durationRtpUnits, encodedFrame);
     }
@@ -432,17 +448,29 @@ public class VideoSession : ReactiveObject, IVideoSession
     
     public void Dispose()
     {
-        State = VideoSessionState.Ended;
-        Peer.PeerConnection?.Close("normal");
+        if (IsDisposed) 
+            return;
+        
         _audioPlayerService?.Dispose();
-        _frameProcessor?.Dispose();
+        Console.WriteLine("Audio player disposed");
+        
+        _screenCastClient.Dispose();
+        Console.WriteLine("Screen cast client disposed");
+        
+        _frameProcessor.Dispose();
+        Console.WriteLine("Frame processor disposed");
+        
         Peer.PeerConnection?.Dispose();
+        Console.WriteLine("Peer connection closed and disposed");
+        
         _ffmpegVideoEndPoint.CloseVideo();
         _ffmpegVideoEndPoint.Dispose();
-        _ffmpegVideoEndPoint?.Dispose();
-        _audioPlayerService?.Dispose();
-        _screenCastClient?.Dispose();
-        _frameProcessor?.Dispose(); 
+        Console.WriteLine("Video endpoint closed and disposed");
+        
+        IsDisposed = true;
         GC.SuppressFinalize(this);
+        Console.WriteLine("!-------------------------------!");
+        Console.WriteLine($"Video Session {Id} disposed");
+        Console.WriteLine("!-------------------------------!");
     }
 }

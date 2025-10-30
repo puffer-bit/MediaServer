@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using Shared.Models;
+using Shared.Models.DTO;
 using Shared.Models.Requests;
 using Websocket.Client;
 

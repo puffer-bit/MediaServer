@@ -29,7 +29,7 @@
                               Background="#2F2F2F">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Address" Binding="{Binding Address}"/>
-                    <DataGridTextColumn Header="User name" Binding="{Binding User.Name}"/>
+                    <DataGridTextColumn Header="User name" Binding="{Binding User.Username}"/>
                     <DataGridTemplateColumn Header="Identity key" IsReadOnly="True" Width="*">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>

@@ -16,6 +16,7 @@ using Client.ViewModels.Sessions.VideoSession;
 using ReactiveUI;
 using Shared.Enums;
 using Shared.Models;
+using Shared.Models.DTO;
 
 namespace Client.ViewModels.MainWindow;
 
@@ -118,12 +119,8 @@ internal class MainWindowViewModel : ReactiveObject
         set => this.RaiseAndSetIfChanged(ref _menuOpacity, value);
     }
 
-    private UserDTO _user = new UserDTO()
-    {
-        Id = null,
-        Name = "Undefined"
-    };
-    public UserDTO User
+    private UserDTO? _user;
+    public UserDTO? User
     {
         get => _user;
         set => this.RaiseAndSetIfChanged(ref _user, value);
@@ -222,12 +219,12 @@ internal class MainWindowViewModel : ReactiveObject
         ShowVideoCommand = ReactiveCommand.Create<SessionViewModel>(sessionViewModel =>
         {
             CurrentContent?.CloseSession();
-            CurrentContent = new VideoSessionViewModel((VideoSessionDTO)sessionViewModel.Dto, _coordinatorSession!);
-            _ = CurrentContent.JoinSession();
+            ChangeContent(new VideoSessionViewModel((VideoSessionDTO)sessionViewModel.Dto, _coordinatorSession!));
+            CurrentContent!.JoinSession();
             CurrentContent.RequestClose += () =>
             {
-                CurrentContent.Dispose();
                 ChangeContent(null);
+                IsFullScreen = WindowState.Normal;
                 sessionViewModel.IsEntered = false;
             };
             CurrentContent.RequestFullScreen += ToggleFullscreen;
@@ -276,7 +273,7 @@ internal class MainWindowViewModel : ReactiveObject
             _appSettingsManager.SettingsData.LastIdentity != null &&
             _appSettingsManager.SettingsData.CoordinatorSessionsIdentities.TryGetValue(_appSettingsManager.SettingsData.LastIdentity, out var coordinatorDTO))
         {
-            await ChangeCurrentActionText($"Connecting to {coordinatorDTO.Address} as {coordinatorDTO.User.Name}...");
+            await ChangeCurrentActionText($"Connecting to {coordinatorDTO.Address} as {coordinatorDTO.User.Username}...");
             await coordinatorSession.ConnectAndAuthenticate(coordinatorDTO.User, coordinatorDTO.Address);
 
             if (coordinatorSession.ConnectionStatus != CoordinatorState.Connected)
@@ -391,16 +388,12 @@ internal class MainWindowViewModel : ReactiveObject
     
     private async Task DisconnectFromCoordinator()
     {
-        CurrentContent = null;
+        ChangeContent(null);
         DetachSessionManager();
         _connectionSubscription?.Dispose();
         await _coordinatorSession!.Disconnect();
         IsConnected = false;
-        User = new UserDTO()
-        {
-            Id = null,
-            Name = "Undefined"
-        };
+        User = null;
     }
     
     private async Task UpdateDataFromCoordinator()

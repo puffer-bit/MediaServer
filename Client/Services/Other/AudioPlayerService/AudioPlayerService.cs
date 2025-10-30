@@ -47,6 +47,8 @@ public class AudioPlayerService : IAudioPlayerService
     public void Dispose()
     {
          _opusDecoder.Dispose();
+         _bufferQueue.Clear();
+         GC.SuppressFinalize(this);
     }
     
     private int MyStreamCallback(int handle, IntPtr buffer, int length, IntPtr user)

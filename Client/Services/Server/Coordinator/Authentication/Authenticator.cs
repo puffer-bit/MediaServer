@@ -8,6 +8,7 @@ using Shared.Models;
 using Shared.Models.Requests;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Shared.Models.DTO;
 
 namespace Client.Services.Server.Coordinator.Authentication;
 

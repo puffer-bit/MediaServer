@@ -10,6 +10,7 @@ using Client.ViewModels.MessageBox;
 using ReactiveUI;
 using Shared.Enums;
 using Shared.Models;
+using Shared.Models.DTO;
 
 namespace Client.ViewModels.MainWindow.ConnectWindow;
 

@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
-using Gst;
 using ManagedBass;
+using Gst;
 using SIPSorceryMedia.FFmpeg;
 
 namespace Client.Services.Other;
@@ -26,11 +26,11 @@ public class AppInitializer
                 // FFMPEG
                 if (OperatingSystem.IsWindows())
                 {
-                    FFmpegInit.Initialise(FfmpegLogLevelEnum.AV_LOG_ERROR, Directory.GetCurrentDirectory());
+                    FFmpegInit.Initialise(FfmpegLogLevelEnum.AV_LOG_ERROR, AppContext.BaseDirectory);
                 }
                 else if (OperatingSystem.IsLinux())
                 {
-                    FFmpegInit.Initialise(FfmpegLogLevelEnum.AV_LOG_FATAL, Directory.GetCurrentDirectory());
+                    FFmpegInit.Initialise(FfmpegLogLevelEnum.AV_LOG_FATAL, AppContext.BaseDirectory);
                 }
             });
         }
@@ -44,12 +44,28 @@ public class AppInitializer
         {
             await System.Threading.Tasks.Task.Run(() =>
             {
-                Environment.SetEnvironmentVariable("GST_DEBUG", "5");
-                Environment.SetEnvironmentVariable("GST_DEBUG_NO_COLOR", "1");
-                Environment.SetEnvironmentVariable("GST_DEBUG_FILE", "gst_debug.log");
-                Environment.SetEnvironmentVariable("GST_PLUGIN_PATH", Path.Combine(AppContext.BaseDirectory, "lib", "gstreamer-1.0"));
                 // GST
-                Application.Init();
+                if (OperatingSystem.IsWindows())
+                {
+                    Environment.SetEnvironmentVariable("GST_DEBUG", "5");
+                    Environment.SetEnvironmentVariable("GST_DEBUG_NO_COLOR", "1");
+                    Environment.SetEnvironmentVariable("GST_DEBUG_FILE", "gst_debug.log");
+                    Environment.SetEnvironmentVariable("GST_PLUGIN_PATH", Path.Combine(AppContext.BaseDirectory, "lib", "gstreamer-1.0"));
+                    Application.Init();
+                }
+                else if (OperatingSystem.IsLinux())
+                {
+                    Environment.SetEnvironmentVariable("GST_DEBUG", "5");
+                    Environment.SetEnvironmentVariable("GST_DEBUG_NO_COLOR", "1");
+                    Environment.SetEnvironmentVariable("GST_DEBUG_FILE", "gst_debug.log");
+                    
+                    Application.Init();
+                    // var registry = Gst.Registry.Get();
+                    // foreach (var plugin in registry.PluginList)
+                    // {
+                    //     //Console.WriteLine($"Plugin: {plugin.Name}, Path: {plugin.Filename}");
+                    // }
+                }
             });
         }
         catch (Exception e)
@@ -64,11 +80,19 @@ public class AppInitializer
             await System.Threading.Tasks.Task.Run(() =>
             {
                 // BASS
-                Bass.Init();
+                Bass.Init(14);
                 Bass.Configure(Configuration.DeviceBufferLength, 200);
                 Bass.Configure(Configuration.PlaybackBufferLength, 200);
                 Bass.Configure(Configuration.UpdatePeriod, 7);
                 Bass.Configure(Configuration.GlobalSampleVolume, 11);
+
+                // for (int i = 0; i < 18; i++)
+                // {
+                //     Bass.GetDeviceInfo(i, out var info);
+                //     Console.WriteLine($"{i} - {info.Driver}");
+                //     Console.WriteLine($"{i} - {info.Name}");
+                //     Console.WriteLine($"");
+                // }
             });
         }
         catch (Exception)

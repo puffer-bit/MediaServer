@@ -2,7 +2,7 @@ using System;
 using System.Globalization;
 using Avalonia.Data.Converters;
 
-namespace Client.UIConverters;
+namespace Client.Services.UIConverters;
 
 public class PasswordVisibilityConverter : IValueConverter
 {

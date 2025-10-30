@@ -32,6 +32,10 @@ public class SessionActionMessageHandler : IMessageHandler
                 JoinSessionRequestModel request => Task.FromResult(HandleJoin(request, message)),
                 LeaveSessionRequestModel request => Task.FromResult(HandleLeave(request, message)),
                 DeleteSessionRequestModel request => Task.FromResult(HandleDelete(request, message)),
+                KickFromSessionRequestModel request => Task.FromResult(HandleKick(request, message)),
+                BanFromSessionRequestModel request => Task.FromResult(HandleBan(request, message)),
+                ApproveUserRequestModel request => Task.FromResult(HandleApprove(request, message)),
+                RejectUserRequestModel request => Task.FromResult(HandleReject(request, message)),
                 SessionRequestType.Reconfigure => throw new NotImplementedException(),
                 _ => Task.FromResult(HandleMessageResult.InternalError)
             };
@@ -99,7 +103,7 @@ public class SessionActionMessageHandler : IMessageHandler
     private HandleMessageResult HandleLeave(IUserSessionRequestModel request, BaseMessage message)
     {
         var response = (LeaveSessionRequestModel)request;
-        response.Result = _coordinator.KickFromSession(request.Session, message.UserId!);
+        response.Result = _coordinator.KickFromSession(request.Session, message.UserId!, false);
 
         // _coordinator.SendMessageToUser(message.UserId!, new BaseMessage(message)
         // {
@@ -122,6 +126,69 @@ public class SessionActionMessageHandler : IMessageHandler
         });
 
         return response.Result == DeleteSessionResult.NoError
+            ? HandleMessageResult.NoError
+            : HandleMessageResult.InternalError;
+    }
+
+    private HandleMessageResult HandleKick(IUserSessionRequestModel request, BaseMessage message)
+    {
+        var response = (KickFromSessionRequestModel)request;
+        response.Result = _coordinator.KickFromSession(response.Session, message.UserId!, true);
+
+        _coordinator.SendMessageToUser(message.UserId!, new BaseMessage(message)
+        {
+            Data = response
+        });
+
+        return response.Result == LeaveSessionResult.NoError
+            ? HandleMessageResult.NoError
+            : HandleMessageResult.InternalError;
+    }
+    
+    private HandleMessageResult HandleBan(IUserSessionRequestModel request, BaseMessage message)
+    {
+        var response = (BanFromSessionRequestModel)request;
+        //response.Result = _coordinator.BanFromSession(response.Session, message.UserId!);
+        throw new NotImplementedException();
+
+        _coordinator.SendMessageToUser(message.UserId!, new BaseMessage(message)
+        {
+            Data = response
+        });
+
+        return response.Result == BanFromSessionResult.NoError
+            ? HandleMessageResult.NoError
+            : HandleMessageResult.InternalError;
+    }
+    
+    private HandleMessageResult HandleApprove(IUserSessionRequestModel request, BaseMessage message)
+    {
+        var response = (ApproveUserRequestModel)request;
+        //response.Result = _coordinator.ApproveUserInSession(response.Session, message.UserId!);
+        throw new NotImplementedException();
+
+        _coordinator.SendMessageToUser(message.UserId!, new BaseMessage(message)
+        {
+            Data = response
+        });
+
+        return response.Result == ApproveUserSessionResult.NoError
+            ? HandleMessageResult.NoError
+            : HandleMessageResult.InternalError;
+    }
+    
+    private HandleMessageResult HandleReject(IUserSessionRequestModel request, BaseMessage message)
+    {
+        var response = (RejectUserRequestModel)request;
+        //response.Result = _coordinator.RejectUserInSession(response.Session, message.UserId!);
+        throw new NotImplementedException();
+
+        _coordinator.SendMessageToUser(message.UserId!, new BaseMessage(message)
+        {
+            Data = response
+        });
+
+        return response.Result == RejectUserSessionResult.NoError
             ? HandleMessageResult.NoError
             : HandleMessageResult.InternalError;
     }

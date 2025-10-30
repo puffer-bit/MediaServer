@@ -64,7 +64,7 @@ namespace Server
                 }
                 else if (OperatingSystem.IsLinux())
                 {
-                    FFmpegInit.Initialise(FfmpegLogLevelEnum.AV_LOG_ERROR, "/media/user/Local SSD Linux1/RiderProjects/SFU_TestServer/Server/bin/Debug/net9.0/ffmpeg");
+                    FFmpegInit.Initialise(FfmpegLogLevelEnum.AV_LOG_ERROR, AppContext.BaseDirectory);
                 }
                 return true;
             }

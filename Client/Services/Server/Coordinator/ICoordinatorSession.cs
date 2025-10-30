@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Client.Services.Server.Video;
 using Shared.Enums;
 using Shared.Models;
+using Shared.Models.DTO;
 using Shared.Models.Requests;
 using SIPSorcery.Net;
 
@@ -48,4 +49,5 @@ public interface ICoordinatorSession : IDisposable
     Task<RTCSessionDescriptionInit?> RequestOffer(WebRTCNegotiation request);
     void SendICE(WebRTCNegotiation request);
     void SendAnswer(WebRTCNegotiation answer);
+    Task<UserDTO?> GetRemoteUser(string userId);
 }

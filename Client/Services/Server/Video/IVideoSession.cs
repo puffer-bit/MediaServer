@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Avalonia.Media.Imaging;
 using Client.Services.Server.Video.Peer;
 using Shared.Enums;
+using Shared.Models;
 using SIPSorcery.Net;
 using SIPSorceryMedia.Abstractions;
 
@@ -24,6 +25,7 @@ public interface IVideoSession : IDisposable
     Queue<RTCIceCandidateInit> IceCandidatesBuffer { get; }
     event Action<WriteableBitmap>? FrameReceived;
 
+    VideoSessionDTO AsModel();
     void HandleHostConnected();
     void HandleHostDissconnected();
     Task<WebRTCNegotiationResult> Renegotiate();

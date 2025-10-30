@@ -12,6 +12,8 @@ namespace Server.Domain.Entities
         public string? RegionName { get; set; }
         public string? RegionCode { get; set; }
         public string? DisplayName { get; set; }
+        public string? Prefix { get; set; }
+        public string? AvatarUrl { get; set; }
         public UserState State { get; set; }
         public DateTime FirstConnectionTime { get; set; }
         public DateTime LastConnectionTime { get; set; }

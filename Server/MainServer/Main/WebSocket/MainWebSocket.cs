@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using Server.MainServer.Main.Server.Coordinator;
 using Shared.Enums;
 using Shared.Models;
+using Shared.Models.DTO;
 
 namespace Server.MainServer.Main.WebSocket
 {
@@ -35,7 +36,7 @@ namespace Server.MainServer.Main.WebSocket
                     User = (UserDTO)message.Data;
                     _coordinator.AttachUser(message, _socket);
                     
-                    _logger.LogDebug("User {Name} connected.", User.Name);
+                    _logger.LogDebug("User {Name} connected.", User.Username);
                 }
                 else
                 {
