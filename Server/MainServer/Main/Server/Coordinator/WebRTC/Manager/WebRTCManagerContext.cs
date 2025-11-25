@@ -9,5 +9,15 @@ public class WebRTCManagerContext : IWebRTCManagerContext
     public ConcurrentDictionary<string, MediaStreamTrack> AudioTracks { get; } = new();
     public ConcurrentDictionary<string, MediaStreamTrack> VideoTracks { get; } = new();
     
-    
+    public void Dispose()
+    {
+        foreach (var connection in Connections.Values)
+        {
+            connection.Dispose();
+        }
+
+        Connections.Clear();
+        AudioTracks.Clear();
+        VideoTracks.Clear();
+    }
 }

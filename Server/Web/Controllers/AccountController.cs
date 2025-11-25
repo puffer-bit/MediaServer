@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Server.Web.Models;
 using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 
-namespace SFU_MainCluster.Web.Controllers
+namespace Server.Web.Controllers
 {
     public class AccountController(SignInManager<IdentityUser> signInManager, UserManager<IdentityUser> userManager) : Controller
     {

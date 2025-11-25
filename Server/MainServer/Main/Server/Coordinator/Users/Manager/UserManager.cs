@@ -18,29 +18,31 @@ public class UserManager : IUserManager
         _coordinator = coordinator;
     }
 
-    public bool AddUser(UserDTO user, out UserDTO? addedUser)
+    public bool AddUser(UserDTO user, out UserDTO addedUser)
     {
         if (user.Id == null)
         {
             user.Id = Guid.NewGuid().ToString();
         }
-        if (_context.ConnectedUsers.ContainsKey(user.Id))
+        if (!_context.ConnectedUsers.TryAdd(user.Id, user))
         {
-            _logger.LogWarning($"User with id {user.Id} already connected. Replacing...");
+            _logger.LogTrace("User with id {Id} already connected. Replacing...", user.Id);
             _context.ConnectedUsers[user.Id] = user;
         }
-        else
-        {
-            _context.ConnectedUsers.Add(user.Id, user);
-        }
 
+        if (user.Id != "system")
+            _logger.LogTrace("User with id {Id} connected.", user.Id);
+        
         addedUser = user;
         return true;
     }
         
     public void RemoveUser(string userId)
     {
-        _context.ConnectedUsers.Remove(userId);
+        if (_context.ConnectedUsers.Remove(userId, out var user))
+        {
+            _logger.LogTrace("User with id {Id} disconnected.", user.Id);
+        }
     }
 
     public bool GetUser(string userId, out UserDTO? user)
@@ -52,5 +54,10 @@ public class UserManager : IUserManager
         }
         user = null;
         return false;
+    }
+
+    public void RemoveAllUsers()
+    {
+        _context.ConnectedUsers.Clear();
     }
 }

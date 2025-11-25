@@ -1,27 +1,23 @@
 ﻿using System.Collections.Concurrent;
+using Server.Domain.Enums;
 
 namespace Server.Domain.Entities
 {
     public class CoordinatorInstanceEntity
     {
         public required string Id { get; init; }
+        public required string Name { get; set; }
         public string? Ip { get; set; }
         public int? Port { get; set; }
+        public DateTime CreateTime { get; set; }
         public DateTime FirstLaunchTime { get; set; }
         public DateTime CurrentLaunchTime { get; set; }
-        public TimeSpan UpTime => DateTime.UtcNow - CurrentLaunchTime;
         public int MaxOnlineUsers { get; set; }
         public int MaxUsers { get; set; }
 
         // Security parametrs
-        bool IsRemoteConnectionsAvailable { get; set; }
-        bool IsRemoteConnectionsRestricted { get; set; }
+        public bool IsMOTDEnabled { get; set; }
         ConcurrentBag<string> AllowedIPs { get; init; }
         ConcurrentBag<string> BannedIPs { get; init; }
-
-        public CoordinatorInstanceEntity(string id)
-        {
-            Id = id;
-        }
     }
 }

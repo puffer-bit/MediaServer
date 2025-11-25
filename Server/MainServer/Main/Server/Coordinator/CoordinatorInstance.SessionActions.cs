@@ -88,6 +88,44 @@ namespace Server.MainServer.Main.Server.Coordinator
             }
         }
         
+        public ApproveUserSessionResult? ApproveUserInSession(SessionDTO sessionDTO, string userId)
+        {
+            switch (sessionDTO.SessionType)
+            {
+                case SessionType.Chat:
+                    throw new NotImplementedException();
+
+                case SessionType.Video:
+                    return _sessionManager.ApproveVideoSessionParticipant(sessionDTO, userId);
+
+                case SessionType.Voice:
+                    throw new NotImplementedException();
+
+                case SessionType.Undefiend:
+                default:
+                    return ApproveUserSessionResult.InternalError;
+            }
+        }
+        
+        public RejectUserSessionResult? RejectUserInSession(SessionDTO sessionDTO, string userId)
+        {
+            switch (sessionDTO.SessionType)
+            {
+                case SessionType.Chat:
+                    throw new NotImplementedException();
+
+                case SessionType.Video:
+                    return _sessionManager.RejectVideoSessionParticipant(sessionDTO, userId);
+
+                case SessionType.Voice:
+                    throw new NotImplementedException();
+
+                case SessionType.Undefiend:
+                default:
+                    return RejectUserSessionResult.InternalError;
+            }
+        }
+        
         public void RemoveUserFromAllSessions(string userId)
         {
             _sessionManager.RemoveUserFromAllSessions(userId);

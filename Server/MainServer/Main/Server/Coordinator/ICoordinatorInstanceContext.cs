@@ -1,25 +1,27 @@
 using System.Collections.Concurrent;
+using Server.Domain.Entities;
 
 namespace Server.MainServer.Main.Server.Coordinator;
 
 public interface ICoordinatorInstanceContext
 {
-    // Main parametrs
+    // Main parameters
     string Id { get; init; }
+    string Name { get; set; }
     string? Ip { get; set; }
     int? Port { get; set; }
+    DateTime CreateTime { get; set; }
     DateTime FirstLaunchTime { get; set; }
     DateTime CurrentLaunchTime { get; set; }
-    TimeSpan UpTime => DateTime.UtcNow - CurrentLaunchTime;
     int MaxOnlineUsers { get; set; }
     int MaxUsers { get; set; }
 
-    // Security parametrs
-    bool IsRemoteConnectionsAvailable { get; set; }
-    bool IsRemoteConnectionsRestricted { get; set; }
+    // Security parameters
+    bool IsMOTDEnabled { get; set; }
     ConcurrentBag<string> AllowedIPs { get; init; }
     ConcurrentBag<string> BannedIPs { get; init; }
 
-    Task UpdateContextFromDBAsync();
-    Task CommitContextToDBAsync();
+    void LoadContext(CoordinatorInstanceEntity coordinatorInstanceEntity);
+    void CommitContext();
+    CoordinatorInstanceEntity GetAsEntity();
 }

@@ -125,6 +125,11 @@ public partial class CoordinatorSession
         ConnectionStatus = CoordinatorState.Disconnected;
     }
 
+    public void SetCoordinatorInstanceData(string coordinatorInstanceId)
+    {
+        CoordinatorDTO = new CoordinatorSessionDTO(coordinatorInstanceId, _connectionManager.GetAddress(), GetUser());
+    }
+    
     public WebsocketClient? GetWebSocket()
     {
         return _connectionManager.GetWebSocket();

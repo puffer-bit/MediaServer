@@ -11,18 +11,18 @@ public class VideoSessionStateToStringConverter : IValueConverter
 {
     public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
-        if (value is not VideoSessionApproveState state)
+        if (value is not VideoSessionPeerState state)
             return "Undefined";
 
         return state switch
         {
-            VideoSessionApproveState.Approved => "Connecting",
-            VideoSessionApproveState.Rejected => "Rejected",
-            VideoSessionApproveState.WaitingForApprove => "Waiting",
-            VideoSessionApproveState.WaitingForNegotiation => "WebRTC connecting",
-            VideoSessionApproveState.Connected => "Connected",
-            VideoSessionApproveState.Kicked => "Kicked",
-            VideoSessionApproveState.Banned => "Banned",
+            VideoSessionPeerState.Approved => "Connecting",
+            VideoSessionPeerState.Rejected => "Rejected",
+            VideoSessionPeerState.WaitingForApprove => "Waiting",
+            VideoSessionPeerState.WaitingForNegotiation => "WebRTC connecting",
+            VideoSessionPeerState.Connected => "Connected",
+            VideoSessionPeerState.Kicked => "Kicked",
+            VideoSessionPeerState.Banned => "Banned",
             _ => "Undefined"
         };
     }

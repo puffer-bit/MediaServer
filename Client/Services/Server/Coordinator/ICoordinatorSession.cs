@@ -20,7 +20,6 @@ public interface ICoordinatorSession : IDisposable
     CoordinatorSessionDTO? CoordinatorDTO { get; set; }
     
     public event NotifyCollectionChangedEventHandler? SessionsCollectionChanged;
-
     
     UserDTO GetUser();
 
@@ -28,9 +27,9 @@ public interface ICoordinatorSession : IDisposable
     Task ConnectAndAuthenticate(UserDTO user, string address, CancellationToken cancellationToken);
     Task Reconnect();
     Task Disconnect();
+    void SetCoordinatorInstanceData(string coordinatorInstanceId);
     ObservableCollection<SessionDTO> GetAllSessions();
     Task<SessionDTO?> GetSessionById(string sessionId);
-    CoordinatorSessionDTO? AsModel();
     Task UpdateAllSessionsAsync();
 
     void RaiseSessionAdded(SessionDTO sessionDTO);

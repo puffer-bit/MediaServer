@@ -57,24 +57,28 @@ public class SessionManager : ISessionManager
                 break;
             
             case SessionStateChangedType.HostConnected:
-            case SessionStateChangedType.HostDisconnected:
                 _coordinatorSession.RaiseHostConnectedToSession(stateChangedMessage.Session);
-                if (ActiveVideoSessions.TryGetValue(stateChangedMessage.Session.Id, out var activeSession))
-                {
-                    if (activeSession.IsHost)
-                        break;
-                    if (stateChangedMessage.Type == SessionStateChangedType.HostConnected)
-                    {
-                        activeSession.HandleHostConnected();
-                    }
-                    else
-                    {
-                        activeSession.HandleHostDissconnected();
-                    }
-                }
+                break;
+            
+            case SessionStateChangedType.HostDisconnected:
+                _coordinatorSession.RaiseHostDisconnectedFromSession(stateChangedMessage.Session);
+                break;
+            
+            case SessionStateChangedType.UserConnected:
+                _coordinatorSession.RaiseParticipantListUpdated(stateChangedMessage.Session);
+                break;
+            
+            case SessionStateChangedType.UserDisconnected:
+                _coordinatorSession.RaiseParticipantListUpdated(stateChangedMessage.Session);
+                break;
+            
+            case SessionStateChangedType.HostNegotiated:
+            case SessionStateChangedType.UserNegotiated:
+                _coordinatorSession.RaiseParticipantListUpdated(stateChangedMessage.Session);
                 break;
             
             default:
+                
                 Console.WriteLine("HandleSessionStateChanged error. Received unknown type.");
                 break;
         }
@@ -201,6 +205,36 @@ public class SessionManager : ISessionManager
             }
         }
         Console.WriteLine("Attempted reconfigure not existing session");
+    }
+
+    public void HandleHostConnected(string sessionId)
+    {
+        if (ActiveVideoSessions.TryGetValue(sessionId, out var activeSession))
+        {
+            if (activeSession.IsHost)
+                return;
+            
+            activeSession.HandleHostConnected();
+        }
+    }
+    
+    public void HandleHostDisconnected(string sessionId)
+    {
+        if (ActiveVideoSessions.TryGetValue(sessionId, out var activeSession))
+        {
+            if (activeSession.IsHost)
+                return;
+            
+            activeSession.HandleHostDisconnected();
+        }
+    }
+
+    public void HandleSessionParticipantListUpdated(SessionDTO sessionDTO)
+    {
+        if (ActiveVideoSessions.TryGetValue(sessionDTO.Id, out var activeSession))
+        {
+            activeSession.RaiseParticipantListUpdated((VideoSessionDTO)sessionDTO);
+        }
     }
 
     public async Task<CreateSessionResult> CreateSession(SessionDTO session)

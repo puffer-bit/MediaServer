@@ -28,5 +28,8 @@ public interface ISessionManager
     void RemoveSession(string sessionId);
     void AddSession(SessionDTO sessionDTO);
     void ReconfigureSession(SessionDTO sessionDTO);
+    void HandleHostConnected(string sessionId);
+    void HandleHostDisconnected(string sessionId);
+    void HandleSessionParticipantListUpdated(SessionDTO sessionDTO);
     Task<DeleteSessionResult> DeleteSession(SessionDTO sessionDTO);
 }

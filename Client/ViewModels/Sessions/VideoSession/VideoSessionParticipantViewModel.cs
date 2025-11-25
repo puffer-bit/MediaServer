@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Client.Services.Server.Coordinator;
 using Client.Services.Server.Coordinator.UserManager;
@@ -11,17 +12,62 @@ namespace Client.ViewModels.Sessions.VideoSession;
 public class VideoSessionParticipantViewModel : ReactiveObject
 {
     private readonly ICoordinatorSession _coordinatorSession;
-    
-    public string UserId { get; set; }
-
-    public string? Username { get; set; }
-    public string? DisplayName { get; set; }
     public PeerDTO Peer { get; set; }
-    public bool IsHost { get; private set; }
-    public bool IsNegotiated { get; private set; }
-    public bool IsConnected { get; private set; }
-    public bool IsApproved { get; set; }
-    public VideoSessionApproveState State { get; set; }
+    
+    private string _userId;
+    public string UserId
+    {
+        get => _userId;
+        set => this.RaiseAndSetIfChanged(ref _userId, value);
+    }
+
+    private string? _username;
+    public string? Username
+    {
+        get => _username;
+        set => this.RaiseAndSetIfChanged(ref _username, value);
+    }
+
+    private string? _displayName;
+    public string? DisplayName
+    {
+        get => _displayName;
+        set => this.RaiseAndSetIfChanged(ref _displayName, value);
+    }
+    private bool _isHost;
+    public bool IsHost
+    {
+        get => _isHost;
+        private set => this.RaiseAndSetIfChanged(ref _isHost, value);
+    }
+
+    private bool _isNegotiated;
+    public bool IsNegotiated
+    {
+        get => _isNegotiated;
+        private set => this.RaiseAndSetIfChanged(ref _isNegotiated, value);
+    }
+
+    private bool _isConnected;
+    public bool IsConnected
+    {
+        get => _isConnected;
+        private set => this.RaiseAndSetIfChanged(ref _isConnected, value);
+    }
+
+    private bool _isApproved;
+    public bool IsApproved
+    {
+        get => _isApproved;
+        set => this.RaiseAndSetIfChanged(ref _isApproved, value);
+    }
+
+    private VideoSessionPeerState _state;
+    public VideoSessionPeerState State
+    {
+        get => _state;
+        set => this.RaiseAndSetIfChanged(ref _state, value);
+    }
     
     private int _opacity;
     public int Opacity
@@ -37,6 +83,7 @@ public class VideoSessionParticipantViewModel : ReactiveObject
         Peer = peerModel;
         UserId = peerModel.Id;
         IsHost = peerModel.IsStreamHost;
+        State = peerModel.PeerState;
         _ = GetRemoteUsername(peerModel.UserId);
     }
 
@@ -45,10 +92,10 @@ public class VideoSessionParticipantViewModel : ReactiveObject
         Username = (await _coordinatorSession.GetRemoteUser(Peer.UserId))?.Username;
     }
     
-    public void ChangeState(VideoSessionApproveState state)
+    public void ChangeState(VideoSessionPeerState state)
     {
         State = state;
-        if (State is not VideoSessionApproveState.WaitingForApprove)
+        if (State is not VideoSessionPeerState.WaitingForApprove)
             IsApproved = false;
         else
             IsApproved = true;

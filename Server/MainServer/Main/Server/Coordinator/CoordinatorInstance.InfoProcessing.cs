@@ -1,4 +1,4 @@
-using Server.MainServer.Main.Server.Video;
+using Server.MainServer.Main.Server.Coordinator.Sessions.Video;
 using Shared.Enums;
 using Shared.Models;
 
@@ -57,7 +57,7 @@ public partial class CoordinatorInstance
                 foundedSession = session;
                 return SessionRequestResult.NoError;
             }
-            _logger.LogDebug($"Error in GetSessionInfo. Requested room ({roomId}) not exists.");
+            _logger.LogTrace($"Error in GetSessionInfo. Requested room ({roomId}) not exists.");
             foundedSession = null;
             return SessionRequestResult.RoomNotExists;
             

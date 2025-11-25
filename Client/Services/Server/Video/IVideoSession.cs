@@ -24,10 +24,12 @@ public interface IVideoSession : IDisposable
     VideoSessionState State { get; set; }
     Queue<RTCIceCandidateInit> IceCandidatesBuffer { get; }
     event Action<WriteableBitmap>? FrameReceived;
+    event Action<VideoSessionDTO>? ParticipantListUpdated;
 
     VideoSessionDTO AsModel();
     void HandleHostConnected();
-    void HandleHostDissconnected();
+    void HandleHostDisconnected();
+    void RaiseParticipantListUpdated(VideoSessionDTO sessionDTO);
     Task<WebRTCNegotiationResult> Renegotiate();
     Task RefreshSession();
     Task<WebRTCNegotiationResult> Negotiate();

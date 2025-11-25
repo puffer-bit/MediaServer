@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace SFU_MainCluster.Web.Controllers;
+namespace Server.Web.Controllers;
 
 public class SfuController : Controller
 {

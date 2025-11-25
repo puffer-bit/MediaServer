@@ -3,7 +3,7 @@ using Shared.Models;
 
 namespace Server.MainServer.Main.Server.Coordinator.Connection;
 
-public interface IClientConnection
+public interface IClientConnection : IDisposable
 {
     string UserId { get; set; }
     IWebSocketConnection WebSocket { get; set; }

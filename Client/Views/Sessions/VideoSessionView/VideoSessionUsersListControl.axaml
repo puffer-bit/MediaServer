@@ -15,6 +15,7 @@
     <Control.Resources>
         <uiConverters1:BoolToOpacityConverter x:Key="BoolToOpacityConverter"/>
         <uiConverters1:VideoSessionStateToStringConverter x:Key="VideoSessionStateToStringConverter"/>
+        <uiConverters1:BoolToGridLengthConverter x:Key="BoolToGridLengthConverter"/>
     </Control.Resources>
     
     <Grid RowDefinitions="20, *" Margin="10">
@@ -34,7 +35,12 @@
                                 <MenuItem Header="Details"/>
                             </MenuFlyout>
                         </Border.ContextFlyout>
-                        <Grid ColumnDefinitions="3*, 50">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="3*"/>
+                                <ColumnDefinition Width="{Binding !State, Converter={StaticResource BoolToGridLengthConverter}}"/>
+                            </Grid.ColumnDefinitions>
+                            
                             <Grid.Transitions>
                                 <Transitions>
                                     <DoubleTransition Property="Opacity" Duration="0:0:0.1" Easing="SineEaseIn"/>
@@ -70,7 +76,7 @@
                                 </StackPanel>
                             </Grid>
 
-                            <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right" Spacing="2" IsVisible="{Binding !IsApproved}">
+                            <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right" Spacing="2" IsVisible="{Binding !State}">
                                 <Button Padding="0"
                                         Command="{Binding DataContext.ApproveParticipant, ElementName=Main}"
                                         CommandParameter="{Binding}"

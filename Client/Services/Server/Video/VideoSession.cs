@@ -25,6 +25,7 @@ public class VideoSession : ReactiveObject, IVideoSession
 {
     public IPeer Peer { get; }
     public required string Id { get; set; }
+    public required string CoordinatorInstanceId { get; set; }
     public required string? HostId { get; set; }
     public required string Name { get; set; }
     public required int Capacity { get; set; }
@@ -51,6 +52,7 @@ public class VideoSession : ReactiveObject, IVideoSession
     private readonly FFmpegVideoEndPoint _ffmpegVideoEndPoint;
     private VideoFormat? _videoFormat;
     public event Action<WriteableBitmap>? FrameReceived;
+    public event Action<VideoSessionDTO>? ParticipantListUpdated;
     
     public VideoSession(
         VideoSessionDTO sessionDTO, 
@@ -102,6 +104,7 @@ public class VideoSession : ReactiveObject, IVideoSession
         return new VideoSessionDTO()
         {
             Id = this.Id,
+            CoordinatorInstanceId = CoordinatorInstanceId,
             HostId = this.HostId,
             Name = this.Name,
             Capacity = this.Capacity,
@@ -124,7 +127,7 @@ public class VideoSession : ReactiveObject, IVideoSession
         if (IsHostConnected)
             HandleHostConnected();
         else
-            HandleHostDissconnected();
+            HandleHostDisconnected();
         IsAudioRequested = sessionDTO.IsAudioRequested;
         
         Participants.Clear();
@@ -133,7 +136,7 @@ public class VideoSession : ReactiveObject, IVideoSession
             Participants.Add(user);
         }
     }
-
+    
     public void HandleHostConnected()
     {
         if (State == VideoSessionState.WaitingForHost)
@@ -145,7 +148,7 @@ public class VideoSession : ReactiveObject, IVideoSession
         }
     }
     
-    public void HandleHostDissconnected()
+    public void HandleHostDisconnected()
     {
         if (State == VideoSessionState.Connected)
         {
@@ -445,6 +448,11 @@ public class VideoSession : ReactiveObject, IVideoSession
     {
         _audioPlayerService!.PlayPcm(frame.EncodedAudio);
     }
+
+    public void RaiseParticipantListUpdated(VideoSessionDTO sessionDTO)
+    {
+        ParticipantListUpdated?.Invoke(sessionDTO);
+    }
     
     public void Dispose()
     {
@@ -460,12 +468,12 @@ public class VideoSession : ReactiveObject, IVideoSession
         _frameProcessor.Dispose();
         Console.WriteLine("Frame processor disposed");
         
-        Peer.PeerConnection?.Dispose();
-        Console.WriteLine("Peer connection closed and disposed");
-        
         _ffmpegVideoEndPoint.CloseVideo();
         _ffmpegVideoEndPoint.Dispose();
         Console.WriteLine("Video endpoint closed and disposed");
+        
+        Peer.PeerConnection?.Dispose();
+        Console.WriteLine("Peer connection closed and disposed");
         
         IsDisposed = true;
         GC.SuppressFinalize(this);

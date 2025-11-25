@@ -9,4 +9,6 @@ public interface IUserManager
     bool AddUser(UserDTO user, out UserDTO addedUser);
     void RemoveUser(string userId);
     bool GetUser(string userId, out UserDTO? user);
+    
+    void RemoveAllUsers();
 }

@@ -143,7 +143,6 @@ internal class VideoSessionViewModel : ReactiveObject, ISessionViewModel
     public ReactiveCommand<Unit, Unit> JoinCommand { get; }
     public ReactiveCommand<Unit, Unit> CloseCommand { get; }
     public ReactiveCommand<Unit, Unit> StartReceiveCommand { get; }
-    public ReactiveCommand<Unit, Unit> EndReceiveCommand { get; }
     public ReactiveCommand<Unit, Unit> FullScreenCommand { get; }
     public ReactiveCommand<Unit, Unit> StartUserStream { get; }
     
@@ -199,8 +198,12 @@ internal class VideoSessionViewModel : ReactiveObject, ISessionViewModel
                     RequestClose?.Invoke();
                     return;
                 }
+                
                 await _videoSession.RefreshSession();
+                
                 ParticipantsListViewModel.FetchUsersFromDTO(_videoSession.AsModel());
+                _videoSession.ParticipantListUpdated += OnParticipantListUpdated;
+                    
                 _connectionSubscription = _videoSession
                     .WhenAnyValue(x => x.State)
                     .ObserveOn(RxApp.MainThreadScheduler)
@@ -348,9 +351,15 @@ internal class VideoSessionViewModel : ReactiveObject, ISessionViewModel
                 break;
         }
     }
+    
     private void OnFrameReceived(WriteableBitmap bmp)
     {
         CurrentFrame = bmp;
+    }
+
+    private void OnParticipantListUpdated(VideoSessionDTO sessionDTO)
+    {
+        ParticipantsListViewModel.FetchUsersFromDTO(sessionDTO);
     }
 
     public void ToggleFullscreen()

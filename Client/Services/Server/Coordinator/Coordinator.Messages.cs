@@ -16,6 +16,7 @@ public partial class CoordinatorSession
 
     public async Task ProcessEvent(BaseMessage message)
     {
+        Console.WriteLine("Received incoming message with Type: {0}." , message.Type.ToString());
         if (!await _responseAwaiter.HandleIncoming(message))
         {
             switch (message.Type)

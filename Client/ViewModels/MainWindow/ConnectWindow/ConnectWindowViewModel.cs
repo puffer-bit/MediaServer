@@ -127,7 +127,7 @@ internal class ConnectWindowViewModel : ReactiveObject, IDisposable
 
                 if (SelectedIdentity == null || SelectedIdentity.Id == null)
                 {
-                    var coordinatorSessionDto = coordinatorSession.AsModel();
+                    var coordinatorSessionDto = coordinatorSession.CoordinatorDTO;
                     _appSettingsManager.AddIdentity(coordinatorSessionDto!.User.Id!, coordinatorSessionDto);
                     _appSettingsManager.SetCoordinatorForAutoConnect(coordinatorSessionDto);
                     _appSettingsManager.SaveSettings();
