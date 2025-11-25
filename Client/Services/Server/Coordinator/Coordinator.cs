@@ -31,6 +31,7 @@ public partial class CoordinatorSession : ReactiveObject, ICoordinatorSession
     public DateTime? LastPing { get; set; }
     public CancellationTokenSource Cts { get; set; }
     public CoordinatorSessionDTO? CoordinatorDTO { get; set; }
+    public event Action? OnDisconnect;
     private ReactiveCommand<Unit, Unit> MonitorServerCommand { get; }
     private IDisposable? _monitorSubscription;
     

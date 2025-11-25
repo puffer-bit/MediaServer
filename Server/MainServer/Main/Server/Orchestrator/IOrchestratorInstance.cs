@@ -55,6 +55,7 @@ namespace Server.MainServer.Main.Server.Orchestrator
         // CoordinatorInstances actions
         Task<CoordinatorInstanceEntity> CreateCoordinatorInstanceAsync(string name, string ip, int port);
         Task AttachCoordinatorInstance(CoordinatorInstanceEntity coordinatorInstanceEntity);
+        void DetachCoordinatorInstance(string coordinatorInstanceId);
         Task DisableCoordinatorInstanceAsync(string coordinatorInstanceId);
         Task EnableCoordinatorInstanceAsync(string coordinatorInstanceId);
         Task CommitCoordinatorDataAsync();

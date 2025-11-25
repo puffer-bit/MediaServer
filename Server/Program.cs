@@ -201,6 +201,11 @@ namespace Server
                 await orchestratorInstance.Configure(initialServerLoader);
                 await orchestratorInstance.StartAsync(CancellationToken.None);
             }
+            
+            public override async Task StopAsync(CancellationToken cancellationToken)
+            {
+                await orchestratorInstance.StopAsync(CancellationToken.None);
+            }
         }
     }
 }

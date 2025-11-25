@@ -66,10 +66,7 @@ namespace Server.MainServer.Main.Server.Coordinator.WebSocket
 
         public Action OnClose => () =>
         {
-            if (User != null)
-            {
-                _coordinator.DetachUser(User.Id, "WebSocket disconnection.");
-            }
+
         };
         
         private BaseMessage? DeSerializeMessage(string jsonMessage)

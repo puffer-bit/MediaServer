@@ -13,5 +13,6 @@ public enum CoordinatorState
     Failed = 6,
     Connected = 7,
     Disconnected = 8,
-    Denied = 9
+    Denied = 9,
+    HeartbeatServerShutdown
 }

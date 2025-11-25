@@ -1,8 +1,10 @@
 using System;
 using System.Threading.Tasks;
+using Org.BouncyCastle.Tls;
 using Shared.Enums;
 using Shared.Models;
 using Shared.Models.Requests;
+using Shared.Models.Requests.Heartbeat;
 using Shared.Models.Requests.SessionInfo;
 
 namespace Client.Services.Server.Coordinator;
@@ -22,7 +24,17 @@ public partial class CoordinatorSession
             switch (message.Type)
             {
                 case MessageType.Heartbeat:
-                    _heartbeatHandler.ReactOnPing();
+                    if (message.Data is HeartbeatModel heartbeatMessage)
+                    {
+                        if (heartbeatMessage.Type == HeartbeatType.ServerClosing)
+                        {
+                            await _heartbeatHandler.ReactOnServerShutdown();
+                        }
+                        else if (heartbeatMessage.Type == HeartbeatType.Ping)
+                        {
+                            _heartbeatHandler.ReactOnPing();
+                        }
+                    }
                     break;
                 case MessageType.WebRTCInit:
                     if (message.Data is WebRTCNegotiation request)

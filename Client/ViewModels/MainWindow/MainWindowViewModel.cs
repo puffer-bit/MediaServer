@@ -377,6 +377,9 @@ internal class MainWindowViewModel : ReactiveObject
                     case CoordinatorState.HeartbeatTimedOut:
                         await ReconnectToCoordinator(_connectionCancellationSource.Token);
                         break;
+                    case CoordinatorState.HeartbeatServerShutdown:
+                        await RemoteDisconnectFromCoordinator();
+                        break;
                 }
 
                 return Unit.Default;
@@ -384,6 +387,22 @@ internal class MainWindowViewModel : ReactiveObject
             .Subscribe();
         User = _coordinatorSession!.GetUser();
         _currentAction = "Connected";
+    }
+    
+    private async Task RemoteDisconnectFromCoordinator()
+    {
+        ChangeContent(null);
+        DetachSessionManager();
+        _connectionSubscription?.Dispose();
+        await _coordinatorSession!.Disconnect();
+        IsConnected = false;
+        User = null;
+        _currentAction = "Offline";
+        await ShowTestBox.Handle(new MessageBoxViewModel(Icon.Error,
+            Buttons.Ok, "Connection closed. " +
+                        "\n\nServer has shut down.","Connection", 
+            false));
+
     }
     
     private async Task DisconnectFromCoordinator()

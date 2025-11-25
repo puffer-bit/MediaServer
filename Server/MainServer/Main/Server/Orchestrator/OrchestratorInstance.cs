@@ -106,9 +106,15 @@ namespace Server.MainServer.Main.Server.Orchestrator
             _logger.LogInformation("Orchestrator successfully started.");
         }
 
-        public Task StopAsync(CancellationToken ct = default)
+        public async Task StopAsync(CancellationToken ct = default)
         {
-            throw new NotImplementedException();
+            _logger.LogInformation("Closing orchestrator...");
+
+            foreach (var coordinatorInstance in CoordinatorsPool)
+            {
+                coordinatorInstance.Value.CloseCoordinator();
+            }
+            State = ServerState.Offline;
         }
 
         public Task RestartAsync(CancellationToken ct = default)
@@ -202,6 +208,12 @@ namespace Server.MainServer.Main.Server.Orchestrator
             await CoordinatorsPool[coordinatorInstanceEntity.Id].LoadSessions(await videoSessionRepository.GetByCoordinatorIdAsync(coordinatorInstanceEntity.Id));
         }
 
+        public void DetachCoordinatorInstance(string coordinatorInstanceId)
+        {
+            if (CoordinatorsPool.TryRemove(coordinatorInstanceId, out var coordinatorInstance))
+                coordinatorInstance.CloseCoordinator();
+        }
+
         public async Task DisableCoordinatorInstanceAsync(string coordinatorInstanceId)
         {
             throw new NotImplementedException();
@@ -257,7 +269,6 @@ namespace Server.MainServer.Main.Server.Orchestrator
             throw new NotImplementedException();
         }
         
-
         private void MigrateDb()
         {
             

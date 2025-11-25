@@ -18,7 +18,8 @@ public interface ICoordinatorSession : IDisposable
     DateTime? LastPing { get; }
     CancellationTokenSource Cts { get; set; }
     CoordinatorSessionDTO? CoordinatorDTO { get; set; }
-    
+
+    public event Action? OnDisconnect;
     public event NotifyCollectionChangedEventHandler? SessionsCollectionChanged;
     
     UserDTO GetUser();
