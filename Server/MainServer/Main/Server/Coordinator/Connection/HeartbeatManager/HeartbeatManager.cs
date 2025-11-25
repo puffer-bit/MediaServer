@@ -1,9 +1,8 @@
-using System.Collections.Concurrent;
 using Shared.Enums;
 using Shared.Models;
 using Shared.Models.Requests.Heartbeat;
 
-namespace Server.MainServer.Main.Server.Coordinator.Connection;
+namespace Server.MainServer.Main.Server.Coordinator.Connection.HeartbeatManager;
 
 public class HeartbeatManager : IHeartbeatManager
 {

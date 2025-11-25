@@ -18,4 +18,9 @@ public class ClientConnection : IClientConnection
         TokenSource = tokenSource;
         LastPong = DateTime.UtcNow;
     }
+
+    public void Dispose()
+    {
+        TokenSource.Dispose();
+    }
 }

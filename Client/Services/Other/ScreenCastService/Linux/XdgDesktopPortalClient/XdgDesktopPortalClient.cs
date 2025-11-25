@@ -179,6 +179,8 @@ public class XdgDesktopPortalClient : IScreenCastClient, IDisposable
 
     public async Task<bool> CloseSessionAsync()
     {
+        var session = _bus.CreateProxy<ISession>("org.freedesktop.portal.Desktop", _sessionPath);
+        await session.CloseAsync();
         var result = _pipeWireService.DestroyPipeline();
         if (result != Shared.Enums.ScreenCastResult.NoError)
         {

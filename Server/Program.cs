@@ -2,19 +2,24 @@ using System.Security.Authentication;
 using System.Security.Cryptography.X509Certificates;
 using Fleck;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 using Serilog.Sinks.SystemConsole.Themes;
 using Server.Domain;
+using Server.Domain.Repositories.CoordinatorInstanceRepository;
+using Server.Domain.Repositories.ServerInstanceRepository;
+using Server.Domain.Repositories.UserRepository;
+using Server.Domain.Repositories.VideoSessionRepository;
+using Server.MainServer.Main.Server.Bootstrap;
 using Server.MainServer.Main.Server.Coordinator;
+using Server.MainServer.Main.Server.Coordinator.WebSocket;
 using Server.MainServer.Main.Server.Factories.ClientConnectionFactory;
 using Server.MainServer.Main.Server.Factories.CoordinatorFactory;
 using Server.MainServer.Main.Server.Factories.PeerManagerFactory;
 using Server.MainServer.Main.Server.Factories.VideoSessionFactory;
-using Server.MainServer.Main.WebSocket;
-using Server.MainServer.Server_Options;
+using Server.MainServer.Main.Server.Orchestrator;
 using SIPSorceryMedia.FFmpeg;
-using ILogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace Server
 {
@@ -22,57 +27,40 @@ namespace Server
     {
         public static async Task Main(string[] args)
         {
-            Log.Logger = new LoggerConfiguration()
-                .MinimumLevel.Debug()
-                .WriteTo.Console(
-                    theme: AnsiConsoleTheme.Code,
-                    outputTemplate:
-                    "[{Timestamp:HH:mm:ss} {Level:u3}] [Bootstrap] {Message:lj}{NewLine}")
-                .CreateBootstrapLogger();
-
             try
             {
-                if (!FfmpegInitialize())
-                {
-                    Log.Logger.Warning("Cannot initialize ffmpeg. Test sessions disabled.");
-                }
-
+                Console.WriteLine("Configuring services...");
+                
+                FleckLog.LogAction = (_, _, _) => { };
                 var builder = CreateWebApplicationBuilder(args);
                 var configuration = BuildConfiguration(builder.Environment.ContentRootPath);
-                var config = configuration.GetSection("Project").Get<ServerConfigurator>()!;
+                var config = configuration.GetSection("Project").Get<InitialServerLoaderContext>()!;
                 
                 ConfigureServices(builder.Services, config);
                 ConfigureLogging(builder.Host, configuration);
-
+                
                 var app = builder.Build();
+                
+                var serverLoader = app.Services.GetRequiredService<InitialServerLoader>();
+                serverLoader.SetContext(config);
+                if (!serverLoader.FfmpegInitialize())
+                {
+                    Console.WriteLine("Cannot initialize ffmpeg.");
+                }
+                
+                Console.WriteLine("Waiting for ASP .NET...");
                 ConfigureMiddleware(app);
-
                 await app.RunAsync();
+            }
+            catch (SqliteException e)
+            {
+                Console.WriteLine("\n----------------FATAL ERROR----------------\n");
+                Console.WriteLine("Database error: {0} ", e);
             }
             catch (Exception e)
             {
-                Log.Logger.Fatal($"Failed to start server. Fatal error occured. \n Exception: {e} ");
-            }
-        }
-
-        private static bool FfmpegInitialize()
-        {
-            try
-            {
-                if (OperatingSystem.IsWindows())
-                {
-                    FFmpegInit.Initialise(FfmpegLogLevelEnum.AV_LOG_ERROR);
-                }
-                else if (OperatingSystem.IsLinux())
-                {
-                    FFmpegInit.Initialise(FfmpegLogLevelEnum.AV_LOG_ERROR, "/media/user/Local SSD Linux1/RiderProjects/SFU_TestServer/Server/bin/Debug/net9.0/ffmpeg");
-                }
-                return true;
-            }
-            catch (ApplicationException ex)
-            {
-                Console.WriteLine("Unable to initialize ffmpeg libraries. Server stoped.");
-                return false;
+                Console.WriteLine("\n----------------FATAL ERROR----------------\n");
+                Console.WriteLine("Unexcepted exception occured: {0} ", e);
             }
         }
         
@@ -111,13 +99,13 @@ namespace Server
             });
         }
 
-        private static void ConfigureServices(IServiceCollection services, ServerConfigurator configurator)
+        private static void ConfigureServices(IServiceCollection services, InitialServerLoaderContext configuratorContext)
         {
+            services.AddHostedService<OrchestratorService>();
             services.AddControllersWithViews();
-            services.AddHostedService<WebSocketHostedService>();
 
             services.AddDbContext<ServerDbContext>(options =>
-                options.UseSqlite(configurator.Database.ConnectionString));
+                options.UseSqlite(configuratorContext.Database.ConnectionString));
 
             services.AddIdentity<IdentityUser, IdentityRole>(opts =>
             {
@@ -139,12 +127,21 @@ namespace Server
                 cookie.SlidingExpiration = true;
             });
 
+            services.AddSingleton<InitialServerLoaderContext>();
+            services.AddSingleton<InitialServerLoader>();
+            
             services.AddSingleton<IVideoSessionFactory, VideoSessionFactory>();
-            services.AddSingleton<ICoordinatorFactory, CoordinatorFactory>();
+            services.AddSingleton<ICoordinatorInstanceFactory, CoordinatorInstanceFactory>();
             services.AddSingleton<IPeerManagerFactory, PeerManagerFactory>();
             services.AddSingleton<IClientConnectionFactory, ClientConnectionFactory>();
             services.AddSingleton<ILoggerFactory, LoggerFactory>();
-            services.AddSingleton<CoordinatorInstance>();
+            services.AddSingleton<IOrchestratorInstanceContext, OrchestratorInstanceContext>();
+            services.AddSingleton<IOrchestratorInstance, OrchestratorInstance>();
+            
+            services.AddScoped<IOrchestratorInstanceRepository, OrchestratorInstanceRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<ICoordinatorInstanceRepository, CoordinatorInstanceRepository>();
+            services.AddScoped<IVideoSessionRepository, VideoSessionRepository>();
         }
 
         private static void ConfigureMiddleware(WebApplication app)
@@ -166,8 +163,8 @@ namespace Server
                 pattern: "{controller=Home}/{action=Download}/{id?}");
         }
 
-        public class WebSocketHostedService(
-            CoordinatorInstance coordinatorInstance, 
+        public class OrchestratorServices(
+            ICoordinatorInstance coordinatorInstance, 
             ILogger<CoordinatorInstance> logger,
             IServiceProvider provider) : BackgroundService
         {
@@ -176,7 +173,6 @@ namespace Server
             protected override async Task ExecuteAsync(CancellationToken stoppingToken)
             {
                 FleckLog.LogAction = (_, _, _) => { };
-                //await coordinatorInstance.RegisterTestSessions();
                 var cert = X509CertificateLoader.LoadPkcs12FromFile("Certs/server.pfx", "MyPassword");
                 _wsServer = new WebSocketServer("wss://0.0.0.0:26666");
                 _wsServer.EnabledSslProtocols = SslProtocols.Tls12 | SslProtocols.Tls13;
@@ -184,7 +180,7 @@ namespace Server
 
                 _wsServer.Start(socket =>
                 {
-                    var handler = ActivatorUtilities.CreateInstance<MainWebSocket>(
+                    var handler = ActivatorUtilities.CreateInstance<CoordinatorWebSocketInstance>(
                         provider,
                         coordinatorInstance,
                         socket
@@ -195,6 +191,15 @@ namespace Server
                     socket.OnMessage = handler.OnMessage;
                     socket.OnError = handler.OnError;
                 });                
+            }
+        }
+        
+        public class OrchestratorService(IOrchestratorInstance orchestratorInstance, InitialServerLoader initialServerLoader) : BackgroundService
+        {
+            protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+            {
+                await orchestratorInstance.Configure(initialServerLoader);
+                await orchestratorInstance.StartAsync(CancellationToken.None);
             }
         }
     }

@@ -80,14 +80,6 @@ public partial class CoordinatorSession : ReactiveObject, ICoordinatorSession
         });
     }
 
-    public CoordinatorSessionDTO? AsModel()
-    {
-        if (_connectionManager.GetAddress() != null &&
-            _userManager.GetUser() != null)
-            return new CoordinatorSessionDTO(_connectionManager.GetAddress()!, _userManager.GetUser()!);
-        return null;
-    }
-
     public void Dispose()
     {
         _monitorSubscription?.Dispose();

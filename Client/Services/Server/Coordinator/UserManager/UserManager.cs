@@ -1,5 +1,6 @@
 using Shared.Enums;
 using Shared.Models;
+using Shared.Models.DTO;
 
 namespace Client.Services.Server.Coordinator.UserManager;
 

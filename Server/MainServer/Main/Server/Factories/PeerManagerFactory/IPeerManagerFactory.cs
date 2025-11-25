@@ -1,4 +1,4 @@
-using Server.MainServer.Main.Server.Video.Peer;
+using Server.MainServer.Main.Server.Coordinator.Sessions.Video.Peer;
 
 namespace Server.MainServer.Main.Server.Factories.PeerManagerFactory;
 

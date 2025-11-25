@@ -1,9 +1,8 @@
 using System.Collections.Concurrent;
-using Fleck;
 
-namespace Server.MainServer.Main.Server.Coordinator.Connection.Manager;
+namespace Server.MainServer.Main.Server.Coordinator.Connection.ConnectionManager;
 
-public interface IConnectionManagerContext
+public interface IConnectionManagerContext : IDisposable
 {
     ConcurrentDictionary<string, IClientConnection> ClientConnections { get; }
 }

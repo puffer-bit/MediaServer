@@ -3,7 +3,7 @@ using SIPSorcery.Net;
 
 namespace Server.MainServer.Main.Server.Coordinator.WebRTC.Manager;
 
-public interface IWebRTCManagerContext
+public interface IWebRTCManagerContext : IDisposable
 {
     ConcurrentDictionary<string, RTCPeerConnection> Connections { get; }
     ConcurrentDictionary<string, MediaStreamTrack> AudioTracks { get; }

@@ -69,7 +69,7 @@ namespace Server.MainServer.Main.Server.Coordinator
             }
         }
         
-        public LeaveSessionResult KickFromSession(SessionDTO sessionDTO, string userId)
+        public LeaveSessionResult KickFromSession(SessionDTO sessionDTO, string userId, bool isForce)
         {
             switch (sessionDTO.SessionType)
             {
@@ -77,7 +77,7 @@ namespace Server.MainServer.Main.Server.Coordinator
                     return _sessionManager.KickFromChatSession((ChatSessionDTO)sessionDTO, userId);
 
                 case SessionType.Video:
-                    return _sessionManager.KickFromVideoSession((VideoSessionDTO)sessionDTO, userId);
+                    return _sessionManager.KickFromVideoSession((VideoSessionDTO)sessionDTO, userId, isForce);
 
                 case SessionType.Voice:
                     return _sessionManager.KickFromVoiceSession((VoiceSessionDTO)sessionDTO, userId);
@@ -85,6 +85,44 @@ namespace Server.MainServer.Main.Server.Coordinator
                 case SessionType.Undefiend:
                 default:
                     return LeaveSessionResult.InternalError;
+            }
+        }
+        
+        public ApproveUserSessionResult? ApproveUserInSession(SessionDTO sessionDTO, string userId)
+        {
+            switch (sessionDTO.SessionType)
+            {
+                case SessionType.Chat:
+                    throw new NotImplementedException();
+
+                case SessionType.Video:
+                    return _sessionManager.ApproveVideoSessionParticipant(sessionDTO, userId);
+
+                case SessionType.Voice:
+                    throw new NotImplementedException();
+
+                case SessionType.Undefiend:
+                default:
+                    return ApproveUserSessionResult.InternalError;
+            }
+        }
+        
+        public RejectUserSessionResult? RejectUserInSession(SessionDTO sessionDTO, string userId)
+        {
+            switch (sessionDTO.SessionType)
+            {
+                case SessionType.Chat:
+                    throw new NotImplementedException();
+
+                case SessionType.Video:
+                    return _sessionManager.RejectVideoSessionParticipant(sessionDTO, userId);
+
+                case SessionType.Voice:
+                    throw new NotImplementedException();
+
+                case SessionType.Undefiend:
+                default:
+                    return RejectUserSessionResult.InternalError;
             }
         }
         

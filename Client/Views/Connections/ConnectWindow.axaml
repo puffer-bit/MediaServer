@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:controls="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia.ProgressRing"
         xmlns:connectWindow="clr-namespace:Client.ViewModels.MainWindow.ConnectWindow"
-        xmlns:conv="clr-namespace:Client.UIConverters"
+        xmlns:uiConverters="clr-namespace:Client.Services.UIConverters"
         mc:Ignorable="d" d:DesignWidth="350" d:DesignHeight="460"
         x:Class="Client.Views.Connections.ConnectWindow"
         x:DataType="connectWindow:ConnectWindowViewModel"
@@ -16,7 +16,7 @@
         CanResize="False"
         Title="Connect to server">
     <Window.Resources>
-        <conv:PasswordVisibilityConverter x:Key="PasswordVisibilityConverter"/>
+        <uiConverters:PasswordVisibilityConverter x:Key="PasswordVisibilityConverter"/>
     </Window.Resources>
     
     <Grid>
@@ -92,7 +92,7 @@
                           SelectedItem="{Binding SelectedIdentity, Mode=TwoWay}">
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding Name}" />
+                            <TextBlock Text="{Binding Username}" />
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
                 </ComboBox>

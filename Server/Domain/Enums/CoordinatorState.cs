@@ -1,0 +1,11 @@
+namespace Server.Domain.Enums;
+
+public enum CoordinatorState
+{
+    Offline = 0,
+    Starting = 1,
+    Online = 5,
+    Restarting = 8,
+    Closing = 9,
+    Failed = 11
+}

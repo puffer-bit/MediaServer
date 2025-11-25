@@ -152,6 +152,7 @@ internal class CreateSessionWindowViewModel : ReactiveObject, IDisposable
         var result = await _coordinatorSession.CreateSession(new VideoSessionDTO()
         {
             Id = "-1",
+            CoordinatorInstanceId = _coordinatorSession.CoordinatorDTO.Id,
             Name = this.Name!,
             Capacity = this.Capacity,
             IsAudioRequested = this.IsAudioRequested,

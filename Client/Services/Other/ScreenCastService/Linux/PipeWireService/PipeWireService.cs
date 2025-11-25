@@ -122,6 +122,9 @@ public class PipeWireService : IGStreamerService, IDisposable
 
     public ScreenCastResult DestroyPipeline()
     {
+        PausePipeline();
+        
+        _appSink?.Dispose();
         _pipeline?.Dispose();
         _pipeline = null;
         return ScreenCastResult.NoError;
@@ -129,6 +132,8 @@ public class PipeWireService : IGStreamerService, IDisposable
 
     public void Dispose()
     {
+        PausePipeline();
+        
         _appSink?.Dispose();
         _pipeline?.Dispose();
         GC.SuppressFinalize(this);

@@ -22,11 +22,16 @@ public partial class CoordinatorSession
 
     public void RaiseHostConnectedToSession(SessionDTO sessionDTO)
     {
-        
+        _sessionsManager.HandleHostConnected(sessionDTO.Id);
     }
     
     public void RaiseHostDisconnectedFromSession(SessionDTO sessionDTO)
     {
-        
+        _sessionsManager.HandleHostDisconnected(sessionDTO.Id);
+    }
+
+    public void RaiseParticipantListUpdated(SessionDTO sessionDTO)
+    {
+        _sessionsManager.HandleSessionParticipantListUpdated(sessionDTO);
     }
 }

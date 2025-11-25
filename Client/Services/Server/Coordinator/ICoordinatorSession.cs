@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Client.Services.Server.Video;
 using Shared.Enums;
 using Shared.Models;
+using Shared.Models.DTO;
 using Shared.Models.Requests;
 using SIPSorcery.Net;
 
@@ -19,7 +20,6 @@ public interface ICoordinatorSession : IDisposable
     CoordinatorSessionDTO? CoordinatorDTO { get; set; }
     
     public event NotifyCollectionChangedEventHandler? SessionsCollectionChanged;
-
     
     UserDTO GetUser();
 
@@ -27,9 +27,9 @@ public interface ICoordinatorSession : IDisposable
     Task ConnectAndAuthenticate(UserDTO user, string address, CancellationToken cancellationToken);
     Task Reconnect();
     Task Disconnect();
+    void SetCoordinatorInstanceData(string coordinatorInstanceId);
     ObservableCollection<SessionDTO> GetAllSessions();
     Task<SessionDTO?> GetSessionById(string sessionId);
-    CoordinatorSessionDTO? AsModel();
     Task UpdateAllSessionsAsync();
 
     void RaiseSessionAdded(SessionDTO sessionDTO);
@@ -48,4 +48,5 @@ public interface ICoordinatorSession : IDisposable
     Task<RTCSessionDescriptionInit?> RequestOffer(WebRTCNegotiation request);
     void SendICE(WebRTCNegotiation request);
     void SendAnswer(WebRTCNegotiation answer);
+    Task<UserDTO?> GetRemoteUser(string userId);
 }

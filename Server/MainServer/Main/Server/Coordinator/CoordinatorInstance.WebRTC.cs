@@ -22,22 +22,22 @@ public partial class CoordinatorInstance
         _webRTCManager.DestroyPeerConnection(peerId);
     }
 
-    public void ReactOnOffer(string? peerId, RTCSessionDescriptionInit sdpOffer)
+    public void ReactOnOffer(string peerId, RTCSessionDescriptionInit sdpOffer)
     {
         _webRTCManager.ReactOnOffer(peerId, sdpOffer);
     }
     
-    public async Task<RTCSessionDescriptionInit> ReactOnOfferRequest(string? peerId)
+    public async Task<RTCSessionDescriptionInit> ReactOnOfferRequest(string peerId)
     {
         return await _webRTCManager.ReactOnOfferRequest(peerId);
     }
     
-    public void ReactOnAnswer(string? peerId, RTCSessionDescriptionInit answerDesc)
+    public void ReactOnAnswer(string peerId, RTCSessionDescriptionInit answerDesc)
     {
         _webRTCManager.ReactOnAnswer(peerId, answerDesc);
     }
 
-    public void ReactOnICE(string? peerId, RTCIceCandidateInit candidate)
+    public void ReactOnICE(string peerId, RTCIceCandidateInit candidate)
     {
         _webRTCManager.ReactOnICE(peerId, candidate);
     }

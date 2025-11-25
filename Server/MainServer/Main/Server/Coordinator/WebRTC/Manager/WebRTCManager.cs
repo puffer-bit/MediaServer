@@ -1,5 +1,5 @@
 using System.Net;
-using Server.MainServer.Main.Server.Video;
+using Server.MainServer.Main.Server.Coordinator.Sessions.Video;
 using Shared.Enums;
 using Shared.Models;
 using Shared.Models.Requests;
@@ -10,7 +10,7 @@ namespace Server.MainServer.Main.Server.Coordinator.WebRTC.Manager;
 
 public class WebRTCManager : IWebRTCManager
 {
-    private readonly Dictionary<string?, Action<IPEndPoint, SDPMediaTypesEnum, RTPPacket>> _clientHandlers = new();
+    private readonly Dictionary<string, Action<IPEndPoint, SDPMediaTypesEnum, RTPPacket>> _clientHandlers = new();
     
     private readonly IWebRTCManagerContext _context;
     private readonly ILogger _logger;
@@ -33,14 +33,11 @@ public class WebRTCManager : IWebRTCManager
     /// <param name="isStreamHost"></param>
     /// <param name="isAudioRequested"></param>
     /// <param name="isTest"></param>
-    public RTCPeerConnection CreatePeerConnection(string userId, string roomId, string? peerId, bool isStreamHost, bool isAudioRequested, bool isTest)
+    public RTCPeerConnection CreatePeerConnection(string userId, string roomId, string peerId, bool isStreamHost, bool isAudioRequested, bool isTest)
     {
         var config = new RTCConfiguration
         {
-            iceServers = new List<RTCIceServer>
-            {
-                new RTCIceServer { urls = "stun:stun.sipsorcery.com" }
-            }
+            iceServers = new List<RTCIceServer> { }
         };
 
         var pc = new RTCPeerConnection(config);
@@ -49,20 +46,24 @@ public class WebRTCManager : IWebRTCManager
 
         if (isAudioRequested)
         {
-            AddAudioTrack(peerId, pc);
+            AddAudioTrack(peerId, pc, isTest);
         }
 
         if (!isTest && _coordinator.GetVideoSession(roomId, out var videoSession) == SessionRequestResult.NoError)
         {
-            RegisterConnectionEvents(pc, userId, roomId, peerId, isStreamHost, videoSession);
+            RegisterConnectionEvents(pc, userId, roomId, peerId, isStreamHost, videoSession!);
             _context.Connections.TryAdd(peerId, pc);
         }
 
         return pc;
     }
-    public void DestroyPeerConnection(string? peerId)
+    public void DestroyPeerConnection(string peerId)
     {
-        _context.Connections[peerId].Close("normal");
+        if (_context.Connections.TryGetValue(peerId, out var pc))
+        {
+            _context.Connections[peerId].Close("normal");
+            _context.Connections.TryRemove(peerId, out _);
+        }
         _context.VideoTracks.TryRemove(peerId, out _);
         _context.AudioTracks.TryRemove(peerId, out _);
     }
@@ -93,7 +94,7 @@ public class WebRTCManager : IWebRTCManager
     /// <param name="peerId"></param>
     /// <param name="answerDesc"></param>
     /// <returns></returns>
-    public void ReactOnAnswer(string? peerId, RTCSessionDescriptionInit? answerDesc)
+    public void ReactOnAnswer(string peerId, RTCSessionDescriptionInit? answerDesc)
     {
         if (_context.Connections.TryGetValue(peerId, out var pc) && answerDesc != null)
         {
@@ -110,7 +111,7 @@ public class WebRTCManager : IWebRTCManager
     /// </summary>
     /// <param name="peerId"></param>
     /// <param name="offerDesc"></param>
-    public void ReactOnOffer(string? peerId, RTCSessionDescriptionInit? offerDesc)
+    public void ReactOnOffer(string peerId, RTCSessionDescriptionInit? offerDesc)
     {
         if (_context.Connections.TryGetValue(peerId, out var pc) && offerDesc != null)
         {
@@ -132,7 +133,7 @@ public class WebRTCManager : IWebRTCManager
     /// TODO: -
     /// </summary>
     /// <returns></returns>
-    public async Task<RTCSessionDescriptionInit> ReactOnOfferRequest(string? peerId)
+    public async Task<RTCSessionDescriptionInit> ReactOnOfferRequest(string peerId)
     {
         if (_context.Connections.TryGetValue(peerId, out var pc))
         {
@@ -149,7 +150,7 @@ public class WebRTCManager : IWebRTCManager
     /// </summary>
     /// <param name="peerId"></param>
     /// <param name="candidate"></param>
-    public void ReactOnICE(string? peerId, RTCIceCandidateInit? candidate)
+    public void ReactOnICE(string peerId, RTCIceCandidateInit? candidate)
     {
         if (_context.Connections.TryGetValue(peerId, out var pc) && candidate != null)
         {
@@ -160,7 +161,7 @@ public class WebRTCManager : IWebRTCManager
             throw new ApplicationException("React on ICE candidate exception. PeerConnection not created.");
         }
     }
-    public void ReactOnICE(string? peerId, RTCIceCandidate? iceCandidate)
+    public void ReactOnICE(string peerId, RTCIceCandidate? iceCandidate)
     {
         if (_context.Connections.TryGetValue(peerId, out var pc) && iceCandidate != null)
         {
@@ -190,19 +191,25 @@ public class WebRTCManager : IWebRTCManager
         return false;
     }
 
-    private void HostStatusChanged(string? peerId, IVideoSession videoSession)
+    private void HostStatusChanged(string peerId, IVideoSession videoSession)
     {
         if (videoSession.IsHostConnected)
             HandleSendRtp(peerId, videoSession.GetHostPeerId());
         else
-            UnHandleSendRtp(peerId, videoSession.GetHostPeerId());
+            UnHandleSendRtp(peerId);
     }
     
-    private void HandleSendRtp(string? peerId, string? hostPeerId)
+    private void HandleSendRtp(string peerId, string? hostPeerId)
     {
+        if (hostPeerId == null)
+        {
+            _logger.LogDebug("Host id was null in RTP Handler.");
+            return;
+        }
+        
         if (!_context.Connections.TryGetValue(peerId, out var pc))
         {
-            _logger.LogWarning($"Peer '{peerId}' not found.");
+            _logger.LogDebug($"Participant '{peerId}' not found.");
             return;
         }
 
@@ -212,7 +219,7 @@ public class WebRTCManager : IWebRTCManager
                 return;
 
             //_logger.LogDebug($"Sending RTCP packet to peer {e}.");
-            pc!.SendRtpRaw(
+            pc.SendRtpRaw(
                 media,
                 rtpPkt.Payload,
                 rtpPkt.Header.Timestamp,
@@ -232,7 +239,7 @@ public class WebRTCManager : IWebRTCManager
         }
     }
     
-    private void UnHandleSendRtp(string? peerId, string? hostPeerId)
+    private void UnHandleSendRtp(string peerId)
     {
         if (_clientHandlers.TryGetValue(peerId, out Action<IPEndPoint, SDPMediaTypesEnum, RTPPacket>? value))
         {
@@ -246,7 +253,7 @@ public class WebRTCManager : IWebRTCManager
         }
     }
     
-    private void HandleConnectedState(string? peerId, bool isStreamHost, IVideoSession videoSession, Action hostStatusHandler)
+    private void HandleConnectedState(string peerId, bool isStreamHost, IVideoSession videoSession, Action hostStatusHandler)
     {
         if (isStreamHost)
         {
@@ -258,12 +265,10 @@ public class WebRTCManager : IWebRTCManager
             {
                 HandleSendRtp(peerId, videoSession.GetHostPeerId());
             }
-
-            videoSession.HostStatusChanged += hostStatusHandler;
         }
     }
 
-    private void HandleDisconnectedState(string? peerId, bool isStreamHost, IVideoSession videoSession, Action hostStatusHandler)
+    private void HandleDisconnectedState(string peerId, bool isStreamHost, IVideoSession videoSession, Action hostStatusHandler)
     {
         if (isStreamHost)
         {
@@ -273,14 +278,12 @@ public class WebRTCManager : IWebRTCManager
         {
             if (_clientHandlers.ContainsKey(peerId))
             {
-                UnHandleSendRtp(peerId, videoSession.GetHostPeerId());
+                UnHandleSendRtp(peerId);
             }
-
-            videoSession.HostStatusChanged -= hostStatusHandler;
         }
     }
 
-    private void RegisterConnectionEvents(RTCPeerConnection pc, string userId, string roomId, string? peerId, bool isStreamHost, IVideoSession videoSession)
+    private void RegisterConnectionEvents(RTCPeerConnection pc, string userId, string videoSessionId, string peerId, bool isStreamHost, IVideoSession videoSession)
     {
         var hostStatusHandler = () => HostStatusChanged(peerId, videoSession);
 
@@ -297,7 +300,7 @@ public class WebRTCManager : IWebRTCManager
                     sdpMLineIndex = candidate.sdpMLineIndex
                 };
 
-                var iceMessage = new WebRTCNegotiation(WebRTCNegotiationType.ICE, peerId, roomId, candidateDTO);
+                var iceMessage = new WebRTCNegotiation(WebRTCNegotiationType.ICE, peerId, videoSessionId, candidateDTO);
                 _coordinator.SendMessageToUser(userId, new BaseMessage(MessageType.WebRTCInit, iceMessage));
             }
         };
@@ -309,6 +312,12 @@ public class WebRTCManager : IWebRTCManager
             switch (state)
             {
                 case RTCPeerConnectionState.connected:
+                    if (videoSession.GetPeerById(peerId, out var peer))
+                        peer!.PeerState = VideoSessionPeerState.Connected;
+                    if (isStreamHost)
+                        _coordinator.HostNegotiatedInVideoSession(peerId, videoSessionId);
+                    else
+                        _coordinator.UserNegotiatedInVideoSession(peerId, videoSessionId);
                     HandleConnectedState(peerId, isStreamHost, videoSession, hostStatusHandler);
                     break;
 
@@ -334,7 +343,7 @@ public class WebRTCManager : IWebRTCManager
         };
     }
 
-    private void AddVideoTrack(string? peerId, RTCPeerConnection pc, bool isTest)
+    private void AddVideoTrack(string peerId, RTCPeerConnection pc, bool isTest)
     {
         var videoTrack = new MediaStreamTrack(
             new VideoFormat(96, "H264", 90000, "profile-level-id=42e01f;packetization-mode=1;")
@@ -348,7 +357,7 @@ public class WebRTCManager : IWebRTCManager
         pc.addTrack(videoTrack);
     }
     
-    private void AddAudioTrack(string? peerId, RTCPeerConnection pc)
+    private void AddAudioTrack(string peerId, RTCPeerConnection pc, bool isTest)
     {
         var audioFormats = new List<AudioFormat>
         {
@@ -362,8 +371,18 @@ public class WebRTCManager : IWebRTCManager
                 FormatID = 14
             }
         };
-
         var audioTrack = new MediaStreamTrack(audioFormats);
+        
+        if (!isTest)
+        {
+            _context.AudioTracks.TryAdd(peerId, audioTrack);
+        }
+        
         pc.addTrack(audioTrack);
+    }
+
+    public void Dispose()
+    {
+        _context.Dispose();
     }
 }

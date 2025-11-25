@@ -1,6 +1,4 @@
-using System.Collections.Concurrent;
-
-namespace Server.MainServer.Main.Server.Coordinator.Connection;
+namespace Server.MainServer.Main.Server.Coordinator.Connection.HeartbeatManager;
 
 public interface IHeartbeatManager
 {

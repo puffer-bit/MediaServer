@@ -57,24 +57,28 @@ public class SessionManager : ISessionManager
                 break;
             
             case SessionStateChangedType.HostConnected:
-            case SessionStateChangedType.HostDissconnected:
                 _coordinatorSession.RaiseHostConnectedToSession(stateChangedMessage.Session);
-                if (ActiveVideoSessions.TryGetValue(stateChangedMessage.Session.Id, out var activeSession))
-                {
-                    if (activeSession.IsHost)
-                        break;
-                    if (stateChangedMessage.Type == SessionStateChangedType.HostConnected)
-                    {
-                        activeSession.HandleHostConnected();
-                    }
-                    else
-                    {
-                        activeSession.HandleHostDissconnected();
-                    }
-                }
+                break;
+            
+            case SessionStateChangedType.HostDisconnected:
+                _coordinatorSession.RaiseHostDisconnectedFromSession(stateChangedMessage.Session);
+                break;
+            
+            case SessionStateChangedType.UserConnected:
+                _coordinatorSession.RaiseParticipantListUpdated(stateChangedMessage.Session);
+                break;
+            
+            case SessionStateChangedType.UserDisconnected:
+                _coordinatorSession.RaiseParticipantListUpdated(stateChangedMessage.Session);
+                break;
+            
+            case SessionStateChangedType.HostNegotiated:
+            case SessionStateChangedType.UserNegotiated:
+                _coordinatorSession.RaiseParticipantListUpdated(stateChangedMessage.Session);
                 break;
             
             default:
+                
                 Console.WriteLine("HandleSessionStateChanged error. Received unknown type.");
                 break;
         }
@@ -83,11 +87,11 @@ public class SessionManager : ISessionManager
     public async Task<SessionRequestResult?> RequestAllSessions()
     {
         Sessions.Clear();
-        var message = new BaseMessage(_coordinatorSession.GetUser().Id!, MessageType.SessionInfoRequest, new UserSessionsInfoRequestModel(true));
+        var message = new BaseMessage(_coordinatorSession.GetUser().Id!, MessageType.SessionInfoRequest, new SessionsInfoRequestModel(true));
         _coordinatorSession.SendMessage(message);
 
         var response = await _awaiter.WaitForResponseAsync(message.MessageId, message.Type);
-        var sessionsModel = (UserSessionsInfoRequestModel)response.Data;
+        var sessionsModel = (SessionsInfoRequestModel)response.Data;
         if (sessionsModel.Result == SessionRequestResult.NoError)
         {
             foreach (var session in sessionsModel.SessionsList)
@@ -101,14 +105,14 @@ public class SessionManager : ISessionManager
 
     public async Task<SessionRequestResult?> RequestSessionById(string sessionId)
     {
-        var message = new BaseMessage(_coordinatorSession.GetUser().Id!, MessageType.SessionInfoRequest, new UserSessionsInfoRequestModel(false)
+        var message = new BaseMessage(_coordinatorSession.GetUser().Id!, MessageType.SessionInfoRequest, new SessionsInfoRequestModel(false)
         {
             RoomId = sessionId
         });
         _coordinatorSession.SendMessage(message);
 
         var response = await _awaiter.WaitForResponseAsync(message.MessageId, message.Type);
-        var sessionsModel = (UserSessionsInfoRequestModel)response.Data;
+        var sessionsModel = (SessionsInfoRequestModel)response.Data;
         if (sessionsModel.Result == SessionRequestResult.NoError)
         {
             for (int i = 0; i < Sessions.Count; i++)
@@ -201,6 +205,36 @@ public class SessionManager : ISessionManager
             }
         }
         Console.WriteLine("Attempted reconfigure not existing session");
+    }
+
+    public void HandleHostConnected(string sessionId)
+    {
+        if (ActiveVideoSessions.TryGetValue(sessionId, out var activeSession))
+        {
+            if (activeSession.IsHost)
+                return;
+            
+            activeSession.HandleHostConnected();
+        }
+    }
+    
+    public void HandleHostDisconnected(string sessionId)
+    {
+        if (ActiveVideoSessions.TryGetValue(sessionId, out var activeSession))
+        {
+            if (activeSession.IsHost)
+                return;
+            
+            activeSession.HandleHostDisconnected();
+        }
+    }
+
+    public void HandleSessionParticipantListUpdated(SessionDTO sessionDTO)
+    {
+        if (ActiveVideoSessions.TryGetValue(sessionDTO.Id, out var activeSession))
+        {
+            activeSession.RaiseParticipantListUpdated((VideoSessionDTO)sessionDTO);
+        }
     }
 
     public async Task<CreateSessionResult> CreateSession(SessionDTO session)

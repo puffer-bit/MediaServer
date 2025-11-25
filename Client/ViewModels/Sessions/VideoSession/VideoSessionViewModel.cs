@@ -102,6 +102,12 @@ internal class VideoSessionViewModel : ReactiveObject, ISessionViewModel
         get => _isFullScreen;
         set => this.RaiseAndSetIfChanged(ref _isFullScreen, value);
     }
+    private bool _isUserListVisible;
+    public bool IsUserListVisible
+    {
+        get => _isUserListVisible;
+        set => this.RaiseAndSetIfChanged(ref _isUserListVisible, value);
+    }
     public bool IsAudioRequested
     {
         get => _videoSession?.IsAudioRequested ?? false;
@@ -130,15 +136,13 @@ internal class VideoSessionViewModel : ReactiveObject, ISessionViewModel
                             _videoSession.State != VideoSessionState.Ended &&
                             _videoSession.State != VideoSessionState.Canceled;
     
-    public readonly VideoSessionDTO SessionDTO;
-    
-    public ObservableCollection<UserDTO> SessionMembers { get; } = new();
+    public readonly VideoSessionDTO VideoSessionDto;
+    public VideoSessionParticipantsListViewModel ParticipantsListViewModel { get; set; }
     private IDisposable? _connectionSubscription;
     public Interaction<MessageBoxViewModel, Unit> ShowMessageBox { get; }
     public ReactiveCommand<Unit, Unit> JoinCommand { get; }
     public ReactiveCommand<Unit, Unit> CloseCommand { get; }
     public ReactiveCommand<Unit, Unit> StartReceiveCommand { get; }
-    public ReactiveCommand<Unit, Unit> EndReceiveCommand { get; }
     public ReactiveCommand<Unit, Unit> FullScreenCommand { get; }
     public ReactiveCommand<Unit, Unit> StartUserStream { get; }
     
@@ -160,11 +164,12 @@ internal class VideoSessionViewModel : ReactiveObject, ISessionViewModel
     private IVideoSession? _videoSession;
     
     public VideoSessionViewModel(
-        VideoSessionDTO sessionDTO, 
+        VideoSessionDTO videoSessionDto, 
         ICoordinatorSession coordinatorSession)
     {
         _coordinatorSession =  coordinatorSession;
-        SessionDTO = sessionDTO;
+        VideoSessionDto = videoSessionDto;
+        ParticipantsListViewModel = new VideoSessionParticipantsListViewModel(coordinatorSession);
         
         ShowMessageBox = new Interaction<MessageBoxViewModel, Unit>();
         
@@ -182,18 +187,23 @@ internal class VideoSessionViewModel : ReactiveObject, ISessionViewModel
         await Task.Delay(200);
         try
         {
-            var result = await _coordinatorSession.JoinSession(SessionDTO);
+            var result = await _coordinatorSession.JoinSession(VideoSessionDto);
             if (result == JoinSessionResult.NoError && _coordinatorSession.ConnectionStatus == CoordinatorState.Connected)
             {
                 _connectionSubscription?.Dispose();
-                _videoSession = _coordinatorSession.GetVideoSessionById(SessionDTO.Id);
+                _videoSession = _coordinatorSession.GetVideoSessionById(VideoSessionDto.Id);
                 if (_videoSession == null)
                 {
                     await ShowMessageBox.Handle(new MessageBoxViewModel(Icon.Error, Buttons.Ok, "Failed to retrieve session data.", "Error", false));
                     RequestClose?.Invoke();
                     return;
                 }
+                
                 await _videoSession.RefreshSession();
+                
+                ParticipantsListViewModel.FetchUsersFromDTO(_videoSession.AsModel());
+                _videoSession.ParticipantListUpdated += OnParticipantListUpdated;
+                    
                 _connectionSubscription = _videoSession
                     .WhenAnyValue(x => x.State)
                     .ObserveOn(RxApp.MainThreadScheduler)
@@ -204,7 +214,8 @@ internal class VideoSessionViewModel : ReactiveObject, ISessionViewModel
                         this.RaisePropertyChanged(nameof(IsLoading));
                         HandleSessionStatusAsync(_videoSession.State);
                     })
-                    .SelectMany(async status =>
+                    .Do(status => Console.WriteLine($"Video session {VideoSessionDto.Id} state changed: {status}"))
+                    .Select(status =>
                     {
                         switch (status)
                         {
@@ -212,7 +223,6 @@ internal class VideoSessionViewModel : ReactiveObject, ISessionViewModel
                                 return StartUserStream;
 
                             case VideoSessionState.TimedOut:
-
                             case VideoSessionState.Connected:
                                 return StartReceiveCommand;
 
@@ -221,7 +231,7 @@ internal class VideoSessionViewModel : ReactiveObject, ISessionViewModel
                         }
                     })
                     .Where(cmd => cmd != null)
-                    .Subscribe(cmd => cmd?.Execute(Unit.Default));
+                    .Subscribe(cmd => cmd?.Execute(Unit.Default).Subscribe());
             }
             else
             {
@@ -245,7 +255,7 @@ internal class VideoSessionViewModel : ReactiveObject, ISessionViewModel
                 await ShowMessageBox.Handle(new MessageBoxViewModel(Icon.Error, Buttons.Ok, 
                     $"Failed to join session. \n\nTimed out.", 
                     "Error", false));
-                _coordinatorSession.LeaveSession(SessionDTO);
+                _coordinatorSession.LeaveSession(VideoSessionDto);
                 RequestClose?.Invoke();
             }
         }
@@ -253,17 +263,20 @@ internal class VideoSessionViewModel : ReactiveObject, ISessionViewModel
 
     public void CloseSession()
     {
+        if (IsClosed)
+            return;
+        
         EndSending();
         EndReceive();
-        RequestClose?.Invoke();
-        _coordinatorSession.LeaveSession(SessionDTO);
-        IsClosed = true;
+        _coordinatorSession.LeaveSession(VideoSessionDto);
         _videoSession?.Dispose();
-        Dispose();
+        IsClosed = true;
+        RequestClose?.Invoke();
     }
     
     private void StartReceive()
     {
+        Console.WriteLine($"Starting receive from video session {VideoSessionDto.Id}");
         if (HostId == _coordinatorSession.GetUser().Id)
         {
             return;
@@ -338,9 +351,15 @@ internal class VideoSessionViewModel : ReactiveObject, ISessionViewModel
                 break;
         }
     }
+    
     private void OnFrameReceived(WriteableBitmap bmp)
     {
         CurrentFrame = bmp;
+    }
+
+    private void OnParticipantListUpdated(VideoSessionDTO sessionDTO)
+    {
+        ParticipantsListViewModel.FetchUsersFromDTO(sessionDTO);
     }
 
     public void ToggleFullscreen()
@@ -358,7 +377,7 @@ internal class VideoSessionViewModel : ReactiveObject, ISessionViewModel
     public void Dispose()
     {
         _connectionSubscription?.Dispose();
-        _videoSession?.Dispose();
         _currentFrame?.Dispose();
+        _videoSession?.Dispose();
     }
 }

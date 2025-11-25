@@ -8,6 +8,7 @@ using Shared.Models;
 using Shared.Models.Requests;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Shared.Models.DTO;
 
 namespace Client.Services.Server.Coordinator.Authentication;
 
@@ -33,6 +34,7 @@ public class Authenticator : IAuthenticator
         if (auth.Status == UserAuthRequestModel.AuthStatus.Completed)
         {
             _coordinatorSession.SetUser(auth.UserDto!);
+            _coordinatorSession.SetCoordinatorInstanceData(auth.CoordinatorInstanceId!);
         }
 
         return auth.Status;

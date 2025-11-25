@@ -1,10 +1,17 @@
 using System.Collections.Concurrent;
-using Fleck;
 
-namespace Server.MainServer.Main.Server.Coordinator.Connection.Manager
+namespace Server.MainServer.Main.Server.Coordinator.Connection.ConnectionManager
 {
     public class ConnectionManagerContext : IConnectionManagerContext
     {
         public ConcurrentDictionary<string, IClientConnection> ClientConnections { get; } = new();
+
+        public void Dispose()
+        {
+            foreach (var clientConnection in ClientConnections.Values)
+            {
+                clientConnection.Dispose();
+            }
+        }
     }
 }
