@@ -284,7 +284,7 @@ namespace Server.MainServer.Main.Server.Orchestrator
 
             _webSocketServer.Start(socket =>
             {
-                var handler = new OrchestratorWebSocketInstance(this, socket, loggerFactory);
+                var handler = new OrchestratorInstanceWebSocketGateway(this, socket, loggerFactory);
 
                 socket.OnOpen = handler.OnOpen;
                 socket.OnClose = handler.OnClose;

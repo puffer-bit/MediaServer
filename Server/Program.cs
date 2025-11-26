@@ -43,10 +43,7 @@ namespace Server
                 
                 var serverLoader = app.Services.GetRequiredService<InitialServerLoader>();
                 serverLoader.SetContext(config);
-                if (!serverLoader.FfmpegInitialize())
-                {
-                    Console.WriteLine("Cannot initialize ffmpeg.");
-                }
+                serverLoader.FfmpegInitialize();
                 
                 Console.WriteLine("Waiting for ASP .NET...");
                 ConfigureMiddleware(app);
@@ -77,9 +74,12 @@ namespace Server
 
         private static IConfiguration BuildConfiguration(string contentRootPath)
         {
+            var env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Production";
+
             return new ConfigurationBuilder()
                 .SetBasePath(contentRootPath)
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .AddJsonFile($"appsettings.{env}.json", optional: true, reloadOnChange: true) // <-- вот это
                 .AddEnvironmentVariables()
                 .Build();
         }
@@ -180,7 +180,7 @@ namespace Server
 
                 _wsServer.Start(socket =>
                 {
-                    var handler = ActivatorUtilities.CreateInstance<CoordinatorWebSocketInstance>(
+                    var handler = ActivatorUtilities.CreateInstance<CoordinatorInstanceWebSocketGateway>(
                         provider,
                         coordinatorInstance,
                         socket

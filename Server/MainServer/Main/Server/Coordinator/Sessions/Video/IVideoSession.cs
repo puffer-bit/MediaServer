@@ -28,6 +28,7 @@ public interface IVideoSession
     List<UserDTO> GetAllPeersAsUsers();
     List<UserDTO> GetAllPeersAsUsersModel();
     string GetSessionId();
+    string GetName();
     string? GetHostId();
     string? GetHostPeerId();
     int GetSessionCapacity();

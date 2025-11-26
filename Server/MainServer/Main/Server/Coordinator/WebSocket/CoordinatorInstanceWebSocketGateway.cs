@@ -4,20 +4,20 @@ using Shared.Enums;
 using Shared.Models;
 using Shared.Models.DTO;
 
-namespace Server.MainServer.Main.Server.Orchestrator.WebSocket
+namespace Server.MainServer.Main.Server.Coordinator.WebSocket
 {
-    public class OrchestratorWebSocketInstance
+    public class CoordinatorInstanceWebSocketGateway
     {
-        private readonly IOrchestratorInstance _orchestrator;
+        private readonly CoordinatorInstance _coordinator;
         private readonly IWebSocketConnection _socket;
         private readonly ILogger _logger;
         private UserDTO? User { get; set; }
         
-        public OrchestratorWebSocketInstance(IOrchestratorInstance orchestratorInstance, IWebSocketConnection socket, ILoggerFactory loggerFactory)
+        public CoordinatorInstanceWebSocketGateway(CoordinatorInstance coordinatorInstance, IWebSocketConnection socket, ILoggerFactory loggerFactory)
         {
-            _orchestrator = orchestratorInstance;
+            _coordinator = coordinatorInstance;
             _socket = socket;
-            _logger = loggerFactory.CreateLogger($"Server WebSocket Gateway");
+            _logger = loggerFactory.CreateLogger($"Coordinator {coordinatorInstance.Context.Id} WebSocket Gateway");
         }
         
         public Action<string> OnMessage => (e) =>
@@ -36,7 +36,7 @@ namespace Server.MainServer.Main.Server.Orchestrator.WebSocket
                     // Проверка пользователя
 
                     User = (UserDTO)message.Data;
-                    //_orchestrator.AttachUser(message, _socket);
+                    _coordinator.AttachUser(message, _socket);
                     
                     _logger.LogTrace("User {Name}(ID:{Id}) connected.", User.Username, User.Id);
                 }
@@ -48,14 +48,14 @@ namespace Server.MainServer.Main.Server.Orchestrator.WebSocket
             }
             else
             {
-                //_orchestrator.ProcessEvent(message);
+                _coordinator.ProcessEvent(message);
             }
         };
 
         public Action OnOpen => () =>
         {
             _logger.LogTrace(
-                "Client connection from {UserEndPoint}",
+                "Web socket client connection from {UserEndPoint}",
                 _socket.ConnectionInfo.ClientIpAddress);
         };
 
@@ -66,10 +66,7 @@ namespace Server.MainServer.Main.Server.Orchestrator.WebSocket
 
         public Action OnClose => () =>
         {
-            if (User != null)
-            {
-                //_orchestrator.DetachUser(User.Id, "WebSocket disconnection.");
-            }
+
         };
         
         private BaseMessage? DeSerializeMessage(string jsonMessage)

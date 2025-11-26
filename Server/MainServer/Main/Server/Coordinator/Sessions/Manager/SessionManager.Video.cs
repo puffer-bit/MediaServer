@@ -39,7 +39,16 @@ public partial class SessionManager
                 _logger.LogTrace("CreateVideoSession event error. Wrong room capacity");
                 return CreateSessionResult.WrongCapacity;
             }
-        
+
+            foreach (var videoSession in _context.VideoSessions)
+            {
+                if (videoSession.Value.GetName() == videoSessionDTO.Name)
+                {
+                    _logger.LogTrace("CreateVideoSession event error. Name already used");
+                    return CreateSessionResult.NameAlreadyUsed;
+                }
+            }
+            
             var newRoomId = sessionDTO.HostId == "system" ? sessionDTO.Id : Guid.NewGuid().ToString();
             videoSessionDTO.Id = newRoomId;
             if (_context.VideoSessions.TryAdd(newRoomId, _videoSessionFactory.CreateVideoSession(videoSessionDTO, _coordinator)))

@@ -134,7 +134,7 @@ namespace Server.MainServer.Main.Server.Coordinator
 
             _webSocketServer.Start(socket =>
             {
-                var handler = new CoordinatorWebSocketInstance(this, socket, loggerFactory);
+                var handler = new CoordinatorInstanceWebSocketGateway(this, socket, loggerFactory);
 
                 socket.OnOpen = handler.OnOpen;
                 socket.OnClose = handler.OnClose;

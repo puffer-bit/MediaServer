@@ -34,9 +34,10 @@ namespace Server.MainServer.Main.Server.Bootstrap
                 IsFfmpegInitialized = true;
                 return true;
             }
-            catch (ApplicationException ex)
+            catch (Exception ex)
             {
-                Log.Logger.Debug("Ffmpeg initialize exception: {exception}", ex.Message);
+                Console.WriteLine("Ffmpeg initialize exception: {0}", ex.Message);
+                IsFfmpegInitialized = false;
                 return false;
             }
         }

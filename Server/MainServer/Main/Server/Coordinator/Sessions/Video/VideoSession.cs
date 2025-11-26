@@ -194,6 +194,11 @@ public class VideoSession : IVideoSession
         return _context.Id;
     }
 
+    public string GetName()
+    {
+        return _context.Name;
+    }
+
     public string? GetHostId()
     {
         return _context.HostId;
