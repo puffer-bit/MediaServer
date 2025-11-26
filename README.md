@@ -1,11 +1,11 @@
 A video server written in C# that uses WebRTC and WebSocekt to transmit screen broadcasts.
 
 # Dependencies
-WebRTC - [SIPSorcery](https://example.com)
+WebRTC - [SIPSorcery](https://github.com/sipsorcery-org/sipsorcery)
 
-Logging - [Serilog]()
+Logging - [Serilog](https://github.com/serilog/serilog)
 
-WebSocekt Server - [Fleck](https://github.com/statianzo/Fleck) 
+WebSocekt Server - [Fleck](https://github.com/statianzo/Fleck)
 
 WebSocekt Client - [WebSocket](websocket-client)
 
