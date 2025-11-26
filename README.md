@@ -7,7 +7,7 @@ Logging - [Serilog](https://github.com/serilog/serilog)
 
 WebSocekt Server - [Fleck](https://github.com/statianzo/Fleck)
 
-WebSocekt Client - [WebSocket](websocket-client)
+WebSocekt Client - [WebSocket](https://github.com/Marfusios/websocket-client)
 
 Client UI - Avalonia
 
