@@ -14,18 +14,18 @@ public class OrchestratorInstanceRepository : IOrchestratorInstanceRepository
 
     public async Task<OrchestratorInstanceEntity?> GetAsync(CancellationToken cancellationToken = default)
     {
-        return await _context.ServerInstance
+        return await _context.OrchestratorInstance
             .SingleOrDefaultAsync(x => x.Id == 1, cancellationToken);
     }
     
     public async Task SaveOrUpdateAsync(OrchestratorInstanceEntity instance, CancellationToken cancellationToken = default)
     {
-        var existing = await _context.ServerInstance
+        var existing = await _context.OrchestratorInstance
             .FirstOrDefaultAsync(x => x.Id == instance.Id, cancellationToken);
 
         if (existing == null)
         {
-            await _context.ServerInstance.AddAsync(instance, cancellationToken);
+            await _context.OrchestratorInstance.AddAsync(instance, cancellationToken);
         }
         else
         {

@@ -128,7 +128,7 @@ internal class ConnectWindowViewModel : ReactiveObject, IDisposable
                 if (SelectedIdentity == null || SelectedIdentity.Id == null)
                 {
                     var coordinatorSessionDto = coordinatorSession.CoordinatorDTO;
-                    _appSettingsManager.AddIdentity(coordinatorSessionDto!.User.Id!, coordinatorSessionDto);
+                    _appSettingsManager.AddIdentity(coordinatorSessionDto!.User!.Id!, coordinatorSessionDto);
                     _appSettingsManager.SetCoordinatorForAutoConnect(coordinatorSessionDto);
                     _appSettingsManager.SaveSettings();
                 }
@@ -139,7 +139,7 @@ internal class ConnectWindowViewModel : ReactiveObject, IDisposable
             {
                 IsConnecting = false;
             }
-            catch (TimeoutException ex)
+            catch (TimeoutException)
             {
                 IsConnecting = false;
                 ConnectionStatus = "Waiting for action...";
@@ -169,7 +169,7 @@ internal class ConnectWindowViewModel : ReactiveObject, IDisposable
         
         var matches = _appSettingsManager.SettingsData.CoordinatorSessionsIdentities
             .Values
-            .Where(coordinatorSessionDTO => coordinatorSessionDTO.Address == ServerAddress)
+            .Where(coordinatorSessionDTO => coordinatorSessionDTO.IpAddress == ServerAddress)
             .ToList();
 
         foreach (var match in matches)

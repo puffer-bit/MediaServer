@@ -1,6 +1,7 @@
 using Server.Domain.Entities;
 using Server.Domain.Enums;
 using Shared.Models;
+using Shared.Models.DTO;
 
 namespace Server.MainServer.Main.Server.Coordinator;
 
@@ -13,6 +14,8 @@ public interface ICoordinatorInstance
     CoordinatorState State { get; set; }
     bool IsRemoteConnectionsAvailable { get; set; }
     bool IsRemoteConnectionsRestricted { get; set; }
+    bool IsStunServerAvailable { get; set; }
+    bool IsTurnServerAvailable { get; set; }
     TimeSpan UpTime => DateTime.UtcNow - Context.CurrentLaunchTime;
     
     event Func<string, Task>? ContextChanged;
@@ -22,10 +25,13 @@ public interface ICoordinatorInstance
     event Func<string, Task>? VideoSessionRemoved;
     
     Task Configure(ILoggerFactory loggerFactory, CoordinatorInstanceEntity coordinatorInstanceEntity);
+    Task CheckTurnAndStunServer();
     void CloseCoordinator();
 
     
     void RemoveUserFromInstance(string userId);
     Task LoadSessions(List<VideoSessionEntity> videoSessionsEntities);
     void SendMessageToUser(string userId, BaseMessage message);
+
+    CoordinatorSessionDTO AsModel();
 }

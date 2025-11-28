@@ -33,6 +33,8 @@ namespace Server.MainServer.Main.Server.Coordinator
         public bool IsStarted { get; set; }
         public bool IsRemoteConnectionsAvailable { get; set; }
         public bool IsRemoteConnectionsRestricted { get; set; }
+        public bool IsStunServerAvailable { get; set; }
+        public bool IsTurnServerAvailable { get; set; }
         public CoordinatorState State { get; set; }
 
         private WebSocketServer? _webSocketServer;
@@ -54,12 +56,13 @@ namespace Server.MainServer.Main.Server.Coordinator
         private readonly IHeartbeatManager _heartbeatManager;
         private readonly Dictionary<MessageType, IMessageHandler> _handlers = new();
         
-        public CoordinatorInstance(CoordinatorInstanceEntity coordinatorInstanceEntity,
+        public CoordinatorInstance(string serverVersion,
+        CoordinatorInstanceEntity coordinatorInstanceEntity,
             ILoggerFactory loggerFactory,
             ICoordinatorInstanceFactory coordinatorInstanceFactory)
         {
             State = CoordinatorState.Starting;
-            Context = coordinatorInstanceFactory.CreateCoordinatorInstanceContext(coordinatorInstanceEntity.Id);
+            Context = coordinatorInstanceFactory.CreateCoordinatorInstanceContext(coordinatorInstanceEntity.Id, serverVersion);
             Context.LoadContext(coordinatorInstanceEntity);
             
             _logger = loggerFactory.CreateLogger($"Coordinator {Context.Name}");
@@ -122,28 +125,8 @@ namespace Server.MainServer.Main.Server.Coordinator
             _sessionManager.CloseAllSessions();
             _connectionManager.DisconnectAllUsers(false);
             _connectionManager.Dispose();
+            State = CoordinatorState.Closed;
             _logger.LogInformation("Coordinator {Id} closed.", Context.Id);
-        }
-
-        private void CreateWebSocketServer(ILoggerFactory loggerFactory)
-        {
-            var cert = X509CertificateLoader.LoadPkcs12FromFile("Certs/server.pfx", "MyPassword");
-            _webSocketServer = new WebSocketServer($"wss://{Context.Ip}:{Context.Port}/");
-            _webSocketServer.EnabledSslProtocols = SslProtocols.Tls12 | SslProtocols.Tls13;
-            _webSocketServer.Certificate = cert;
-
-            _webSocketServer.Start(socket =>
-            {
-                var handler = new CoordinatorInstanceWebSocketGateway(this, socket, loggerFactory);
-
-                socket.OnOpen = handler.OnOpen;
-                socket.OnClose = handler.OnClose;
-                socket.OnMessage = handler.OnMessage;
-                socket.OnError = handler.OnError;
-            });
-
-            IsGatewayReady = true;
-            _logger.LogInformation("Coordinator {Id} WebSocket server listening on IP:{Ip} and Port:{Port}.", Context.Id, Context.Ip, Context.Port);
         }
         
         private async Task CreateTestVideoSessionFromMp4()
@@ -266,6 +249,33 @@ namespace Server.MainServer.Main.Server.Coordinator
             {
                 _logger.LogError("TestSession sdp failed.");
             }
+        }
+
+        public CoordinatorSessionDTO AsModel()
+        {
+            return new CoordinatorSessionDTO()
+            {
+                Id = Context.Id,
+                IpAddress = Context.Ip,
+                Port = Context.Port,
+                ConnectedUsersCount = _userManager.ConnectedUsersCount,
+                IsStunEnabled = Context.IsStunEnabled,
+                IsStunServerAvailable = IsStunServerAvailable,
+                StunAddress = Context.StunAddress,
+                StunPort = Context.StunPort,
+                IsTurnEnabled = Context.IsTurnEnabled,
+                IsTurnServerAvailable = IsTurnServerAvailable,
+                TurnAddress = Context.TurnAddress,
+                TurnPort = Context.TurnPort,
+                TurnUsername = Context.TurnUsername,
+                TurnPassword = Context.TurnPassword,
+                ServerVersion = Context.ServerVersion,
+                CreateTime = Context.CreateTime,
+                FirstLaunchTime = Context.FirstLaunchTime,
+                CurrentLaunchTime = Context.CurrentLaunchTime,
+                MaxOnlineUsers = Context.MaxOnlineUsers,
+                IsMOTDEnabled = Context.IsMOTDEnabled
+            };
         }
     }
 }

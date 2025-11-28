@@ -27,7 +27,15 @@ public partial class CoordinatorInstance
         if (AddUserToInstance(userDTO, out var addedUser))
         {
             _heartbeatManager.StartAsync(userDTO.Id!, AddNewConnection(userDTO.Id!, webSocket).Token);
-            SendMessageToUser(userDTO.Id!, new BaseMessage(MessageType.UserAuth, new UserAuthRequestModel(UserAuthRequestModel.AuthStatus.Completed, addedUser!, Context.Id))
+
+            var coordinatorDto = AsModel();
+            coordinatorDto.User = addedUser;
+            
+            SendMessageToUser(userDTO.Id!, new BaseMessage(MessageType.UserAuth, new UserAuthRequestModel(UserAuthRequestModel.AuthStatus.Completed, addedUser!, Context.Id)
+            {
+                UserDto = addedUser,
+                CoordinatorSessionData = coordinatorDto
+            })
             {
                 MessageId = message.MessageId
             });

@@ -14,15 +14,26 @@
     public class DatabaseConfig
     {
         public string? ConnectionString { get; set; }
-        public string Provider { get; set; } = "SQLite";
+        public string Provider { get; set; } = "sqlite";
     }
 
     public class MainServerConfig
     {
-        public string MainServerIpAddress { get; set; } = "localhost";
-        public int Port { get; set; } = 26666;
-        public int TimeOutTimeInSeconds { get; set; } = 25;
+        public string IpAddress { get; set; }
+        public ushort Port { get; set; }
+        public int TimeOutTimeInSeconds { get; set; }
         public bool EnableFfmpeg { get; set; }
-        public bool ActivateAspNetServer { get; set; }
+        public bool ActivateWebServer { get; set; }
+        
+        public bool EnableTurn { get; set; }
+        public bool EnableStun { get; set; }
+
+        public string? TurnAddress { get; set; }
+        public ushort TurnPort { get; set; }
+        public string TurnUsername { get; set; }
+        public string TurnPassword { get; set; }
+        
+        public string? StunAddress { get; set; }
+        public ushort StunPort { get; set; }
     }
 }

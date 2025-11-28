@@ -25,7 +25,7 @@ namespace Server.MainServer.Main.Server.Orchestrator
         int RamSizeMb { get; set; }
         int MaxDbSizeMb { get; set; }
         
-        Task Configure(InitialServerLoader initialServerLoader);
+        Task Configure();
         
         // Lifecycle actions
         Task StartAsync(CancellationToken ct = default);
@@ -71,6 +71,7 @@ namespace Server.MainServer.Main.Server.Orchestrator
 
         // Other
         Task ProcessExternalAction();
+        void CreatePfxCert();
 
         // Events
         event EventHandler<ServerStateChangedEventArgs> StateChanged;

@@ -1,3 +1,4 @@
+using System.Net.Sockets;
 using Server.Domain.Entities;
 using Server.Domain.Enums;
 using Server.MainServer.Main.Server.Coordinator.Sessions.Video;
@@ -19,7 +20,7 @@ public partial class CoordinatorInstance
         try
         {
             CreateWebSocketServer(loggerFactory);
-                
+            await CheckTurnAndStunServer();
             _userManager.AddUser(new UserDTO()
             {
                 Id = "system",
@@ -33,6 +34,8 @@ public partial class CoordinatorInstance
             IsReady = true;
             IsStarted = true;
             State = CoordinatorState.Online;
+            
+            
             _logger.LogInformation("Coordinator {Name} (ID: {Id}) successful started.", Context.Name, Context.Id);
         }
         catch (Exception ex)

@@ -7,5 +7,6 @@ public enum CoordinatorState
     Online = 5,
     Restarting = 8,
     Closing = 9,
-    Failed = 11
+    Failed = 11,
+    Closed
 }

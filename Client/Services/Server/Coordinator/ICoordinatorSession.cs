@@ -17,18 +17,17 @@ public interface ICoordinatorSession : IDisposable
     CoordinatorState ConnectionStatus { get; set; }
     DateTime? LastPing { get; }
     CancellationTokenSource Cts { get; set; }
-    CoordinatorSessionDTO? CoordinatorDTO { get; set; }
+    CoordinatorSessionDTO CoordinatorDTO { get; set; }
 
     public event Action? OnDisconnect;
     public event NotifyCollectionChangedEventHandler? SessionsCollectionChanged;
     
     UserDTO GetUser();
-
-    Task ConnectAndAuthenticate(UserDTO user, string address);
-    Task ConnectAndAuthenticate(UserDTO user, string address, CancellationToken cancellationToken);
+    
+    Task ConnectAndAuthenticate(UserDTO user, string address, CancellationToken cancellationToken = default);
     Task Reconnect();
     Task Disconnect();
-    void SetCoordinatorInstanceData(string coordinatorInstanceId);
+    void SetCoordinatorInstanceData(CoordinatorSessionDTO coordinatorSessionDTO);
     ObservableCollection<SessionDTO> GetAllSessions();
     Task<SessionDTO?> GetSessionById(string sessionId);
     Task UpdateAllSessionsAsync();

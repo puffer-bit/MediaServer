@@ -7,6 +7,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>42dbd77a-e8ab-4df2-b021-d18f42382597</UserSecretsId>
     <RuntimeIdentifiers>linux-x64</RuntimeIdentifiers>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
   </PropertyGroup>
 
   <ItemGroup>
@@ -33,9 +34,9 @@
 
   <ItemGroup>
     <Folder Include="Certs\" />
+    <Folder Include="Libs\FFmpeg\" />
     <Folder Include="Logs\" />
     <Folder Include="MainServer\Database\Migrations\" />
-    <Folder Include="MainServer\Main\SignalR\" />
     <Folder Include="Web\" />
   </ItemGroup>
 
@@ -54,6 +55,9 @@
 
   <ItemGroup>
     <Content Remove="MainServer\Main\Server\Coordinator\MessagesProcessing\MessagesValidator\**" />
+    <Content Include="..\.dockerignore">
+      <Link>.dockerignore</Link>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
@@ -181,4 +185,10 @@
     <ProjectReference Include="..\Shared\Shared.csproj" />
   </ItemGroup>
 
+    <ItemGroup>
+        <Content Include="..\Libs\FFmpeg\**\*">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+    </ItemGroup>
+    
 </Project>

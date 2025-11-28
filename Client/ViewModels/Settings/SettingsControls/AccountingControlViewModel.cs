@@ -3,6 +3,7 @@ using System.Reactive;
 using Client.Services.Other.AppInfrastructure;
 using Client.Services.Server;
 using ReactiveUI;
+using Shared.Models.DTO;
 
 namespace Client.ViewModels.Settings.SettingsControls;
 

@@ -16,6 +16,7 @@ using Client.Services.Server.Coordinator.UserManager;
 using Client.Services.Server.Factories.CoordinatorFactory;
 using ReactiveUI;
 using Shared.Models;
+using Shared.Models.DTO;
 
 namespace Client.Services.Server.Coordinator;
 
@@ -30,7 +31,7 @@ public partial class CoordinatorSession : ReactiveObject, ICoordinatorSession
     
     public DateTime? LastPing { get; set; }
     public CancellationTokenSource Cts { get; set; }
-    public CoordinatorSessionDTO? CoordinatorDTO { get; set; }
+    public CoordinatorSessionDTO CoordinatorDTO { get; set; }
     public event Action? OnDisconnect;
     private ReactiveCommand<Unit, Unit> MonitorServerCommand { get; }
     private IDisposable? _monitorSubscription;

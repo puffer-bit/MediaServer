@@ -1,5 +1,7 @@
 ﻿using System.Collections.Concurrent;
+using System.Net;
 using System.Security.Authentication;
+using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using Fleck;
 using Server.Domain.Entities;
@@ -44,17 +46,19 @@ namespace Server.MainServer.Main.Server.Orchestrator
         private readonly IServiceProvider _serviceProvider;
         private readonly IServiceScopeFactory _scopeFactory;
         private readonly ICoordinatorInstanceFactory _coordinatorInstanceFactory;
-
+        private readonly InitialServerLoader _initialServerLoader;
         public event EventHandler<ServerStateChangedEventArgs>? StateChanged;
         
         public OrchestratorInstance(IOrchestratorInstanceContext orchestratorInstanceContext,
             ILoggerFactory loggerFactory,
             ICoordinatorInstanceFactory coordinatorInstanceFactory, 
             IServiceScopeFactory scopeFactory,
-            IServiceProvider serviceProvider)
+            IServiceProvider serviceProvider,
+            InitialServerLoader initialServerLoader)
         {
             State = ServerState.Starting;
             Context = orchestratorInstanceContext;
+            _initialServerLoader = initialServerLoader;
             _logger = loggerFactory.CreateLogger($"Orchestrator");
             
             _coordinatorInstanceFactory = coordinatorInstanceFactory;
@@ -62,11 +66,11 @@ namespace Server.MainServer.Main.Server.Orchestrator
             _serviceProvider = serviceProvider;
         }
 
-        public async Task Configure(InitialServerLoader initialServerLoader)
+        public async Task Configure()
         {
             _logger.LogTrace("Configuring orchestrator...");
-            IsFfmpegEnabled = initialServerLoader.Context.MainServer.EnableFfmpeg;
-            IsFfmpegInitialized = initialServerLoader.IsFfmpegInitialized;
+            IsFfmpegEnabled = _initialServerLoader.Context.MainServer.EnableFfmpeg;
+            IsFfmpegInitialized = _initialServerLoader.IsFfmpegInitialized;
 
             using var scope = _scopeFactory.CreateScope();
             var orchestratorInstanceRepository = scope.ServiceProvider.GetRequiredService<IOrchestratorInstanceRepository>();
@@ -78,7 +82,7 @@ namespace Server.MainServer.Main.Server.Orchestrator
                 Context.CreateContext();
                 await orchestratorInstanceRepository.SaveOrUpdateAsync(Context.GetAsEntity());
                 
-                await AttachCoordinatorInstance(await CreateCoordinatorInstanceAsync("Default server", "0.0.0.0", 26666));
+                await AttachCoordinatorInstance(await CreateCoordinatorInstanceAsync("Default server", "127.0.0.1", 26666));
             }
             else
             {
@@ -96,9 +100,16 @@ namespace Server.MainServer.Main.Server.Orchestrator
             
                 await FetchCoordinatorsInstancesFromDbAsync();
             }
+            catch (CryptographicException e)
+            {
+                _logger.LogCritical("Orchestrator failed. Failed to found certificate for WebSocket connection.");
+                await StopAsync(CancellationToken.None);
+                Environment.Exit(1);
+            }
             catch (Exception e)
             {
                 _logger.LogCritical("Orchestrator failed. Exception: {e}", e.Message);
+                await StopAsync(CancellationToken.None);
                 Environment.Exit(1);
             }
             
@@ -183,7 +194,7 @@ namespace Server.MainServer.Main.Server.Orchestrator
                 Name = name,
                 Ip = ip,
                 Port = port,
-                CreateTime = DateTime.UtcNow
+                CreateTime = DateTime.UtcNow,
             };
             await coordinatorsInstancesRepository.AddAsync(coordinatorInstanceEntity);
             
@@ -192,13 +203,31 @@ namespace Server.MainServer.Main.Server.Orchestrator
         
         public async Task AttachCoordinatorInstance(CoordinatorInstanceEntity coordinatorInstanceEntity)
         {
-            CoordinatorsPool.TryAdd(coordinatorInstanceEntity.Id, _coordinatorInstanceFactory.CreateCoordinatorInstance(coordinatorInstanceEntity));
+            // TODO: Remove after full orchestrator integration
+            coordinatorInstanceEntity.Ip = _initialServerLoader.Context.MainServer.IpAddress;
+            coordinatorInstanceEntity.Port = _initialServerLoader.Context.MainServer.Port;
+            
+            coordinatorInstanceEntity.IsTurnEnabled = _initialServerLoader.Context.MainServer.EnableTurn;
+            coordinatorInstanceEntity.TurnAddress = _initialServerLoader.Context.MainServer.TurnAddress;
+            coordinatorInstanceEntity.TurnPort = _initialServerLoader.Context.MainServer.TurnPort;
+            coordinatorInstanceEntity.TurnUsername = _initialServerLoader.Context.MainServer.TurnUsername;
+            coordinatorInstanceEntity.TurnPassword = _initialServerLoader.Context.MainServer.TurnPassword;
+            
+            coordinatorInstanceEntity.IsStunEnabled = _initialServerLoader.Context.MainServer.EnableStun;
+            coordinatorInstanceEntity.StunAddress = _initialServerLoader.Context.MainServer.StunAddress;
+            coordinatorInstanceEntity.StunPort = _initialServerLoader.Context.MainServer.StunPort;
+            
+            using var scope = _scopeFactory.CreateScope();
+            var coordinatorInstanceRepository = scope.ServiceProvider.GetRequiredService<ICoordinatorInstanceRepository>();
+            await coordinatorInstanceRepository.UpdateAsync(coordinatorInstanceEntity);
+            //
+            
+            CoordinatorsPool.TryAdd(coordinatorInstanceEntity.Id, _coordinatorInstanceFactory.CreateCoordinatorInstance(Context.ServerVersion, coordinatorInstanceEntity));
 
             CoordinatorsPool[coordinatorInstanceEntity.Id].VideoSessionAdded += AddVideoSessionToDbAsync;
             CoordinatorsPool[coordinatorInstanceEntity.Id].VideoSessionReconfigured += UpdateVideoSessionToDbAsync;
             CoordinatorsPool[coordinatorInstanceEntity.Id].VideoSessionRemoved += RemoveVideoSessionFromDbAsync;
                 
-            using var scope = _scopeFactory.CreateScope();
             var videoSessionRepository = scope.ServiceProvider.GetRequiredService<IVideoSessionRepository>();
             
             // Config coordinator
@@ -273,12 +302,30 @@ namespace Server.MainServer.Main.Server.Orchestrator
         {
             
         }
+        
+        public void CreatePfxCert()
+        {
+
+        }
 
         private void CreateAndStartWebSocketServer(ILoggerFactory loggerFactory)
         {
-            _logger.LogTrace("Starting orchestrator Web Socket server...");
             var cert = X509CertificateLoader.LoadPkcs12FromFile("Certs/server.pfx", "MyPassword");
-            _webSocketServer = new WebSocketServer($"wss://{Context.Ip}:{Context.Port}/");
+            
+            if (string.IsNullOrWhiteSpace(Context.Ip) || Context.Port == 0)
+            {
+                _webSocketServer = new WebSocketServer("wss://127.0.0.1:26666/");
+            }
+            else if (IPAddress.TryParse(Context.Ip, out _))
+            {
+                _webSocketServer = new WebSocketServer($"wss://{Context.Ip}:{Context.Port}/");
+            }
+            else
+            {
+                _logger.LogWarning("Failed to parse IP address.");
+                _webSocketServer = new WebSocketServer("wss://127.0.0.1:26666/");
+            }
+            
             _webSocketServer.EnabledSslProtocols = SslProtocols.Tls12 | SslProtocols.Tls13;
             _webSocketServer.Certificate = cert;
 

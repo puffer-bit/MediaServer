@@ -9,9 +9,9 @@ namespace Server.MainServer.Main.Server.Orchestrator
     {
         // Main properties
         public required int Id { get; init; } = 1;
-        public required string Version { get; set; }
+        public required string ServerVersion { get; set; }
         public string? Key { get; set; }
-        public string? Ip { get; set; }
+        public string Ip { get; set; }
         public string? DnsName { get; set; }
         public int Port { get; set; }
         public int MaxCoordinators { get; set; }
@@ -52,21 +52,21 @@ namespace Server.MainServer.Main.Server.Orchestrator
         public void CreateContext()
         {
             if (Assembly.GetExecutingAssembly().GetName().Version == null)
-                Version = "Unknown";
+                ServerVersion = "Unknown";
             else
-                Version = Assembly.GetExecutingAssembly().GetName().Version!.ToString();
+                ServerVersion = Assembly.GetExecutingAssembly().GetName().Version!.ToString();
             
             FirstLaunchTime = DateTime.UtcNow;
-            Ip = "0.0.0.0";
+            Ip = "127.0.0.1";
             Port = 2222;
         }
         
         public void RecreateContext()
         {
             if (Assembly.GetExecutingAssembly().GetName().Version == null)
-                Version = "Unknown";
+                ServerVersion = "Unknown";
             else
-                Version = Assembly.GetExecutingAssembly().GetName().Version!.ToString();
+                ServerVersion = Assembly.GetExecutingAssembly().GetName().Version!.ToString();
             
             CurrentLaunchTime = DateTime.UtcNow;
             Ip = "0.0.0.0";
@@ -80,7 +80,7 @@ namespace Server.MainServer.Main.Server.Orchestrator
 
         public void UpdateContext(OrchestratorInstanceEntity orchestratorInstanceEntity)
         {
-            Version = orchestratorInstanceEntity.Version;
+            ServerVersion = orchestratorInstanceEntity.ServerVersion;
             Ip = orchestratorInstanceEntity.Ip;
             Port = orchestratorInstanceEntity.Port;
         }
@@ -89,7 +89,7 @@ namespace Server.MainServer.Main.Server.Orchestrator
         {
             return new OrchestratorInstanceEntity()
             {
-                Version = this.Version,
+                ServerVersion = this.ServerVersion,
                 Ip = this.Ip,
                 Port = this.Port,
             };

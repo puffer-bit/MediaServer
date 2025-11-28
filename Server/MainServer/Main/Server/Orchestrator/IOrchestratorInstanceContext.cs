@@ -8,9 +8,9 @@ namespace Server.MainServer.Main.Server.Orchestrator
     {
         // Main properties
         int Id { get; init; }
-        string Version { get; set; }
+        string ServerVersion { get; set; }
         string? Key { get; set; }
-        string? Ip { get; set; }
+        string Ip { get; set; }
         string? DnsName { get; set; }
         int Port { get; set; }
         int MaxCoordinators { get; set; }

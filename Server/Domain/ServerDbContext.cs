@@ -11,7 +11,7 @@ namespace Server.Domain;
 
 public class ServerDbContext : DbContext
 {
-    public DbSet<OrchestratorInstanceEntity> ServerInstance { get; set; }
+    public DbSet<OrchestratorInstanceEntity> OrchestratorInstance { get; set; }
     public DbSet<CoordinatorInstanceEntity> CoordinatorInstances { get; set; }
     public DbSet<UserEntity> UserEntities { get; set; }
     public DbSet<VideoSessionEntity> VideoSessionsEntities { get; set; }

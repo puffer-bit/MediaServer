@@ -1,11 +1,9 @@
 using System;
 using System.Collections;
 using System.IO;
-using System.Text.Json;
-using Client.Services.Server;
 using Newtonsoft.Json;
 using ReactiveUI;
-using JsonSerializer = Newtonsoft.Json.JsonSerializer;
+using Shared.Models.DTO;
 
 namespace Client.Services.Other.AppInfrastructure;
 
@@ -46,7 +44,7 @@ public class AppSettingsManager : ReactiveObject
 
     public void SetCoordinatorForAutoConnect(CoordinatorSessionDTO coordinatorSessionDTO)
     {
-        SettingsData.LastIdentity = coordinatorSessionDTO.User.Id;
+        SettingsData.LastIdentity = coordinatorSessionDTO.User!.Id;
     }
 
     public void AddIdentity(string userId, CoordinatorSessionDTO coordinatorSessionDTO)
@@ -56,7 +54,7 @@ public class AppSettingsManager : ReactiveObject
     
     public void DeleteIdentity(CoordinatorSessionDTO coordinatorSessionDTO)
     {
-        if (coordinatorSessionDTO.User.Id == null)
+        if (coordinatorSessionDTO.User!.Id == null)
             return;
         SettingsData.CoordinatorSessionsIdentities.Remove(coordinatorSessionDTO.User.Id);
     }
@@ -67,7 +65,7 @@ public class AppSettingsManager : ReactiveObject
 
         foreach (var item in collection)
         {
-            if (item is CoordinatorSessionDTO dto && dto.User.Id != null)
+            if (item is CoordinatorSessionDTO dto && dto.User!.Id != null)
             {
                 SettingsData.CoordinatorSessionsIdentities[dto.User.Id] = dto;
             }

@@ -10,39 +10,7 @@ namespace Client.Services.Server.Coordinator;
 
 public partial class CoordinatorSession
 {
-    public async Task ConnectAndAuthenticate(UserDTO user, string address)
-    {
-        _monitorSubscription?.Dispose();
-        ConnectionStatus = CoordinatorState.Connecting;
-
-        var connected = await _connectionManager.ConnectAsync(address);
-        if (!connected)
-        {
-            ConnectionStatus = CoordinatorState.Failed;
-            return;
-        }
-        ConnectionStatus = CoordinatorState.AuthenticationNeeded;
-
-        _messageHandler.StartRouting(_connectionManager.GetWebSocket());
-        try
-        {
-            var status = await _authenticator.AuthenticateAsync(user);
-            if (status == UserAuthRequestModel.AuthStatus.Completed)
-            {
-                ConnectionStatus = CoordinatorState.Connected;
-                LastPing = DateTime.UtcNow;
-                _monitorSubscription = MonitorServerCommand.Execute().Subscribe();
-            }
-            else
-                ConnectionStatus = CoordinatorState.AuthenticationFailed;
-        }
-        catch (TimeoutException e)
-        {
-            ConnectionStatus = CoordinatorState.Failed;
-        }
-    }
-
-    public async Task ConnectAndAuthenticate(UserDTO user, string address, CancellationToken cancellationToken)
+    public async Task ConnectAndAuthenticate(UserDTO user, string address, CancellationToken cancellationToken = default)
     {
         _monitorSubscription?.Dispose();
         ConnectionStatus = CoordinatorState.Connecting;
@@ -125,9 +93,9 @@ public partial class CoordinatorSession
         ConnectionStatus = CoordinatorState.Disconnected;
     }
 
-    public void SetCoordinatorInstanceData(string coordinatorInstanceId)
+    public void SetCoordinatorInstanceData(CoordinatorSessionDTO coordinatorSessionDTO)
     {
-        CoordinatorDTO = new CoordinatorSessionDTO(coordinatorInstanceId, _connectionManager.GetAddress(), GetUser());
+        CoordinatorDTO = coordinatorSessionDTO;
     }
     
     public WebsocketClient? GetWebSocket()

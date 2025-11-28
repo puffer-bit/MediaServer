@@ -15,8 +15,8 @@ namespace Server.MainServer.Main.Server.Factories.CoordinatorFactory;
 
 public interface ICoordinatorInstanceFactory
 {
-    CoordinatorInstance CreateCoordinatorInstance(CoordinatorInstanceEntity coordinatorInstanceEntity);
-    CoordinatorInstanceContext CreateCoordinatorInstanceContext(string coordinatorInstanceId);
+    CoordinatorInstance CreateCoordinatorInstance(string serverVersion, CoordinatorInstanceEntity coordinatorInstanceEntity);
+    CoordinatorInstanceContext CreateCoordinatorInstanceContext(string coordinatorInstanceId, string serverVersion);
 
     //CoordinatorWebSocketInstance CreateCoordinatorWebSocketInstance(ICoordinatorInstance coordinatorInstance);
     

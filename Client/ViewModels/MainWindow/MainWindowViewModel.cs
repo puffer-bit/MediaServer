@@ -269,12 +269,11 @@ internal class MainWindowViewModel : ReactiveObject
         ShowGrid();
         ActivateMenu();
         
-        if (_appSettingsManager.SettingsData.IsAutoConnectEnabled &&
-            _appSettingsManager.SettingsData.LastIdentity != null &&
+        if (_appSettingsManager.SettingsData is { IsAutoConnectEnabled: true, LastIdentity: not null } &&
             _appSettingsManager.SettingsData.CoordinatorSessionsIdentities.TryGetValue(_appSettingsManager.SettingsData.LastIdentity, out var coordinatorDTO))
         {
-            await ChangeCurrentActionText($"Connecting to {coordinatorDTO.Address} as {coordinatorDTO.User.Username}...");
-            await coordinatorSession.ConnectAndAuthenticate(coordinatorDTO.User, coordinatorDTO.Address);
+            await ChangeCurrentActionText($"Connecting to {coordinatorDTO.IpAddress} as {coordinatorDTO.User.Username}...");
+            await coordinatorSession.ConnectAndAuthenticate(coordinatorDTO.User, coordinatorDTO.IpAddress);
 
             if (coordinatorSession.ConnectionStatus != CoordinatorState.Connected)
             {

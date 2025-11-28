@@ -37,8 +37,31 @@ public class WebRTCManager : IWebRTCManager
     {
         var config = new RTCConfiguration
         {
-            iceServers = new List<RTCIceServer> { }
+            iceServers = new List<RTCIceServer>
+            {
+
+            }
         };
+
+        if (_coordinator.IsStunServerAvailable)
+        {
+            config.iceServers.Add(
+                new RTCIceServer
+                {
+                    urls = $"stun:{_coordinator.Context.StunAddress}:{_coordinator.Context.StunPort}"
+                });
+        }
+
+        if (_coordinator.IsTurnServerAvailable)
+        {
+            config.iceServers.Add(
+                new RTCIceServer
+                {
+                    urls = $"turn:{_coordinator.Context.TurnAddress}:{_coordinator.Context.TurnPort}",
+                    username = _coordinator.Context.TurnUsername,
+                    credential = _coordinator.Context.TurnPassword
+                });
+        }
 
         var pc = new RTCPeerConnection(config);
 

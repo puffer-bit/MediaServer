@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Client.Services.Server;
+using Shared.Models.DTO;
 
 namespace Client.Services.Other.AppInfrastructure;
 

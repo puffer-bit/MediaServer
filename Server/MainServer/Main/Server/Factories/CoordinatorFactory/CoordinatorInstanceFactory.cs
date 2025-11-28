@@ -26,11 +26,11 @@ public class CoordinatorInstanceFactory : ICoordinatorInstanceFactory
         _provider = provider;
     }
 
-    public CoordinatorInstance CreateCoordinatorInstance(CoordinatorInstanceEntity coordinatorInstanceEntity) =>
-        ActivatorUtilities.CreateInstance<CoordinatorInstance>(_provider, coordinatorInstanceEntity);
+    public CoordinatorInstance CreateCoordinatorInstance(string serverVersion, CoordinatorInstanceEntity coordinatorInstanceEntity) =>
+        ActivatorUtilities.CreateInstance<CoordinatorInstance>(_provider, serverVersion, coordinatorInstanceEntity);
     
-    public CoordinatorInstanceContext CreateCoordinatorInstanceContext(string coordinatorInstanceId) =>
-        ActivatorUtilities.CreateInstance<CoordinatorInstanceContext>(_provider, coordinatorInstanceId);
+    public CoordinatorInstanceContext CreateCoordinatorInstanceContext(string coordinatorInstanceId, string serverVersion) =>
+        ActivatorUtilities.CreateInstance<CoordinatorInstanceContext>(_provider, serverVersion, coordinatorInstanceId);
 
     public IConnectionManager CreateConnectionManager(CoordinatorInstance coordinatorInstance) =>
         ActivatorUtilities.CreateInstance<ConnectionManager>(_provider, CreateConnectionManagerContext(), coordinatorInstance);

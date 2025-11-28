@@ -194,11 +194,11 @@ namespace Server
             }
         }
         
-        public class OrchestratorService(IOrchestratorInstance orchestratorInstance, InitialServerLoader initialServerLoader) : BackgroundService
+        public class OrchestratorService(IOrchestratorInstance orchestratorInstance) : BackgroundService
         {
             protected override async Task ExecuteAsync(CancellationToken stoppingToken)
             {
-                await orchestratorInstance.Configure(initialServerLoader);
+                await orchestratorInstance.Configure();
                 await orchestratorInstance.StartAsync(CancellationToken.None);
             }
             

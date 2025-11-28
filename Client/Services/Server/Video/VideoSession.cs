@@ -258,7 +258,35 @@ public class VideoSession : ReactiveObject, IVideoSession
 
     private RTCPeerConnection InitPeerConnection()
     {
-        RTCPeerConnection pc = new RTCPeerConnection();
+        var config = new RTCConfiguration
+        {
+            iceServers = new List<RTCIceServer>
+            {
+
+            }
+        };
+
+        if (_coordinatorSession.CoordinatorDTO.IsStunServerAvailable)
+        {
+            config.iceServers.Add(
+                new RTCIceServer
+                {
+                    urls = $"stun:{_coordinatorSession.CoordinatorDTO.StunAddress}:{_coordinatorSession.CoordinatorDTO.StunPort}"
+                });
+        }
+
+        if (_coordinatorSession.CoordinatorDTO.IsTurnServerAvailable)
+        {
+            config.iceServers.Add(
+                new RTCIceServer
+                {
+                    urls = $"turn:{_coordinatorSession.CoordinatorDTO.TurnAddress}:{_coordinatorSession.CoordinatorDTO.TurnPort}",
+                    username = _coordinatorSession.CoordinatorDTO.TurnUsername,
+                    credential = _coordinatorSession.CoordinatorDTO.TurnPassword
+                });
+        }
+
+        var pc = new RTCPeerConnection(config);
         AddTracks(pc);
         
         pc.onicecandidate += (iceCandidate) =>

@@ -34,7 +34,7 @@ public class Authenticator : IAuthenticator
         if (auth.Status == UserAuthRequestModel.AuthStatus.Completed)
         {
             _coordinatorSession.SetUser(auth.UserDto!);
-            _coordinatorSession.SetCoordinatorInstanceData(auth.CoordinatorInstanceId!);
+            _coordinatorSession.SetCoordinatorInstanceData(auth.CoordinatorSessionData!);
         }
 
         return auth.Status;

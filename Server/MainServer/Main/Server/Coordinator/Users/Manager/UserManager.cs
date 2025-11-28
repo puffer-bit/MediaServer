@@ -5,6 +5,8 @@ namespace Server.MainServer.Main.Server.Coordinator.Users.Manager;
 
 public class UserManager : IUserManager
 {
+    public int ConnectedUsersCount => _context.ConnectedUsers.Count;
+    
     private readonly IUserManagerContext _context;
     private readonly ILogger _logger;
     private readonly CoordinatorInstance _coordinator;

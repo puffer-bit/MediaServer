@@ -6,9 +6,9 @@ namespace Server.Domain.Entities
     {
         // Main properties
         public int Id { get; private init; } = 1;
-        public required string Version { get; set; }
+        public required string ServerVersion { get; set; }
         public string? LicenseKey { get; set; } // :)
-        public string? Ip { get; set; }
+        public string Ip { get; set; }
         public string? DnsName { get; set; }
         public int Port { get; set; }
         public int MaxCoordinators { get; set; }
