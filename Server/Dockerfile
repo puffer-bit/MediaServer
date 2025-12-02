@@ -11,7 +11,16 @@ COPY ["Shared/Shared.csproj", "Shared/"]
 RUN dotnet restore "Server/Server.csproj"
 COPY . .
 WORKDIR "/src/Server"
-RUN dotnet publish "./Server.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "./Server.csproj" \
+    -c $BUILD_CONFIGURATION \
+    -o /app/publish \
+    -r linux-x64 \
+    /p:PublishSingleFile=true \
+    /p:PublishTrimmed=true \
+    /p:PublishReadyToRun=true \
+    /p:UseAppHost=true \
+    /p:DebugType=none  \
+    /p:DebugSymbols=false
 
 FROM base AS final
 WORKDIR /app
