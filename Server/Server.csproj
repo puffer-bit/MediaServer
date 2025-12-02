@@ -34,7 +34,6 @@
 
   <ItemGroup>
     <Folder Include="Certs\" />
-    <Folder Include="Libs\FFmpeg\" />
     <Folder Include="Logs\" />
     <Folder Include="MainServer\Database\Migrations\" />
     <Folder Include="Web\" />
@@ -186,8 +185,10 @@
   </ItemGroup>
 
     <ItemGroup>
-        <Content Include="..\Libs\FFmpeg\**\*">
+        <Content Include="Libs\FFmpeg\**\*">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+            <TargetPath>%(Filename)%(Extension)</TargetPath>
         </Content>
     </ItemGroup>
     

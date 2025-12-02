@@ -92,7 +92,7 @@ public partial class CoordinatorInstance
                 await udpClient.SendAsync(stunRequest, stunRequest.Length);
 
                 var receiveTask = udpClient.ReceiveAsync();
-                var completed = await Task.WhenAny(receiveTask, Task.Delay(3000));
+                var completed = await Task.WhenAny(receiveTask, Task.Delay(6000));
 
                 if (completed == receiveTask)
                 {

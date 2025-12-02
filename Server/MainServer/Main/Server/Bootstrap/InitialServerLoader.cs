@@ -20,6 +20,12 @@ namespace Server.MainServer.Main.Server.Bootstrap
         
         public bool FfmpegInitialize()
         {
+            if (!Context.MainServer.EnableFfmpeg)
+            {
+                IsFfmpegInitialized = false;
+                return false;
+            }
+            
             try
             {
                 if (OperatingSystem.IsWindows())
@@ -36,7 +42,8 @@ namespace Server.MainServer.Main.Server.Bootstrap
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Ffmpeg initialize exception: {0}", ex.Message);
+                Console.WriteLine("Ffmpeg initialize exception: {0}", ex);
+                Console.WriteLine("Ffmpeg initialize folder: {0}", AppContext.BaseDirectory);
                 IsFfmpegInitialized = false;
                 return false;
             }

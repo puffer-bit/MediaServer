@@ -55,7 +55,7 @@ namespace Server.MainServer.Main.Server.Coordinator.WebSocket
         public Action OnOpen => () =>
         {
             _logger.LogTrace(
-                "Web socket client connection from {UserEndPoint}",
+                "Web socket client connection from {UserEndPoint}.",
                 _socket.ConnectionInfo.ClientIpAddress);
         };
 

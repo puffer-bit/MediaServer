@@ -30,7 +30,7 @@ public class CoordinatorInstanceFactory : ICoordinatorInstanceFactory
         ActivatorUtilities.CreateInstance<CoordinatorInstance>(_provider, serverVersion, coordinatorInstanceEntity);
     
     public CoordinatorInstanceContext CreateCoordinatorInstanceContext(string coordinatorInstanceId, string serverVersion) =>
-        ActivatorUtilities.CreateInstance<CoordinatorInstanceContext>(_provider, serverVersion, coordinatorInstanceId);
+        ActivatorUtilities.CreateInstance<CoordinatorInstanceContext>(_provider, coordinatorInstanceId, serverVersion);
 
     public IConnectionManager CreateConnectionManager(CoordinatorInstance coordinatorInstance) =>
         ActivatorUtilities.CreateInstance<ConnectionManager>(_provider, CreateConnectionManagerContext(), coordinatorInstance);

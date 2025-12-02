@@ -35,7 +35,6 @@ public partial class CoordinatorInstance
             IsStarted = true;
             State = CoordinatorState.Online;
             
-            
             _logger.LogInformation("Coordinator {Name} (ID: {Id}) successful started.", Context.Name, Context.Id);
         }
         catch (Exception ex)
