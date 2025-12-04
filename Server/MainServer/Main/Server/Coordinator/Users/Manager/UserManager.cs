@@ -39,11 +39,11 @@ public class UserManager : IUserManager
         return true;
     }
         
-    public void RemoveUser(string userId)
+    public void RemoveUser(string userId, string reason)
     {
         if (_context.ConnectedUsers.Remove(userId, out var user))
         {
-            _logger.LogTrace("User with id {Id} disconnected.", user.Id);
+            _logger.LogInformation("User {Name} disconnected. Reason: {Reason}", user?.Username, reason);
         }
     }
 

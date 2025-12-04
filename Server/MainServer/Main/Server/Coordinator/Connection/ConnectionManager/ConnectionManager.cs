@@ -34,7 +34,6 @@ namespace Server.MainServer.Main.Server.Coordinator.Connection.ConnectionManager
             if (_context.ClientConnections.TryGetValue(userId, out var clientConnection))
             {
                 clientConnection.TokenSource.Cancel();
-                _coordinator.RemoveUserFromInstance(clientConnection.UserId);
                 clientConnection.Dispose();
             }
             return _context.ClientConnections.TryRemove(userId, out _);
@@ -57,11 +56,18 @@ namespace Server.MainServer.Main.Server.Coordinator.Connection.ConnectionManager
             {
                 clientConnection.TokenSource.Cancel();
                 if (isRestarting)
-                    _coordinator.SendMessageToUser(clientConnection.UserId, new BaseMessage(MessageType.Heartbeat, new HeartbeatModel(HeartbeatType.ServerRestarting)));
+                {
+                    _coordinator.SendMessageToUser(clientConnection.UserId,
+                        new BaseMessage(MessageType.Heartbeat, new HeartbeatModel(HeartbeatType.ServerRestarting)));
+                    _coordinator.RemoveUserFromInstance(clientConnection.UserId, "Server restarting.");
+                }
                 else
-                    _coordinator.SendMessageToUser(clientConnection.UserId, new BaseMessage(MessageType.Heartbeat, new HeartbeatModel(HeartbeatType.ServerClosing)));
+                {
+                    _coordinator.SendMessageToUser(clientConnection.UserId,
+                        new BaseMessage(MessageType.Heartbeat, new HeartbeatModel(HeartbeatType.ServerClosing)));
+                    _coordinator.RemoveUserFromInstance(clientConnection.UserId, "Server closed.");
+                }
                 
-                _coordinator.RemoveUserFromInstance(clientConnection.UserId);
                 clientConnection.Dispose();
             }
             
