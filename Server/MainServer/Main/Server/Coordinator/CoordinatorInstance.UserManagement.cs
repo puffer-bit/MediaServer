@@ -16,9 +16,9 @@ public partial class CoordinatorInstance
         return true;
     }
 
-    public void RemoveUserFromInstance(string userId)
+    public void RemoveUserFromInstance(string userId, string reason)
     {
-        _userManager.RemoveUser(userId);
+        _userManager.RemoveUser(userId, reason);
     }
     
     public void AttachUser(BaseMessage message, IWebSocketConnection webSocket)
@@ -54,11 +54,10 @@ public partial class CoordinatorInstance
         if (disconnectMessage != null)
             SendMessageToUser(userId, new BaseMessage(MessageType.Heartbeat, new HeartbeatModel(HeartbeatType.Disconnected)));
          
-        GetUser(userId, out var user);
+        GetUser(userId, out _);
         RemoveUserFromAllSessions(userId);
-        RemoveUserFromInstance(userId);
+        RemoveUserFromInstance(userId, reason);
         RemoveConnection(userId);
-        _logger.LogInformation("User {Name} disconnected. Reason: {Reason}", user?.Username, reason);
     }
 
     public bool GetUser(string userId, out UserDTO? user)

@@ -29,7 +29,7 @@ public interface ICoordinatorInstance
     void CloseCoordinator();
 
     
-    void RemoveUserFromInstance(string userId);
+    void RemoveUserFromInstance(string userId, string reason);
     Task LoadSessions(List<VideoSessionEntity> videoSessionsEntities);
     void SendMessageToUser(string userId, BaseMessage message);
 

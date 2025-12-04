@@ -9,7 +9,7 @@ public interface IUserManager
     public int ConnectedUsersCount { get; }
 
     bool AddUser(UserDTO user, out UserDTO addedUser);
-    void RemoveUser(string userId);
+    void RemoveUser(string userId, string reason);
     bool GetUser(string userId, out UserDTO? user);
     
     void RemoveAllUsers();

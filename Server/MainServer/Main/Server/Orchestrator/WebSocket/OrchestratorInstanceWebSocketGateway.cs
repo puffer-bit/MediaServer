@@ -33,7 +33,7 @@ namespace Server.MainServer.Main.Server.Orchestrator.WebSocket
             {
                 if (message.Type == MessageType.UserAuth)
                 {
-                    // Проверка пользователя
+                    // User verify
 
                     User = (UserDTO)message.Data;
                     //_orchestrator.AttachUser(message, _socket);
@@ -61,7 +61,7 @@ namespace Server.MainServer.Main.Server.Orchestrator.WebSocket
 
         public Action<Exception> OnError => (e) => 
         {
-            _logger.LogError("Error on ws connection. {e}",e.Message);
+            //_logger.LogError("Error on ws connection. {e}",e.Message);
         };
 
         public Action OnClose => () =>

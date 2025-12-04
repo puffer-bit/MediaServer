@@ -24,7 +24,6 @@ public partial class SessionManager : ISessionManager
     {
         foreach (var videoSession in _context.VideoSessions)
         {
-            _coordinator.SessionDeleted(videoSession.Value.GetSessionId());
             videoSession.Value.CloseSession();
         }
         _context.VideoSessions.Clear();
