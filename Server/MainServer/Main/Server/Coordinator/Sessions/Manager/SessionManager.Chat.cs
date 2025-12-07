@@ -53,14 +53,9 @@ public partial class SessionManager
     {
         foreach (var session in _context.VideoSessions.Values)
         {
-            var peersToRemove = session.GetAllPeers()
-                .Where(p => p.GetUserId() == userId)
-                .Select(p => p.GetId())
-                .ToList();
-
-            foreach (var peerId in peersToRemove)
+            if (session.GetPeerByUserId(userId, out _))
             {
-                KickFromVideoSession(session.AsModel(), peerId, false);
+                KickFromVideoSession(session.AsModel(), userId, false);
             }
         }
     }

@@ -66,13 +66,6 @@
                                                TextTrimming="CharacterEllipsis"
                                                TextWrapping="NoWrap"
                                                VerticalAlignment="Center"/>
-                                    <TextBlock Text="{Binding State, Converter={StaticResource VideoSessionStateToStringConverter}}"
-                                               TextTrimming="CharacterEllipsis"
-                                               TextWrapping="NoWrap"
-                                               FontSize="10"
-                                               Foreground="Gray"
-                                               FontStyle="Italic"
-                                               VerticalAlignment="Center"/>
                                 </StackPanel>
                             </Grid>
 

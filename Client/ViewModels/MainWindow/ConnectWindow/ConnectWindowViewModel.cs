@@ -56,7 +56,7 @@ internal class ConnectWindowViewModel : ReactiveObject, IDisposable
         set => this.RaiseAndSetIfChanged(ref _connectionStatus, value);
     }
     
-    private string _serverAddress = "localhost:26666";
+    private string _serverAddress = "147.45.169.159:26666";
     public string ServerAddress
     {
         get => _serverAddress;
@@ -128,6 +128,7 @@ internal class ConnectWindowViewModel : ReactiveObject, IDisposable
                 if (SelectedIdentity == null || SelectedIdentity.Id == null)
                 {
                     var coordinatorSessionDto = coordinatorSession.CoordinatorDTO;
+                    coordinatorSessionDto.IpAddress = ServerAddress;
                     _appSettingsManager.AddIdentity(coordinatorSessionDto!.User!.Id!, coordinatorSessionDto);
                     _appSettingsManager.SetCoordinatorForAutoConnect(coordinatorSessionDto);
                     _appSettingsManager.SaveSettings();

@@ -64,14 +64,27 @@ namespace Client.Services.Other.ScreenCastService.Windows.Win32PortalClient
             }
 
             var (type, id) = _selectedSource.Value;
-            _windowsScreenCaptureService.SetPipelineData(type, id);
+            
+            var initResult = _windowsScreenCaptureService.SetPipelineData(type, id);
+            if (initResult != Shared.Enums.ScreenCastResult.NoError)
+            {
+                MessageBoxWindow messageBox = new MessageBoxWindow()
+                {
+                    DataContext = new MessageBoxViewModel(Icon.Error, Buttons.Ok,
+                        $"Pipeline failed to create. Logs may contains additional information.\n\nError: {initResult}",
+                        "GStreamer Error")
+                };
+                await messageBox.ShowDialog(_mainWindow);
+                return false;
+            }
+            
             var createResult = _windowsScreenCaptureService.CreatePipeline();
             if (createResult != Shared.Enums.ScreenCastResult.NoError)
             {
                 MessageBoxWindow messageBox = new MessageBoxWindow()
                 {
                     DataContext = new MessageBoxViewModel(Icon.Error, Buttons.Ok,
-                    $"Pipeline failed to create. Logs may contains additional information.\n\nCode: {(int)createResult}",
+                    $"Pipeline failed to create. Logs may contains additional information.\n\nError: {createResult}",
                     "GStreamer Error")
                 };
                 await messageBox.ShowDialog(_mainWindow);
@@ -84,7 +97,7 @@ namespace Client.Services.Other.ScreenCastService.Windows.Win32PortalClient
                 MessageBoxWindow messageBox = new MessageBoxWindow()
                 {
                     DataContext = new MessageBoxViewModel(Icon.Error, Buttons.Ok, 
-                    $"Pipeline failed to start. Logs may contains additional information.\n\nCode: {(int)startResult}", 
+                    $"Pipeline failed to start. Logs may contains additional information.\n\nError: {startResult}", 
                     "GStreamer Error")
                 };
                 await messageBox.ShowDialog(_mainWindow);
@@ -103,7 +116,7 @@ namespace Client.Services.Other.ScreenCastService.Windows.Win32PortalClient
                 MessageBoxWindow messageBox = new MessageBoxWindow()
                 {
                     DataContext = new MessageBoxViewModel(Icon.Error, Buttons.Ok,
-                    $"Pipeline failed to close. Logs may contains additional information.\n\nCode: {(int)result}",
+                    $"Pipeline failed to close. Logs may contains additional information.\n\nError: {result}",
                     "GStreamer Error")
                 };
                 await messageBox.ShowDialog(_mainWindow);

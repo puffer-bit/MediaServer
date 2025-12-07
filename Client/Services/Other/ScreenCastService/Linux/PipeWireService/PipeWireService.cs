@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using Client.Services.HardwareIdentifier.GPU;
 using Client.Services.Other.ScreenCastService.Windows.Win32PortalClient;
 using Gst;
 using Gst.App;
@@ -22,11 +23,24 @@ public class PipeWireService : IGStreamerService, IDisposable
 
     }
 
-    public void SetPipelineData(WindowsScreenCastType _, string nodeId)
+    public ScreenCastResult SetPipelineData(WindowsScreenCastType _, string nodeId)
     {
-        _pipelineDescription = 
-            $"pipewiresrc path={nodeId} ! videoconvert ! video/x-raw,format=NV12 ! nvh264enc bitrate=4000 preset=low-latency-hq ! h264parse config-interval=1 ! appsink name=mysink";    
+        string gpuVendor = GpuInfo.DetectGpuVendor(GpuInfo.GetGpuInfo()[0].Name);
+
+        string encoder = gpuVendor switch
+        {
+            "NVIDIA" => "nvh264enc bitrate=4000 preset=low-latency-hq",
+            "AMD"    => "vaapih264enc bitrate=4000",
+            "Intel"  => "vaapih264enc bitrate=4000",
+            _        => "x264enc bitrate=4000 tune=zerolatency"
+        };
+
+        _pipelineDescription =
+            $"pipewiresrc path={nodeId} ! videoconvert ! video/x-raw,format=NV12 ! {encoder} ! h264parse config-interval=1 ! video/x-h264,stream-format=byte-stream,alignment=au ! appsink name=mysink";
+
+        return ScreenCastResult.NoError;
     }
+
 
     public ScreenCastResult CreatePipeline()
     {
@@ -122,12 +136,24 @@ public class PipeWireService : IGStreamerService, IDisposable
 
     public ScreenCastResult DestroyPipeline()
     {
-        PausePipeline();
-        
-        _appSink?.Dispose();
-        _pipeline?.Dispose();
-        _pipeline = null;
-        return ScreenCastResult.NoError;
+        try
+        {
+            if (_pipeline != null && _appSink != null)
+            {
+                _appSink.NewSample -= ProceedFrameData;
+                _pipeline.SetState(State.Null);
+                _appSink?.Dispose();
+                _pipeline?.Dispose();
+                _pipeline = null;
+                return ScreenCastResult.NoError;
+            }
+            return ScreenCastResult.NotInitialized;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"Failed to pause pipeline. Exception: {e}");
+            return ScreenCastResult.InternalError;
+        }
     }
 
     public void Dispose()

@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <OutputType>WinExe</OutputType>
+        <OutputType>Exe</OutputType>
         <TargetFramework>net9.0</TargetFramework>
         <Nullable>enable</Nullable>
         <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
@@ -26,7 +26,7 @@
         <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1" />
         <PackageReference Include="Concentus" Version="2.2.2" />
         <PackageReference Include="FluentAvalonia.ProgressRing" Version="1.69.2" />
-        <PackageReference Include="gstreamer-sharp-netcore" Version="0.0.8" />
+        <PackageReference Include="GstSharpBundle" Version="1.24.3-preview6" />
         <PackageReference Include="ManagedBass" Version="4.0.1" />
         <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.8" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
@@ -54,6 +54,10 @@
       </Compile>
       <Compile Update="Views\Connections\ConnectWindow.axaml.cs">
         <DependentUpon>ConnectWindow.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\Notifications\NotificationPopUp.axaml.cs">
+        <DependentUpon>NotificationPopUp.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
     </ItemGroup>
@@ -137,12 +141,15 @@
       <AvaloniaResource Include="Assets\SessionInfo.svg" />
       <None Remove="Assets\Icons\NotJoined.svg" />
       <AvaloniaResource Include="Assets\Icons\NotJoined.svg" />
+      <None Remove="Assets\Icons\CloseNotification.svg" />
+      <AvaloniaResource Include="Assets\Icons\CloseNotification.svg" />
     </ItemGroup>
 
     <ItemGroup>
       <Folder Include="Libs\Linux\Ffmpeg\" />
       <Folder Include="Libs\Windows\Ffmpeg\" />
       <Folder Include="Libs\Windows\GStreamer\" />
+      <Folder Include="Services\HardwareIdentifier\CPU\" />
     </ItemGroup>
 
 	<Target Name="ShowRID" BeforeTargets="Build">

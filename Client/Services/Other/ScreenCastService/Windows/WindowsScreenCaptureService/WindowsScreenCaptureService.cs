@@ -4,6 +4,7 @@ using Gst.App;
 using Shared.Enums;
 using System;
 using System.Runtime.InteropServices;
+using Client.Services.HardwareIdentifier.GPU;
 
 namespace Client.Services.Other.ScreenCastService.Windows.D3D11ScreenCaptureSrcService
 {
@@ -20,18 +21,30 @@ namespace Client.Services.Other.ScreenCastService.Windows.D3D11ScreenCaptureSrcS
 
         }
 
-        public void SetPipelineData(WindowsScreenCastType castType, string nodeId)
+        public ScreenCastResult SetPipelineData(WindowsScreenCastType castType, string nodeId)
         {
+            string gpuVendor = GpuInfo.DetectGpuVendor(GpuInfo.GetGpuInfo()[0].Name);
+            
+            string encoder = GpuInfo.DetectGpuVendor(gpuVendor) switch
+            {
+                "NVIDIA" => "nvh264enc bitrate=4000 preset=low-latency-hq",
+                "AMD"    => "vaapih264enc bitrate=4000",
+                "Intel"  => "vaapih264enc bitrate=4000",
+                _        => "x264enc bitrate=4000 tune=zerolatency byte-stream=true key-int-max=30"
+            };
+
             if (castType == WindowsScreenCastType.Window)
             {
                 _pipelineDescription =
-               $"d3d11screencapturesrc window-handle={nodeId} show-cursor=true ! videoconvert ! video/x-raw,format=NV12 ! nvh264enc bitrate=4000 preset=low-latency-hq ! h264parse config-interval=1 ! appsink name=mysink";
+                    $"d3d11screencapturesrc window-handle={nodeId} show-cursor=true ! videoconvert ! video/x-raw,format=NV12 ! {encoder} ! h264parse config-interval=1 ! video/x-h264,stream-format=byte-stream,alignment=au ! appsink name=mysink";
             }
             else if (castType == WindowsScreenCastType.Monitor)
             {
                 _pipelineDescription =
-               $"d3d11screencapturesrc monitor-handle={nodeId} show-cursor=true ! videoconvert ! video/x-raw,format=NV12 ! nvh264enc bitrate=4000 preset=low-latency-hq ! h264parse config-interval=1 ! appsink name=mysink";
+                    $"d3d11screencapturesrc monitor-handle={nodeId} show-cursor=true ! videoconvert ! video/x-raw,format=NV12 ! {encoder} ! h264parse config-interval=1 ! video/x-h264,stream-format=byte-stream,alignment=au ! appsink name=mysink";
             }
+
+            return ScreenCastResult.NoError;
         }
 
         public ScreenCastResult CreatePipeline()
@@ -127,9 +140,23 @@ namespace Client.Services.Other.ScreenCastService.Windows.D3D11ScreenCaptureSrcS
 
         public ScreenCastResult DestroyPipeline()
         {
-            _pipeline?.Dispose();
-            _pipeline = null;
-            return ScreenCastResult.NoError;
+            try
+            {
+                if (_pipeline != null && _appSink != null)
+                {
+                    _appSink.NewSample -= ProceedFrameData;
+                    _pipeline.SetState(State.Null);
+                    _pipeline?.Dispose();
+                    _pipeline = null;
+                    return ScreenCastResult.NoError;
+                }
+                return ScreenCastResult.NotInitialized;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Failed to pause pipeline. Exception: {e}");
+                return ScreenCastResult.InternalError;
+            }
         }
 
         public void Dispose()

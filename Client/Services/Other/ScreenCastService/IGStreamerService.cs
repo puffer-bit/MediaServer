@@ -9,7 +9,7 @@ namespace Client.Services.Other.ScreenCastService;
 public interface IGStreamerService : IDisposable
 {
     event Action<byte[]> FrameReceived;
-    void SetPipelineData(WindowsScreenCastType type, string id);
+    ScreenCastResult SetPipelineData(WindowsScreenCastType type, string id);
     ScreenCastResult CreatePipeline();
     ScreenCastResult StartPipeline();
     ScreenCastResult PausePipeline();

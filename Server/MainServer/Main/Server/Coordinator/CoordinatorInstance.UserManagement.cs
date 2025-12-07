@@ -21,7 +21,7 @@ public partial class CoordinatorInstance
         _userManager.RemoveUser(userId, reason);
     }
     
-    public void AttachUser(BaseMessage message, IWebSocketConnection webSocket)
+    public void AttachUser(BaseMessage message, IWebSocketConnection webSocket, out UserDTO? attachedUser)
     {
         var userDTO = (UserDTO)message.Data;
         if (AddUserToInstance(userDTO, out var addedUser))
@@ -39,6 +39,7 @@ public partial class CoordinatorInstance
             {
                 MessageId = message.MessageId
             });
+            attachedUser = addedUser;
         }
         else
         {
@@ -46,6 +47,7 @@ public partial class CoordinatorInstance
             {
                 MessageId = message.MessageId
             });
+            attachedUser = null;
         }
     }
     

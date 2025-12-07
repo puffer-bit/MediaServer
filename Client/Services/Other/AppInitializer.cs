@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
+using Client.Services.HardwareIdentifier.GPU;
 using ManagedBass;
 using Gst;
 using SIPSorceryMedia.FFmpeg;
@@ -18,7 +19,17 @@ public class AppInitializer
     {
         if (IsInitialized)
             return true; // Returns true if application already initialized
-
+        
+        try
+        {
+            Console.WriteLine(GpuInfo.DetectGpuVendor(GpuInfo.GetGpuInfo()[0].Name));
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+        
         try
         {
             await System.Threading.Tasks.Task.Run(() =>
@@ -73,8 +84,7 @@ public class AppInitializer
             _failedDependencies.Add("GST");
             IsFailed = true;
         }
-
-
+        
         try
         {
             await System.Threading.Tasks.Task.Run(() =>

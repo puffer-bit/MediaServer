@@ -9,6 +9,7 @@ using Avalonia;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
 using Avalonia.Threading;
+using Client.Services.HardwareIdentifier.GPU;
 using Client.Services.Other.FrameProcessor;
 using Client.Services.Server.Coordinator;
 using Client.Services.Server.Video;
@@ -138,6 +139,9 @@ internal class VideoSessionViewModel : ReactiveObject, ISessionViewModel
     
     public readonly VideoSessionDTO VideoSessionDto;
     public VideoSessionParticipantsListViewModel ParticipantsListViewModel { get; set; }
+    public ObservableCollection<NotificationPopUpViewModel> NotificationsListViewModel { get; } = new();
+    public bool HasNotifications => NotificationsListViewModel.Count > 0;
+    
     private IDisposable? _connectionSubscription;
     public Interaction<MessageBoxViewModel, Unit> ShowMessageBox { get; }
     public ReactiveCommand<Unit, Unit> JoinCommand { get; }
@@ -232,6 +236,17 @@ internal class VideoSessionViewModel : ReactiveObject, ISessionViewModel
                     })
                     .Where(cmd => cmd != null)
                     .Subscribe(cmd => cmd?.Execute(Unit.Default).Subscribe());
+                
+                if (GpuInfo.DetectGpuVendor(GpuInfo.GetGpuInfo()[0].Name) == "Unknown")
+                    NotificationsListViewModel.Add(new NotificationPopUpViewModel(NotificationPopUpViewModel.PopUpType.Warning, 
+                        "Failed to use hardware acceleration.", 
+                        NotificationsListViewModel, "HardwareAccelerationUnavailable"));
+                
+                if (VideoSessionDto.HostId == _coordinatorSession.GetUser().Id)
+                    NotificationsListViewModel.Add(new NotificationPopUpViewModel(NotificationPopUpViewModel.PopUpType.Info, 
+                        "You are session host. Select video source to start stream.", 
+                        NotificationsListViewModel, "HostTip"));
+                
             }
             else
             {
@@ -240,7 +255,7 @@ internal class VideoSessionViewModel : ReactiveObject, ISessionViewModel
                     var messageBox = new MessageBoxWindow
                     {
                         DataContext = new MessageBoxViewModel(Icon.Error, Buttons.Ok,
-                            $"Failed to join session. \n\nError code: {(int)result}",
+                            $"Failed to join session. \n\nError code: {result}",
                             "Error", false)
                     };
                     messageBox.Show();
@@ -310,6 +325,8 @@ internal class VideoSessionViewModel : ReactiveObject, ISessionViewModel
                 _videoSession.FrameReceived += OnFrameReceived;
             }
         }
+        
+        RemoveNotificationByTag("HostTip");
     }
      
     private void EndSending()
@@ -360,6 +377,18 @@ internal class VideoSessionViewModel : ReactiveObject, ISessionViewModel
     private void OnParticipantListUpdated(VideoSessionDTO sessionDTO)
     {
         ParticipantsListViewModel.FetchUsersFromDTO(sessionDTO);
+    }
+
+    private void RemoveNotificationByTag(string tag)
+    {
+        foreach (var notification in NotificationsListViewModel)
+        {
+            if (notification.Tag == tag)
+            {
+                notification.SetLifetime(TimeSpan.FromSeconds(5));
+                break;
+            }
+        }
     }
 
     public void ToggleFullscreen()

@@ -29,7 +29,8 @@ public class UserManager : IUserManager
         if (!_context.ConnectedUsers.TryAdd(user.Id, user))
         {
             _logger.LogTrace("User with id {Id} already connected. Replacing...", user.Id);
-            _context.ConnectedUsers[user.Id] = user;
+            _coordinator.DetachUser(user.Id, "Connecting from other endpoint.");
+            _context.ConnectedUsers.Add(user.Id, user);
         }
 
         if (user.Id != "system")

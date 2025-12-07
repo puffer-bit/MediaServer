@@ -3,8 +3,10 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:controls="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia.ProgressRing"
+             xmlns:viewModels="clr-namespace:Client.ViewModels"
              xmlns:videoSessionViewModels="clr-namespace:Client.ViewModels.Sessions.VideoSession"
              xmlns:videoSessionViews="clr-namespace:Client.Views.Sessions.VideoSessionView"
+             xmlns:notifications="clr-namespace:Client.Views.Notifications"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:DataType="videoSessionViewModels:VideoSessionViewModel"
              x:Class="Client.Views.Sessions.VideoSessionView.VideoSessionControl">
@@ -71,13 +73,23 @@
                 </Button>
             </StackPanel>
         </Grid>
+        
         <Grid Grid.Row="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="4*"/>
                 <ColumnDefinition Width="1"/>
                 <ColumnDefinition MinWidth="200" MaxWidth="400"/>
             </Grid.ColumnDefinitions>
-            <Image Grid.ColumnSpan="3" Source="{Binding CurrentFrame}" Stretch="Uniform" Margin="12,12,12,12"/>
+            <Grid Grid.ColumnSpan="3" RowDefinitions="Auto, *">
+                <ItemsControl Grid.Row="0" ItemsSource="{Binding NotificationsListViewModel}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate DataType="viewModels:NotificationPopUpViewModel">
+                            <notifications:NotificationPopUp/>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <Image Grid.Row="1" Source="{Binding CurrentFrame}" Stretch="Uniform" Margin="12,12,12,12"/>
+            </Grid>
             <GridSplitter Grid.Column="1" Width="1" Background="Transparent" IsVisible="{Binding IsUserListVisible}"></GridSplitter>
             <Grid Grid.Column="2" IsVisible="{Binding IsUserListVisible}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
                 <ContentControl Content="{Binding ParticipantsListViewModel}"></ContentControl>

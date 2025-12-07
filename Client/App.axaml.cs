@@ -54,8 +54,7 @@ public partial class App : Application
         services.AddSingleton<ICoordinatorFactory, CoordinatorFactory>();
         services.AddSingleton<IVideoSessionFactory, VideoSessionFactory>();
         services.AddSingleton<AppSettingsManager>();
-
-
+        
         services.AddTransient<IFrameProcessor, FrameProcessor>();
         services.AddTransient<ICoordinatorSession, CoordinatorSession>();
         services.AddTransient<IAudioPlayerService, AudioPlayerService>();

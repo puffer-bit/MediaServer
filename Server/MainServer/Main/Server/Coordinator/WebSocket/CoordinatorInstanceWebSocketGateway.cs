@@ -34,15 +34,17 @@ namespace Server.MainServer.Main.Server.Coordinator.WebSocket
                 if (message.Type == MessageType.UserAuth)
                 {
                     // Проверка пользователя
-
-                    User = (UserDTO)message.Data;
-                    _coordinator.AttachUser(message, _socket);
                     
-                    _logger.LogTrace("User {Name}(ID:{Id}) connected.", User.Username, User.Id);
+                    _coordinator.AttachUser(message, _socket, out var userDTO);
+                    
+                    if (userDTO != null)
+                        User = userDTO;
+                    else
+                        _socket.Close();
                 }
                 else
                 {
-                    _logger.LogDebug("Connection closed. User cannot be identified.");
+                    _logger.LogDebug("Connection closed. User not authorized.");
                     _socket.Close();
                 }
             }
@@ -66,7 +68,8 @@ namespace Server.MainServer.Main.Server.Coordinator.WebSocket
 
         public Action OnClose => () =>
         {
-
+            if (_coordinator.GetUser(User!.Id!, out _))
+                _coordinator.DetachUser(User.Id!, "WebSocket connection closed.");
         };
         
         private BaseMessage? DeSerializeMessage(string jsonMessage)
