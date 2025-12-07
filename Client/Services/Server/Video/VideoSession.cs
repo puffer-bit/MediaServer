@@ -412,7 +412,6 @@ public class VideoSession : ReactiveObject, IVideoSession
         if (State is VideoSessionState.Disconnected or VideoSessionState.Ended)
         {
             _ffmpegVideoEndPoint.OnVideoSinkDecodedSampleFaster -= OnVideoFrameReceived;
-            _ffmpegVideoEndPoint.CloseVideo();
             if (IsAudioRequested)
             {
                 Peer.PeerConnection!.OnAudioFrameReceived -= OnAudioFrameReceived;

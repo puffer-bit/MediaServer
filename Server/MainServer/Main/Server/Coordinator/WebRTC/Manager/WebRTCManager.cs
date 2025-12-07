@@ -241,7 +241,7 @@ public class WebRTCManager : IWebRTCManager
             if (media != SDPMediaTypesEnum.audio && media != SDPMediaTypesEnum.video)
                 return;
 
-            //_logger.LogDebug($"Sending RTCP packet to peer {e}.");
+            _logger.LogDebug($"Sending RTCP packet to peer {e}.");
             pc.SendRtpRaw(
                 media,
                 rtpPkt.Payload,

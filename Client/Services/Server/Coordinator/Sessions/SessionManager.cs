@@ -57,7 +57,6 @@ public class SessionManager : ISessionManager
                 break;
             
             case SessionStateChangedType.HostConnected:
-                _coordinatorSession.RaiseHostConnectedToSession(stateChangedMessage.Session);
                 break;
             
             case SessionStateChangedType.HostDisconnected:
@@ -73,6 +72,9 @@ public class SessionManager : ISessionManager
                 break;
             
             case SessionStateChangedType.HostNegotiated:
+                _coordinatorSession.RaiseHostConnectedToSession(stateChangedMessage.Session);
+                break;
+            
             case SessionStateChangedType.UserNegotiated:
                 _coordinatorSession.RaiseParticipantListUpdated(stateChangedMessage.Session);
                 break;
